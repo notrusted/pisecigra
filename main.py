@@ -23,7 +23,7 @@ Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load
 Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
 Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")
 
-
+print("hello")
 
 n_flag = True
 n_timer = pygame.USEREVENT + 1
