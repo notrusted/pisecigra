@@ -1,7 +1,5 @@
-from Monster import *
+from classes.Monster import *
 import pygame
-from random import randint
-
 
 clock = pygame.time.Clock()
 
