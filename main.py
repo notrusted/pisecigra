@@ -4,6 +4,7 @@ from random import randint
 bonus_attack = 0
 flag_ability = 1
 #проверка на подключение к паблик проекту
+#мега проверка
 class Character:
     def __init__(self,Hp, Strong, Ability, Weapon):
         self.strong = Strong
