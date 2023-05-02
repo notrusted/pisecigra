@@ -6,7 +6,6 @@ flag_ability = 1
 #проверка на подключение к паблик проекту
 #мега проверка
 #мега проверка 20
-#мега проверка 25
 class Character:
     def __init__(self,Hp, Strong, Ability, Weapon):
         self.strong = Strong
