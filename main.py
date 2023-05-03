@@ -1,6 +1,6 @@
 import pygame
 from random import randint
-from Persona import Character
+
 bonus_attack = 0
 flag_ability = 1
 #проверка на подключение к паблик проекту
