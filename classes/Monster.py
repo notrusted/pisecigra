@@ -1,5 +1,6 @@
 from random import *
-
+from classes.Character import *
+from classes.Weapon import *
 class Monster:
     def __init__(self, Hp, Armor, X,Y, Damage, Weapon):
         self.hp = Hp
