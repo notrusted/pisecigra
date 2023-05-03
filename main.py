@@ -8,7 +8,7 @@ flag_ability = 1
 #мега проверка
 #мега проверка 20
 #мега проверка 26
-#супер проверка 27
+#супер проверка 278
 class Character:
     def __init__(self,Hp, Strong, Ability, Weapon):
         self.strong = Strong
