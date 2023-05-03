@@ -1,5 +1,4 @@
 import pygame
-from random import randint
 from classes.Character import *
 from classes.Monster import *
 bonus_attack = 0
