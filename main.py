@@ -4,6 +4,7 @@ from random import randint
 bonus_attack = 0
 flag_ability = 1
 #проверка на подключение к паблик проекту
+#Mega test
 #мега проверка
 #мега проверка 20
 #мега проверка 26
