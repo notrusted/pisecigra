@@ -178,9 +178,15 @@ Walk_Down = [pygame.image.load('images/Down_-_1.png'),pygame.image.load('images/
 
 Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"),pygame.image.load("images/Nazgul-2-1-right-eyes.png")]
 Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
-Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
-Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")
-picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack_left,Nazgul_attack_right]
+"""Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
+Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")"""
+Nazgul_attack=[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
+picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack]
+for i in range(len(picture_list)):
+    for j in range(len(picture_list[i])):
+        a=pygame.transform.scale(picture_list[i][j],(picture_list[i][j].get_width()//3,picture_list[i][j].get_height()//3))
+        picture_list[i][j]=a
+
 
 
 
@@ -308,11 +314,11 @@ while running:
                 if (abs(elem.x - player_x) <= 200) and (abs(elem.y - player_y) <= 200):
 
                     if elem.x >= player_x:
-                        screen.blit(Nazgul_attack_left, (elem.x, elem.y))
+                        screen.blit(Nazgul_attack[0], (elem.x, elem.y))
                         screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
                         screen.blit(n_armor,(elem.x + 10, elem.y - 60))
                     if elem.x < player_x:
-                        screen.blit(Nazgul_attack_right, (elem.x, elem.y))
+                        screen.blit(Nazgul_attack[1], (elem.x, elem.y))
                         screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
                         screen.blit(n_armor, (elem.x + 10, elem.y - 60))
                     n_flag = False
