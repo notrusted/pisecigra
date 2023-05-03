@@ -3,7 +3,7 @@ from classes.Character import *
 from classes.Monster import *
 bonus_attack = 0
 flag_ability = 1
-#проверка на подключение к паблик проекту
+#проверка на подключение кc паблик проекту
 #Mega test
 #мега проверка
 #мега проверка 20
