@@ -1,4 +1,4 @@
-from Weapon import Weapon
+from Weapon import *
 class Character:
     def __init__(self,Hp, Strong, Ability, Weapon):
         self.strong = Strong
