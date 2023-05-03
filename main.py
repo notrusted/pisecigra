@@ -180,6 +180,7 @@ Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"),pygame.image.load("im
 Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
 Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
 Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")
+picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack_left,Nazgul_attack_right]
 
 
 
