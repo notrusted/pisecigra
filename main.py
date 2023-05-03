@@ -169,6 +169,7 @@ pygame.display.set_caption("The Hobbit: Pyton's Adventure")
 #pygame.display.set_icon(icon)
 
 bg = pygame.image.load("images/Back.png")
+bg = pygame.transform.scale(bg,(1000,800))
 #player = pygame.image.load("I-ICON.png")
 
 Walk_right = [pygame.image.load('images/Right-1.png'),pygame.image.load('images/Right-2.png')]
