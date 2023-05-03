@@ -192,17 +192,17 @@ flag_animation = True
 Type_anim = 0
 
 gameplay = True
-the_end_label = pygame.font.Font("RobotoMono-VariableFont_wght.ttf",50)
+the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf",50)
 loose_label = the_end_label.render('You died',False,(12,12,12))
 restart_label = the_end_label.render("Start again",False,(35,234,32))
 restart_label_rect = restart_label.get_rect(topleft = (250,400))
 
 
 
-Arrow = pygame.image.load("Arrow.png")
+Arrow = pygame.image.load("images/Arrow.png")
 Arrow_list = []
 Arrow_How = 0
-Arrow_label = pygame.font.Font("RobotoMono-VariableFont_wght.ttf",20)
+Arrow_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf",20)
 Attack_point = 0
 
 
@@ -216,7 +216,7 @@ while running:
     if Start_game_flag :
         gameplay = False
         screen.fill("Black")
-        label = pygame.font.Font('RobotoMono-VariableFont_wght.ttf',20)
+        label = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf',20)
         Game_Name = label.render("The Hobbit: Pyton's Adventure",False,"Yellow")
         screen.blit(Game_Name,(250,400))
         Game_start = label.render("Press any to start...",False,"Yellow")
@@ -286,7 +286,7 @@ while running:
 
         if n_list_it_the_game:
             for (i,elem) in enumerate (n_list_it_the_game):
-                n_label = pygame.font.Font("RobotoMono-VariableFont_wght.ttf", 25)
+                n_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
                 n_heal_points = n_label.render("Hp: " + str(elem.hp),False,"green")
                 n_armor = n_label.render("Armor: " + str(elem.armor),False,"green")
 
