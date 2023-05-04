@@ -155,6 +155,17 @@ class Nazgul(Monster):
         b = dmg
         self.hp = self.hp - dmg + (b * randint(0, 1) * randint(0, 1))
 
+class Ork(Monster):
+
+    def __int__(self):
+        Monster.__init__(self, randint(50, 70), randint(1, 10), 1, 250, randint(15, 20), Weapon("Dubina", randint(10, 20)))
+
+    def Attack(self):
+        print('Ork attack with damage', self.damage + self.weapon.damage)
+        return self.damage+ self.weapon.damage
+
+    def Protect(self, dmg):
+        self.hp -= dmg
 
 
 
