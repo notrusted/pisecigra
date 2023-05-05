@@ -24,13 +24,14 @@ flag_ability = 1
 #мега проверка 20
 #мега проверка 26
 #супер проверка 27
-class Character:
-    def __init__(self,Hp, Strong, Ability, Weapon):
+class Character():
+    count_animation=0
+    def __init__(self,Hp, Strong, Ability, Weapon, list_animation: list):
         self.strong = Strong
         self.hp = Hp
         self.ability = Ability
         self.weapon = Weapon
-
+        self.la = list_animation
     def Attack(self):
         return (self.strong + self.weapon.damage)
 
@@ -41,12 +42,25 @@ class Character:
     def Use_the_Ability(self):
         print("use ability: ", self.ability)
         print()
-
+    def animation(self,surf: pygame.surface.Surface, symbol: str, x,y):
+        if Character.count_animation==0:
+            Character.count_animation=1
+        else:
+            Character.count_animation=0
+        if symbol=="l":
+            ch=0
+        elif symbol=="r":
+            ch=1
+        elif symbol=="u":
+            ch=2
+        elif symbol=="d":
+            ch=3
+        surf.blit(self.la[ch][Character.count_animation],(x,y))
 
 class Elf(Character):
 
     def __init__(self):
-        Character.__init__(self,90,30, "has agility",Weapon("Bow",30))
+        Character.__init__(self,90,30, "has agility",Weapon("Bow",30),[Walk_left,Walk_right,Walk_Up,Walk_Down])
 
 
     def Attack(self):
@@ -70,7 +84,7 @@ class Elf(Character):
 class Human(Character):
 
     def __init__(self):
-        Character.__init__(self,150,40, "is a tracker", Weapon("sword", 15))
+        Character.__init__(self,150,40, "is a tracker", Weapon("sword", 15),[Walk_left,Walk_right,Walk_Up,Walk_Down])
 
     def Attack(self):
         global bonus_attack
@@ -94,7 +108,7 @@ class Human(Character):
 class Hobbit(Character):
 
     def __init__(self):
-        Character.__init__(self,50,70, 'can a hide', Weapon('Arnors knife', 15))
+        Character.__init__(self,50,70, 'can a hide', Weapon('Arnors knife', 15),[Walk_left,Walk_right,Walk_Up,Walk_Down])
 
     def Attack(self):
         print( "The Hobbit attack with damage", self.strong + self.weapon.damage)
@@ -125,13 +139,14 @@ class Weapon:
 
 
 class Monster:
-    def __init__(self, Hp, Armor, X,Y, Damage, Weapon):
+    def __init__(self, Hp, Armor, X,Y, Damage, Weapon,):#надо найти текстуры как для персонажа (list_animation)
         self.hp = Hp
         self.armor = Armor
         self.damage = Damage
         self.weapon = Weapon
         self.x = X
         self.y = Y
+        #self.la=list_animation
 
     def Attack(self):
         return self.damage + self.weapon.damage
@@ -139,6 +154,20 @@ class Monster:
     def Protect(self, dmg):
         a = randint(0, 1)
         self.hp = self.hp - dmg + dmg * a * a
+    """def animation(self,surf: pygame.surface.Surface, symbol: str, x,y):
+        if Character.count_animation==0:
+            Character.count_animation=1
+        else:
+            Character.count_animation=0
+        if symbol=="l":
+            ch=0
+        elif symbol=="r":
+            ch=1
+        elif symbol=="u":
+            ch=2
+        elif symbol=="d":
+            ch=3
+        surf.blit(self.la[ch][Character.count_animation],(x,y))"""
 
 
 class Nazgul(Monster):
@@ -192,9 +221,9 @@ Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"),pygame.image.load("im
 Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
 """Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
 Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")"""
-Nazgul_attack=[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
 Arrow = pygame.image.load("images/Arrow.png")
-picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack]
+Nazgul_attack=[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
+picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack,]
 for i in range(len(picture_list)):
     for j in range(len(picture_list[i])):
         a=pygame.transform.scale(picture_list[i][j],(picture_list[i][j].get_width()//3,picture_list[i][j].get_height()//3))
@@ -376,7 +405,7 @@ while running:
                         gameplay = False
 
 
-
+#---перс при бездействии-------------------------------------------
         if flag_animation:
             player_heal_points = player_label.render("Hp: " + str(player_character.hp), False, "Red")
             if Type_anim == 0:
@@ -393,10 +422,10 @@ while running:
                 screen.blit(player_heal_points, (player_x + 20, player_y - 30))
 
         flag_animation = True
-
+#---анимация персонажа-------------------------------------------
         keys = pygame.key.get_pressed()
         if keys[pygame.K_d] and player_x < 800:
-            screen.blit(Walk_right[Player_animation_count], (player_x, player_y))
+            player_character.animation(screen,"r",player_x,player_y)
             player_x += player_speed
             flag_animation = False
             Type_anim = 2
@@ -404,7 +433,7 @@ while running:
 
 
         elif keys[pygame.K_a] and player_x > 0:
-            screen.blit(Walk_left[Player_animation_count], (player_x, player_y))
+            player_character.animation(screen,"l",player_x,player_y)
             player_x -= player_speed
             flag_animation = False
             Type_anim = 1
@@ -412,7 +441,7 @@ while running:
 
 
         elif keys[pygame.K_w]:
-            screen.blit(Walk_Up[Player_animation_count], (player_x, player_y))
+            player_character.animation(screen,"u",player_x,player_y)
             player_y -= player_speed
             bg_y += 2
             Type_anim = 0
@@ -421,7 +450,7 @@ while running:
                 player_y = 690
 
         elif keys[pygame.K_s] and player_y < 700:
-            screen.blit(Walk_Down[Player_animation_count], (player_x, player_y))
+            player_character.animation(screen,"d",player_x,player_y)
             player_y += player_speed
             bg_y -= 2
             Type_anim = 3
