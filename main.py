@@ -247,12 +247,7 @@ for i in range(len(warg_picture_list)):
         b = pygame.transform.scale(warg_picture_list[i][j],(warg_picture_list[i][j].get_width()* 2,warg_picture_list[i][j].get_height()*2))
         warg_picture_list[i][j] = b
 
-Nazgul_attack = [pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
-picture_list = [Walk_left, Walk_right, Walk_Up, Walk_Down, Nazgul_left, Nazgul_right, Nazgul_attack]
-for i in range(len(picture_list)):
-    for j in range(len(picture_list[i])):
-        a = pygame.transform.scale(picture_list[i][j], (picture_list[i][j].get_width()//3, picture_list[i][j].get_height()//3))
-        picture_list[i][j] = a
+
 
 #---------------------------------------------------------------------------------------------
 
