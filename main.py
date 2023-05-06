@@ -191,7 +191,8 @@ class Ork(Monster):
 
 
 class Warg(Monster):
-    def __init__(self):
+    def __init__(self,anim):
+        self.anim = anim
         Monster.__init__(self, randint(30, 90), randint(0, 20), 250, -100, randint(5, 15), Weapon('claws', randint(10,15)))
 
     def Attack(self):
@@ -264,7 +265,7 @@ warg_flag2 = False
 warg_flag3 = False
 warg_flag4 = False
 warg_list_in_the_game = []
-warg_animation_count = 0
+
 
 
 Player_animation_count = 0
@@ -387,8 +388,8 @@ while running:
                 if warg_flag1 and elem1.y <= 1100:
                     elem1.y += 15
 
-                    warg_animation_count += 1
-                    screen.blit(Warg_Down[warg_animation_count % 3],(elem1.x,elem1.y))
+                    elem1.anim += 1
+                    screen.blit(Warg_Down[elem1.anim % 3],(elem1.x,elem1.y))
                     screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
                     screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
 
@@ -402,8 +403,8 @@ while running:
                 if warg_flag2 and elem1.x <= 900:
                     elem1.x += 15
 
-                    warg_animation_count += 1
-                    screen.blit(Warg_Right[warg_animation_count % 2],(elem1.x,elem1.y))
+                    elem1.anim += 1
+                    screen.blit(Warg_Right[elem1.anim % 2],(elem1.x,elem1.y))
                     screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
                     screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
 
@@ -417,8 +418,8 @@ while running:
                 if warg_flag3 and elem1.y >= -100 :
                     elem1.y -= 15
 
-                    warg_animation_count += 1
-                    screen.blit(Warg_Up[warg_animation_count % 2], (elem1.x, elem1.y))
+                    elem1.anim += 1
+                    screen.blit(Warg_Up[elem1.anim % 2], (elem1.x, elem1.y))
                     screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
                     screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
 
@@ -433,8 +434,8 @@ while running:
                     elem1.x -= 15
 
 
-                    warg_animation_count += 1
-                    screen.blit(Warg_Left[warg_animation_count % 2], (elem1.x, elem1.y))
+                    elem1.anim += 1
+                    screen.blit(Warg_Left[elem1.anim % 2], (elem1.x, elem1.y))
                     screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
                     screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
 
@@ -663,7 +664,7 @@ while running:
             n_list_it_the_game.append(Nazgul())
 
         if event.type == n_timer:
-            warg_list_in_the_game.append(Warg())
+            warg_list_in_the_game.append(Warg(0))
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility":
             Arrow_list.append(Arrow.get_rect(topleft=(player_x, player_y - 30)))
