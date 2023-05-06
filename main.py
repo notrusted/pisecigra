@@ -760,7 +760,7 @@ while running:
             if Attack_point <= a:
                 Attack_point = a
             if n_list_it_the_game:
-                for (j,elem) in enumerate(n_list_it_the_game):
+                for (j, elem) in enumerate(n_list_it_the_game):
                     if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
                         elem.y -= 100
 
@@ -798,6 +798,23 @@ while running:
                             print("the Warg is murdered...")
                             flag_ability = 1
 
+            if orc_list_in_the_game:
+                for (j, elem) in enumerate(orc_list_in_the_game):
+                    if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
+                        elem.y -= 100
+                        if elem.armor > 0:
+                            elem.armor -= Attack_point
+                            if elem.armor < 0:
+                                elem.armor = 0
+                        else:
+                            elem.Protect(Attack_point)
+
+                        Attack_point = 0
+
+                        if elem.hp <= 0:
+                            orc_list_in_the_game.pop(j)
+                            print("the Ork is murdered...")
+                            flag_ability = 1
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_c:
             player_character.Use_the_Ability()
