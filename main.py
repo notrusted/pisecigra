@@ -52,6 +52,9 @@ class Character():
             ch = 3
         surf.blit(self.la[ch][Character.count_animation], (x, y))
 
+    def Player_coordinate(self):
+        return (player_x,player_y)
+
 class Elf(Character):
 
     def __init__(self):
@@ -187,42 +190,70 @@ class Ork(Monster):
         self.hp -= dmg
 
 
+class Warg(Monster):
+    def __init__(self):
+        Monster.__init__(self, randint(30, 90), randint(0, 20), 250, -100, randint(5, 15), Weapon('claws', randint(10,15)))
+
+    def Attack(self):
+        print('The Warg Attack with damage', self.damage + self.weapon.damage)
+        return self.damage + self.weapon.damage
+
+    def Protect(self, dmg):
+        print('The Warg try to protect')
+        a = randint(0, 1)
+        b = dmg
+
+        self.hp = self.hp - dmg + (b * a)
+
 
 
 clock = pygame.time.Clock()
 
 
 pygame.init()
-screen = pygame.display.set_mode((1000, 800))
+screen = pygame.display.set_mode((1000,800))
 pygame.display.set_caption("The Hobbit: Pyton's Adventure")
 #icon = pygame.image.load("I-ICON.png")
 #pygame.display.set_icon(icon)
 # ---Подключение изображений--------------------------------------------------------------
 bg = pygame.image.load("images/Back.png")
-bg = pygame.transform.scale(bg, (1000, 800))
+bg = pygame.transform.scale(bg,(1000,800))
 #player = pygame.image.load("I-ICON.png")
 
-Walk_right = [pygame.image.load('images/Right-1.png'), pygame.image.load('images/Right-2.png')]
-Walk_left = [pygame.image.load('images/Left-1.png'), pygame.image.load('images/Left-2.png')]
-Walk_Up = [pygame.image.load('images/Up-1.png'), pygame.image.load("images/Up-2.png")]
-Walk_Down = [pygame.image.load('images/Down_-_1.png'), pygame.image.load('images/Down-2.png')]
+Walk_right = [pygame.image.load('images/Right-1.png'),pygame.image.load('images/Right-2.png')]
+Walk_left  = [pygame.image.load('images/Left-1.png'),pygame.image.load('images/Left-2.png')]
+Walk_Up = [pygame.image.load('images/Up-1.png'),pygame.image.load("images/Up-2.png")]
+Walk_Down = [pygame.image.load('images/Down_-_1.png'),pygame.image.load('images/Down-2.png')]
 
-Orc_right = [pygame.image.load('images/orcs/orc_right1.png'), pygame.image.load('images/orcs/orc_right2.png'), pygame.image.load('images/orcs/orc_right3.png')]
-Orc_left = [pygame.image.load('images/orcs/orc_left1.png'), pygame.image.load('images/orcs/orc_left2.png'), pygame.image.load('images/orcs/orc_left3.png')]
-Orc_up = [pygame.image.load('images/orcs/orc_up1.png'), pygame.image.load('images/orcs/orc_up2.png'), pygame.image.load('images/orcs/orc_up3.png')]
-Orc_down = [pygame.image.load('images/orcs/orc_down1.png'), pygame.image.load('images/orcs/orc_down2.png'), pygame.image.load('images/orcs/orc_down3.png')]
-
-Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"), pygame.image.load("images/Nazgul-2-1-right-eyes.png")]
-Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"), pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
+Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"),pygame.image.load("images/Nazgul-2-1-right-eyes.png")]
+Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
 """Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
 Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")"""
 Arrow = pygame.image.load("images/Arrow.png")
-Nazgul_attack = [pygame.image.load("images/Nazgul-3-left.png"), pygame.image.load("images/Nazgul-3-rigt.png")]
+<<<<<<< HEAD
+Nazgul_attack=[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
+Warg_Up = [pygame.image.load("images/Warg_Up_1.png"),pygame.image.load("images/Warg_Up_2.png")]
+Warg_Down = [pygame.image.load("images/Warg_Down_1.png"),pygame.image.load("images/Warg_Down_2.png"),pygame.image.load('images/Warg_Down_3.png')]
+Warg_Left = [pygame.image.load("images/Warg_Left_1.png"),pygame.image.load("images/Warg_Left_2.png")]
+Warg_Right = [pygame.image.load("images/Warg_Right_1.png"),pygame.image.load("images/Warg_Right_2.png")]
+picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack]
+for i in range(len(picture_list)):
+    for j in range(len(picture_list[i])):
+        a=pygame.transform.scale(picture_list[i][j],(picture_list[i][j].get_width()//3,picture_list[i][j].get_height()//3))
+        picture_list[i][j]=a
+warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
+for i in range(len(warg_picture_list)):
+    for j in range(len(warg_picture_list[i])):
+        b = pygame.transform.scale(warg_picture_list[i][j],(warg_picture_list[i][j].get_width()* 2,warg_picture_list[i][j].get_height()*2))
+        warg_picture_list[i][j] = b
+=======
+Nazgul_attack = [pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
 picture_list = [Walk_left, Walk_right, Walk_Up, Walk_Down, Nazgul_left, Nazgul_right, Nazgul_attack]
 for i in range(len(picture_list)):
     for j in range(len(picture_list[i])):
         a = pygame.transform.scale(picture_list[i][j], (picture_list[i][j].get_width()//3, picture_list[i][j].get_height()//3))
         picture_list[i][j] = a
+>>>>>>> origin/master
 #---------------------------------------------------------------------------------------------
 
 
@@ -233,9 +264,18 @@ pygame.time.set_timer(n_timer,10000)
 n_list_it_the_game = []
 n_animation_count = 0
 
+warg_flag1 = True
+warg_flag2 = False
+warg_flag3 = False
+warg_flag4 = False
+warg_list_in_the_game = []
+warg_animation_count = 0
+
 
 Player_animation_count = 0
 bg_y = 0
+
+
 
 
 player_speed = 15
@@ -319,7 +359,7 @@ while running:
 
 
     #---процесс геймплея(арена)-------------------------------------------------------------------
-    if gameplay:
+    if gameplay :
         screen.blit(bg, (0, bg_y))
         screen.blit(bg, (0, bg_y - 800))
         if player_character.ability == "has agility":
@@ -342,6 +382,98 @@ while running:
             screen.blit(Character_label_Hobbit_and_Human_ability, (500, 750))
 
         #---реализация поведения и движения мобов-------------------------------------------
+
+        if warg_list_in_the_game:
+            for(i,elem1) in enumerate(warg_list_in_the_game):
+                warg_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf",25)
+                warg_heal_points = warg_label.render("Hp: " + str(elem1.hp),False,"green")
+                warg_armor = warg_label.render("Armor: " + str(elem1.armor),False,"green")
+
+                if warg_flag1 and elem1.y <= 1100:
+                    elem1.y += 15
+
+                    warg_animation_count += 1
+                    screen.blit(Warg_Down[warg_animation_count % 3],(elem1.x,elem1.y))
+                    screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
+                    screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
+
+                if elem1.y > 1100 and warg_flag1:
+                    a = player_character.Player_coordinate()
+                    elem1.x = -100
+                    elem1.y = a[1]
+                    warg_flag1 = False
+                    warg_flag2 = True
+
+                if warg_flag2 and elem1.x <= 900:
+                    elem1.x += 15
+
+                    warg_animation_count += 1
+                    screen.blit(Warg_Right[warg_animation_count % 2],(elem1.x,elem1.y))
+                    screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
+                    screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
+
+                if elem1.x > 900 and warg_flag2:
+                    a = player_character.Player_coordinate()
+                    elem1.x = a[0]
+                    elem1.y = 1100
+                    warg_flag2 = False
+                    warg_flag3 = True
+
+                if warg_flag3 and elem1.y >= -100 :
+                    elem1.y -= 15
+
+                    warg_animation_count += 1
+                    screen.blit(Warg_Up[warg_animation_count % 2], (elem1.x, elem1.y))
+                    screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
+                    screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
+
+                if elem1.y < -100 and warg_flag3:
+                    a = player_character.Player_coordinate()
+                    elem1.x = 900
+                    elem1.y = a[1]
+                    warg_flag3 = False
+                    warg_flag4 = True
+
+                if warg_flag4 and elem1.x >= -100:
+                    elem1.x -= 15
+
+
+                    warg_animation_count += 1
+                    screen.blit(Warg_Left[warg_animation_count % 2], (elem1.x, elem1.y))
+                    screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
+                    screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
+
+                if elem1.x < -100 and warg_flag4:
+                    a = player_character.Player_coordinate()
+                    elem1.x = a[0]
+                    elem1.y = -100
+                    warg_flag4 = False
+                    warg_flag1 = True
+
+                if abs(elem1.x - player_x) < 50 and abs(elem1.y - player_y) < 50:
+                    player_character.hp -= elem1.Attack()
+
+                    if player_x > elem1.x:
+                        player_x -= 50
+
+
+
+                    elif player_x < elem1.x :
+                        player_x += 50
+
+
+
+                    if player_y < elem1.y:
+                        player_y += 50
+
+                    elif player_y > elem1.y:
+                        player_y -= 50
+
+                    if player_character.hp <= 0:
+                        player_character.hp = 0
+                        gameplay = False
+
+
         if n_list_it_the_game:
             for (i, elem) in enumerate(n_list_it_the_game):
                 n_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
@@ -353,7 +485,7 @@ while running:
                     if elem.x >= player_x:
                         screen.blit(Nazgul_attack[0], (elem.x, elem.y))
                         screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
-                        screen.blit(n_armor, (elem.x + 10, elem.y - 60))
+                        screen.blit(n_armor,(elem.x + 10, elem.y - 60))
                     if elem.x < player_x:
                         screen.blit(Nazgul_attack[1], (elem.x, elem.y))
                         screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
@@ -488,6 +620,26 @@ while running:
                            if ar.y < -100:
                               Arrow_list.pop(i)
 
+                if warg_list_in_the_game:
+                    for (j1,elem1) in enumerate(warg_list_in_the_game):
+                        if abs(ar.x - elem1.x) < 100 and abs(ar.y - elem1.y) < 100:
+                            elem1.y -= 50
+
+                            if elem1.armor > 0:
+                                elem1.armor -= Attack_point
+                                if elem1.armor < 0:
+                                    elem1.armor = 0
+                            else:
+                                elem1.Protect(Attack_point)
+
+                            if elem1.hp <= 0:
+                                warg_list_in_the_game.pop(j1)
+                                print("the Warg is murdered...")
+                                flag_ability = 1
+
+                            if Arrow_list:
+                                Arrow_list.pop(i)
+
 
 
     elif Start_game_flag == False:
@@ -498,6 +650,7 @@ while running:
         if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
             player_y = 500
             n_list_it_the_game.clear()
+            warg_list_in_the_game.clear()
             Arrow_list.clear()
             player_character.hp = All_Hp
             flag_ability = 1
@@ -513,6 +666,9 @@ while running:
 
         if event.type == n_timer:
             n_list_it_the_game.append(Nazgul())
+
+        if event.type == n_timer:
+            warg_list_in_the_game.append(Warg())
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility":
             Arrow_list.append(Arrow.get_rect(topleft=(player_x, player_y - 30)))
@@ -544,6 +700,27 @@ while running:
                             n_list_it_the_game.pop(j)
                             print("the Nazgul is murdered...")
                             flag_ability = 1
+
+
+            if warg_list_in_the_game:
+                for (j1,elem1) in enumerate(warg_list_in_the_game):
+                    if abs(elem1.x - player_x) < 70 and abs(elem1.y - player_y) < 70:
+                        elem1.y -= 100
+
+                        if elem1.armor > 0:
+                            elem1.armor -= Attack_point
+                            if elem1.armor < 0:
+                                elem1.armor = 0
+                        else:
+                            elem1.Protect(Attack_point)
+
+                        Attack_point = 0
+
+                        if elem1.hp <= 0:
+                            warg_list_in_the_game.pop(j1)
+                            print("the Warg is murdered...")
+                            flag_ability = 1
+
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_c:
             player_character.Use_the_Ability()
