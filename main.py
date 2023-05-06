@@ -164,7 +164,8 @@ class Monster:
 
 
 class Nazgul(Monster):
-    def __init__(self):
+    def __init__(self,anim):
+        self.anim = anim
         Monster.__init__(self, randint(20, 50),  randint(5, 20), 250,-100,randint(1,15),Weapon("Morgul's knife",randint(5,10)))
 
 
@@ -266,7 +267,7 @@ n_flag = True
 n_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(n_timer,10000)
 n_list_it_the_game = []
-n_animation_count = 0
+
 
 warg_flag1 = True
 warg_flag2 = False
@@ -502,22 +503,18 @@ while running:
                 if elem.x < player_x:
                     elem.x += 2
                     if n_flag:
-                        if n_animation_count == 1:
-                            n_animation_count = 0
-                        else:
-                            n_animation_count += 1
-                        screen.blit(Nazgul_right[n_animation_count], (elem.x, elem.y))
+
+                        elem.anim += 1
+                        screen.blit(Nazgul_right[elem.anim % 2], (elem.x, elem.y))
                         screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
                         screen.blit(n_armor, (elem.x + 10, elem.y - 60))
 
                 if elem.x > player_x:
                     elem.x -= 2
                     if n_flag:
-                        if n_animation_count == 1:
-                            n_animation_count = 0
-                        else:
-                            n_animation_count += 1
-                        screen.blit(Nazgul_left[n_animation_count], (elem.x, elem.y))
+
+                        elem.anim += 1
+                        screen.blit(Nazgul_left[elem.anim % 2], (elem.x, elem.y))
                         screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
                         screen.blit(n_armor, (elem.x + 10, elem.y - 60))
 
@@ -669,7 +666,7 @@ while running:
             pygame.quit()
 
         if event.type == n_timer:
-            n_list_it_the_game.append(Nazgul())
+            n_list_it_the_game.append(Nazgul(0))
 
         if event.type == n_timer:
             warg_list_in_the_game.append(Warg(0))
