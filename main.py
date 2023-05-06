@@ -18,12 +18,7 @@ from random import randint
 
 bonus_attack = 0
 flag_ability = 1
-#проверка на подключение к паблик проекту
-#Mega test
-#мега проверка
-#мега проверка 20
-#мега проверка 26
-#супер проверка 27
+
 class Character():
     count_animation=0
     def __init__(self,Hp, Strong, Ability, Weapon, list_animation: list):
@@ -43,19 +38,19 @@ class Character():
         print("use ability: ", self.ability)
         print()
     def animation(self,surf: pygame.surface.Surface, symbol: str, x,y):
-        if Character.count_animation==0:
-            Character.count_animation=1
+        if Character.count_animation == 0:
+            Character.count_animation = 1
         else:
-            Character.count_animation=0
-        if symbol=="l":
-            ch=0
-        elif symbol=="r":
-            ch=1
-        elif symbol=="u":
-            ch=2
-        elif symbol=="d":
-            ch=3
-        surf.blit(self.la[ch][Character.count_animation],(x,y))
+            Character.count_animation = 0
+        if symbol == "l":
+            ch = 0
+        elif symbol == "r":
+            ch = 1
+        elif symbol == "u":
+            ch = 2
+        elif symbol == "d":
+            ch = 3
+        surf.blit(self.la[ch][Character.count_animation], (x, y))
 
 class Elf(Character):
 
@@ -78,7 +73,6 @@ class Elf(Character):
             print("The Elf try to use him agility")
             Arrow_How += 15
         flag_ability = 0
-
 
 
 class Human(Character):
@@ -128,14 +122,10 @@ class Hobbit(Character):
 
 
 
-
-
-
 class Weapon:
     def __init__(self, Name, Damage):
         self.name = Name
         self.damage = Damage
-
 
 
 class Monster:
@@ -222,12 +212,12 @@ Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load
 """Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
 Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")"""
 Arrow = pygame.image.load("images/Arrow.png")
-Nazgul_attack=[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
-picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack,]
+Nazgul_attack = [pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
+picture_list = [Walk_left, Walk_right, Walk_Up, Walk_Down, Nazgul_left, Nazgul_right, Nazgul_attack]
 for i in range(len(picture_list)):
     for j in range(len(picture_list[i])):
-        a=pygame.transform.scale(picture_list[i][j],(picture_list[i][j].get_width()//3,picture_list[i][j].get_height()//3))
-        picture_list[i][j]=a
+        a = pygame.transform.scale(picture_list[i][j], (picture_list[i][j].get_width()//3, picture_list[i][j].get_height()//3))
+        picture_list[i][j] = a
 #---------------------------------------------------------------------------------------------
 
 
@@ -254,12 +244,12 @@ Type_anim = 0
 gameplay = True
 
 #---Подключение шрифтов----------------------------------------------------
-player_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf",30)
-the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf",50)
-loose_label = the_end_label.render('You died',False,(12,12,12))
-restart_label = the_end_label.render("Start again",False,(35,234,32))
-restart_label_rect = restart_label.get_rect(topleft = (250,400))
-Arrow_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf",20)
+player_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
+the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
+loose_label = the_end_label.render('You died', False, (12, 12, 12))
+restart_label = the_end_label.render("Start again", False, (35, 234, 32))
+restart_label_rect = restart_label.get_rect(topleft=(250, 400))
+Arrow_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 20)
 #--------------------------------------------------------------------------
 
 Arrow_list = []
@@ -274,30 +264,30 @@ entr = False #флаг на переключение экранов старто
 running = True
 while running:
     #---Стартовый экран-------------------------------------------------------
-    if Start_game_flag :
+    if Start_game_flag:
         gameplay = False
         screen.fill("Black")
-        label = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf',20)
-        Game_Name = label.render("The Hobbit: Pyton's Adventure",False,"Yellow")
+        label = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 20)
+        Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Yellow")
         screen.blit(Game_Name,(250,400))
-        Game_start = label.render("Press any to start...",False,"Yellow")
-        screen.blit(Game_start,(250,600))
+        Game_start = label.render("Press any to start...", False, "Yellow")
+        screen.blit(Game_start, (250, 600))
     #-------------------------------------------------------------------------
 
     #---экран выбора героя----------------------------------------------------
         if entr:
             screen.fill("Black")
-            Character_label = label.render("Choose your hero:",False,"Red")
-            screen.blit(Character_label,(250,200))
-            Character_label_Elf = label.render("Forest Elf",False,"Yellow")
-            screen.blit(Character_label_Elf,(250,400))
+            Character_label = label.render("Choose your hero:", False, "Red")
+            screen.blit(Character_label, (250, 200))
+            Character_label_Elf = label.render("Forest Elf", False, "Yellow")
+            screen.blit(Character_label_Elf, (250, 400))
             Character_label_Human = label.render("Human", False, "Yellow")
             screen.blit(Character_label_Human, (250, 500))
             Character_label_Hobbit = label.render("Hobbit", False, "Yellow")
             screen.blit(Character_label_Hobbit, (250, 600))
 
-            Character_label_Elf_rect = Character_label_Elf.get_rect(topleft = (250,400))
-            Character_label_Human_rect = Character_label_Human.get_rect(topleft=(250,500))
+            Character_label_Elf_rect = Character_label_Elf.get_rect(topleft=(250, 400))
+            Character_label_Human_rect = Character_label_Human.get_rect(topleft=(250, 500))
             Character_label_Hobbit_rect = Character_label_Hobbit.get_rect(topleft=(250, 600))
 
             mouse = pygame.mouse.get_pos()
@@ -332,10 +322,11 @@ while running:
         if player_character.ability == "has agility":
             Arrow_label_how = Arrow_label.render("You have a " + str(Arrow_How) + " arrow's", False, "Brown")
             Arrow_label_press = Arrow_label.render("Press R...",False,"Brown")
-            Character_label_Elf_ability = Arrow_label.render("You can" + (1 - flag_ability) *"'t" + " use " +"The ability: " + str(player_character.ability),False,'Brown')
+            Character_label_Elf_ability = Arrow_label.render("You can" + (1 - flag_ability) * "'t" + " use " + "The ability: " +
+                                                             str(player_character.ability), False, 'Brown')
             screen.blit(Arrow_label_how, (700, 30))
-            screen.blit(Arrow_label_press,(700,60))
-            screen.blit(Character_label_Elf_ability,(500,750))
+            screen.blit(Arrow_label_press, (700, 60))
+            screen.blit(Character_label_Elf_ability, (500, 750))
 
         else:
             Arrow_label_how = Arrow_label.render("You can touch with  " + str(player_character.weapon.name), False, "Brown")
@@ -351,8 +342,8 @@ while running:
         if n_list_it_the_game:
             for (i, elem) in enumerate(n_list_it_the_game):
                 n_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
-                n_heal_points = n_label.render("Hp: " + str(elem.hp),False,"green")
-                n_armor = n_label.render("Armor: " + str(elem.armor),False,"green")
+                n_heal_points = n_label.render("Hp: " + str(elem.hp), False, "green")
+                n_armor = n_label.render("Armor: " + str(elem.armor), False, "green")
 
                 if (abs(elem.x - player_x) <= 200) and (abs(elem.y - player_y) <= 200):
 
@@ -425,23 +416,19 @@ while running:
 #---анимация персонажа-------------------------------------------
         keys = pygame.key.get_pressed()
         if keys[pygame.K_d] and player_x < 800:
-            player_character.animation(screen,"r",player_x,player_y)
+            player_character.animation(screen, "r", player_x, player_y)
             player_x += player_speed
             flag_animation = False
             Type_anim = 2
 
-
-
         elif keys[pygame.K_a] and player_x > 0:
-            player_character.animation(screen,"l",player_x,player_y)
+            player_character.animation(screen, "l", player_x, player_y)
             player_x -= player_speed
             flag_animation = False
             Type_anim = 1
 
-
-
         elif keys[pygame.K_w]:
-            player_character.animation(screen,"u",player_x,player_y)
+            player_character.animation(screen, "u", player_x, player_y)
             player_y -= player_speed
             bg_y += 2
             Type_anim = 0
@@ -450,7 +437,7 @@ while running:
                 player_y = 690
 
         elif keys[pygame.K_s] and player_y < 700:
-            player_character.animation(screen,"d",player_x,player_y)
+            player_character.animation(screen, "d", player_x, player_y)
             player_y += player_speed
             bg_y -= 2
             Type_anim = 3
@@ -470,12 +457,12 @@ while running:
 
 
         if Arrow_list:
-            for (i,ar) in enumerate( Arrow_list):
-                screen.blit(Arrow,(ar.x,ar.y))
+            for (i, ar) in enumerate(Arrow_list):
+                screen.blit(Arrow, (ar.x, ar.y))
                 ar.y -= 20
 
                 if n_list_it_the_game:
-                    for (j,elem) in enumerate( n_list_it_the_game):
+                    for (j, elem) in enumerate(n_list_it_the_game):
                         if abs(ar.x - elem.x) < 100 and abs(ar.y - elem.y) < 100:
                             elem.y -= 50
 
@@ -494,19 +481,16 @@ while running:
                             if Arrow_list:
                               Arrow_list.pop(i)
 
-
                         if Arrow_list:
                            if ar.y < -100:
                               Arrow_list.pop(i)
 
 
 
-
-
     elif Start_game_flag == False:
         screen.fill("White")
-        screen.blit(loose_label,(250,500))
-        screen.blit(restart_label,(250,400))
+        screen.blit(loose_label, (250, 500))
+        screen.blit(restart_label, (250, 400))
         mouse = pygame.mouse.get_pos()
         if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
             player_y = 500
@@ -517,13 +501,10 @@ while running:
             Arrow_How = 0
             Start_game_flag = True
 
-
     pygame.display.update()
-
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-
             running = False
             pygame.quit()
 
@@ -564,8 +545,4 @@ while running:
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_c:
             player_character.Use_the_Ability()
 
-
-
     clock.tick(20)
-
-
