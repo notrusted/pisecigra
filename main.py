@@ -286,7 +286,7 @@ Player_animation_count = 0
 bg_y = 0
 
 orc_list_in_the_game = []
-
+orc_flag = 0
 
 
 player_speed = 15
@@ -554,6 +554,7 @@ while running:
                         gameplay = False
 
                 elif abs(elem.x - player_x) > abs(elem.y - player_y):
+                    orc_flag += 1
                     if elem.x > player_x:
                         elem.x -= 4
                         elem.anim += 1
@@ -567,6 +568,7 @@ while running:
                         screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
                         screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
                 elif abs(elem.x - player_x) <= abs(elem.y - player_y):
+                    orc_flag = 0
                     if elem.y > player_y:
                         elem.y -= 4
                         elem.anim += 1
@@ -750,7 +752,7 @@ while running:
             orc_list_in_the_game.append(Ork(randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)), 0))
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility":
-            Arrow_list.append(Arrow.get_rect(topleft=(player_x, player_y - 30)))
+            Arrow_list.append(Arrow.get_rect(topleft=(player_x+25, player_y-10)))
             Arrow_How -= 1
             Attack_point = player_character.Attack()
 
