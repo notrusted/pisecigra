@@ -129,7 +129,7 @@ class Weapon:
 
 
 class Monster:
-    def __init__(self, Hp, Armor, X, Y, Damage, Weapon,):#надо найти текстуры как для персонажа (list_animation)
+    def __init__(self, Hp, Armor, X, Y, Damage, Weapon):#надо найти текстуры как для персонажа (list_animation)
         self.hp = Hp
         self.armor = Armor
         self.damage = Damage
@@ -176,7 +176,7 @@ class Nazgul(Monster):
 
 class Ork(Monster):
     def __int__(self):
-        Monster.__init__(self, randint(50, 70), randint(1, 10), 1, 250, randint(15, 20), Weapon("Dubina", randint(10, 20)))
+        Monster.__init__(self, randint(20, 50),  randint(5, 20), 250, -100, randint(1, 15), Weapon("Morgul's knife", randint(5, 10)))
 
     def Attack(self):
         print('Ork attack with damage', self.damage + self.weapon.damage)
@@ -512,7 +512,7 @@ while running:
 
         if event.type == n_timer:
             n_list_it_the_game.append(Nazgul())
-            n_list_it_the_game.append(Ork())
+            n_list_it_the_game.append(Ork(randint(20, 50),  randint(5, 20), 250, -100, randint(1, 15), Weapon("Morgul's knife", randint(5, 10))))
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility":
             Arrow_list.append(Arrow.get_rect(topleft=(player_x, player_y - 30)))
