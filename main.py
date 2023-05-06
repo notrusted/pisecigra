@@ -193,26 +193,31 @@ clock = pygame.time.Clock()
 
 
 pygame.init()
-screen = pygame.display.set_mode((1000,800))
+screen = pygame.display.set_mode((1000, 800))
 pygame.display.set_caption("The Hobbit: Pyton's Adventure")
 #icon = pygame.image.load("I-ICON.png")
 #pygame.display.set_icon(icon)
 # ---Подключение изображений--------------------------------------------------------------
 bg = pygame.image.load("images/Back.png")
-bg = pygame.transform.scale(bg,(1000,800))
+bg = pygame.transform.scale(bg, (1000, 800))
 #player = pygame.image.load("I-ICON.png")
 
-Walk_right = [pygame.image.load('images/Right-1.png'),pygame.image.load('images/Right-2.png')]
-Walk_left  = [pygame.image.load('images/Left-1.png'),pygame.image.load('images/Left-2.png')]
-Walk_Up = [pygame.image.load('images/Up-1.png'),pygame.image.load("images/Up-2.png")]
-Walk_Down = [pygame.image.load('images/Down_-_1.png'),pygame.image.load('images/Down-2.png')]
+Walk_right = [pygame.image.load('images/Right-1.png'), pygame.image.load('images/Right-2.png')]
+Walk_left = [pygame.image.load('images/Left-1.png'), pygame.image.load('images/Left-2.png')]
+Walk_Up = [pygame.image.load('images/Up-1.png'), pygame.image.load("images/Up-2.png")]
+Walk_Down = [pygame.image.load('images/Down_-_1.png'), pygame.image.load('images/Down-2.png')]
 
-Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"),pygame.image.load("images/Nazgul-2-1-right-eyes.png")]
-Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
+Orc_right = [pygame.image.load('images/orcs/orc_right1.png'), pygame.image.load('images/orcs/orc_right2.png'), pygame.image.load('images/orcs/orc_right3.png')]
+Orc_left = [pygame.image.load('images/orcs/orc_left1.png'), pygame.image.load('images/orcs/orc_left2.png'), pygame.image.load('images/orcs/orc_left3.png')]
+Orc_up = [pygame.image.load('images/orcs/orc_up1.png'), pygame.image.load('images/orcs/orc_up2.png'), pygame.image.load('images/orcs/orc_up3.png')]
+Orc_down = [pygame.image.load('images/orcs/orc_down1.png'), pygame.image.load('images/orcs/orc_down2.png'), pygame.image.load('images/orcs/orc_down3.png')]
+
+Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"), pygame.image.load("images/Nazgul-2-1-right-eyes.png")]
+Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"), pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
 """Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
 Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")"""
 Arrow = pygame.image.load("images/Arrow.png")
-Nazgul_attack = [pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
+Nazgul_attack = [pygame.image.load("images/Nazgul-3-left.png"), pygame.image.load("images/Nazgul-3-rigt.png")]
 picture_list = [Walk_left, Walk_right, Walk_Up, Walk_Down, Nazgul_left, Nazgul_right, Nazgul_attack]
 for i in range(len(picture_list)):
     for j in range(len(picture_list[i])):
@@ -231,8 +236,6 @@ n_animation_count = 0
 
 Player_animation_count = 0
 bg_y = 0
-
-
 
 
 player_speed = 15
@@ -316,7 +319,7 @@ while running:
 
 
     #---процесс геймплея(арена)-------------------------------------------------------------------
-    if gameplay :
+    if gameplay:
         screen.blit(bg, (0, bg_y))
         screen.blit(bg, (0, bg_y - 800))
         if player_character.ability == "has agility":
@@ -350,7 +353,7 @@ while running:
                     if elem.x >= player_x:
                         screen.blit(Nazgul_attack[0], (elem.x, elem.y))
                         screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
-                        screen.blit(n_armor,(elem.x + 10, elem.y - 60))
+                        screen.blit(n_armor, (elem.x + 10, elem.y - 60))
                     if elem.x < player_x:
                         screen.blit(Nazgul_attack[1], (elem.x, elem.y))
                         screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
