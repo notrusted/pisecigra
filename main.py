@@ -248,6 +248,8 @@ Warg_Left = [pygame.image.load("images/Warg_Left_1.png"),pygame.image.load("imag
 Warg_Right = [pygame.image.load("images/Warg_Right_1.png"),pygame.image.load("images/Warg_Right_2.png")]
 picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack]
 
+Arrow = pygame.transform.scale(Arrow, (Arrow.get_width() // 3, Arrow.get_height() // 3))
+
 
 
 for i in range(len(picture_list)):
@@ -708,9 +710,9 @@ while running:
                             if Arrow_list:
                               Arrow_list.pop(i)
 
-                        if Arrow_list:
-                           if ar.y < -100:
-                              Arrow_list.pop(i)
+                if Arrow_list:
+                    if ar.y < -100:
+                        Arrow_list.pop(i)
 
 
 
