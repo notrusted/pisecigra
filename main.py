@@ -253,6 +253,7 @@ for i in range(len(picture_list)):
     for j in range(len(picture_list[i])):
         a = pygame.transform.scale(picture_list[i][j], (picture_list[i][j].get_width()//3, picture_list[i][j].get_height()//3))
         picture_list[i][j] = a
+
 #---------------------------------------------------------------------------------------------
 
 
