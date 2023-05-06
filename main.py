@@ -129,7 +129,7 @@ class Weapon:
 
 
 class Monster:
-    def __init__(self, Hp, Armor, X,Y, Damage, Weapon,):#надо найти текстуры как для персонажа (list_animation)
+    def __init__(self, Hp, Armor, X, Y, Damage, Weapon,):#надо найти текстуры как для персонажа (list_animation)
         self.hp = Hp
         self.armor = Armor
         self.damage = Damage
@@ -162,7 +162,7 @@ class Monster:
 
 class Nazgul(Monster):
     def __init__(self):
-        Monster.__init__(self, randint(20, 50),  randint(5, 20), 250,-100,randint(1,15),Weapon("Morgul's knife",randint(5,10)))
+        Monster.__init__(self, randint(20, 50),  randint(5, 20), 250, -100, randint(1, 15), Weapon("Morgul's knife", randint(5, 10)))
 
 
     def Attack(self):
@@ -175,13 +175,12 @@ class Nazgul(Monster):
         self.hp = self.hp - dmg + (b * randint(0, 1) * randint(0, 1))
 
 class Ork(Monster):
-
     def __int__(self):
         Monster.__init__(self, randint(50, 70), randint(1, 10), 1, 250, randint(15, 20), Weapon("Dubina", randint(10, 20)))
 
     def Attack(self):
         print('Ork attack with damage', self.damage + self.weapon.damage)
-        return self.damage+ self.weapon.damage
+        return self.damage + self.weapon.damage
 
     def Protect(self, dmg):
         self.hp -= dmg
@@ -210,7 +209,7 @@ Walk_Down = [pygame.image.load('images/Down_-_1.png'), pygame.image.load('images
 Orc_right = [pygame.image.load('images/orcs/orc_right1.png'), pygame.image.load('images/orcs/orc_right2.png'), pygame.image.load('images/orcs/orc_right3.png')]
 Orc_left = [pygame.image.load('images/orcs/orc_left1.png'), pygame.image.load('images/orcs/orc_left2.png'), pygame.image.load('images/orcs/orc_left3.png')]
 Orc_up = [pygame.image.load('images/orcs/orc_up1.png'), pygame.image.load('images/orcs/orc_up2.png'), pygame.image.load('images/orcs/orc_up3.png')]
-Orc_down = [pygame.image.load('images/orcs/orc_down1.png'), pygame.image.load('images/orcs/orc_down2.png'), pygame.image.load('images/orcs/orc_down3.png')]
+Orc_down = [pygame.image.load('images/orcs/orc_down1.png'), pygame.image.load('images/orcs/orc_down2.png'), pygame.image.load('images/orcs/orc_stay.png')]
 
 Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"), pygame.image.load("images/Nazgul-2-1-right-eyes.png")]
 Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"), pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
@@ -478,7 +477,7 @@ while running:
 
                             if elem.hp <= 0:
                                 n_list_it_the_game.pop(j)
-                                print("the Nazgul is murdered...")
+                                print("the enemy is murdered...")
                                 flag_ability = 1
 
                             if Arrow_list:
@@ -513,6 +512,7 @@ while running:
 
         if event.type == n_timer:
             n_list_it_the_game.append(Nazgul())
+            n_list_it_the_game.append(Ork())
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility":
             Arrow_list.append(Arrow.get_rect(topleft=(player_x, player_y - 30)))
@@ -524,10 +524,9 @@ while running:
 
         if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f:
             a = player_character.Attack()
-            if Attack_point <= a:
-                Attack_point = a
+            Attack_point = a
             if n_list_it_the_game:
-                for (j,elem) in enumerate(n_list_it_the_game):
+                for (j, elem) in enumerate(n_list_it_the_game):
                     if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
                         elem.y -= 100
 
@@ -542,7 +541,7 @@ while running:
 
                         if elem.hp <= 0:
                             n_list_it_the_game.pop(j)
-                            print("the Nazgul is murdered...")
+                            print("the enemy is murdered...")
                             flag_ability = 1
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_c:
