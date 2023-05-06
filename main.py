@@ -132,7 +132,8 @@ class Weapon:
 
 
 class Monster:
-    def __init__(self, Hp, Armor, X,Y, Damage, Weapon,):#надо найти текстуры как для персонажа (list_animation)
+    def __init__(self, Hp, Armor, X,Y, Damage, Weapon, anim):#надо найти текстуры как для персонажа (list_animation)
+        self.anim = anim
         self.hp = Hp
         self.armor = Armor
         self.damage = Damage
@@ -166,7 +167,7 @@ class Monster:
 class Nazgul(Monster):
     def __init__(self,anim):
         self.anim = anim
-        Monster.__init__(self, randint(20, 50),  randint(5, 20), 250,-100,randint(1,15),Weapon("Morgul's knife",randint(5,10)))
+        Monster.__init__(self, randint(20, 50),  randint(5, 20), 250,-100,randint(1,15),Weapon("Morgul's knife",randint(5,10)), 0)
 
 
     def Attack(self):
@@ -178,23 +179,13 @@ class Nazgul(Monster):
         b = dmg
         self.hp = self.hp - dmg + (b * randint(0, 1) * randint(0, 1))
 
-class Ork(Monster):
 
-    def __int__(self):
-        Monster.__init__(self, randint(50, 70), randint(1, 10), 1, 250, randint(15, 20), Weapon("Dubina", randint(10, 20)))
 
-    def Attack(self):
-        print('Ork attack with damage', self.damage + self.weapon.damage)
-        return self.damage+ self.weapon.damage
-
-    def Protect(self, dmg):
-        self.hp -= dmg
 
 
 class Warg(Monster):
-    def __init__(self,anim):
-        self.anim = anim
-        Monster.__init__(self, randint(30, 90), randint(0, 20), 250, -100, randint(5, 15), Weapon('claws', randint(10,15)))
+    def __init__(self):
+        Monster.__init__(self, randint(30, 90), randint(0, 20), 250, -100, randint(5, 15), Weapon('claws', randint(10,15)), 0)
 
     def Attack(self):
         print('The Warg Attack with damage', self.damage + self.weapon.damage)
@@ -207,7 +198,19 @@ class Warg(Monster):
 
         self.hp = self.hp - dmg + (b * a)
 
+class Ork(Monster):
+    def __int__(self, anim):
+        self.anim = anim
+        Monster.__init__(self,randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)), 0)
 
+    def Attack(self):
+        print('Ork attack with damage', self.damage + self.weapon.damage)
+        return self.damage + self.weapon.damage
+
+    def Protect(self, dmg):
+        print('Ork try to protect')
+        b = dmg
+        self.hp = self.hp - dmg + (b * randint(0, 1) * randint(0, 1))
 
 clock = pygame.time.Clock()
 
@@ -232,7 +235,7 @@ Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load
 """Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
 Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")"""
 Arrow = pygame.image.load("images/Arrow.png")
-Nazgul_attack=[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
+Nazgul_attack =[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
 
 Orc_right = [pygame.image.load('images/orcs/orc_right1.png'), pygame.image.load('images/orcs/orc_right2.png'), pygame.image.load('images/orcs/orc_right3.png')]
 Orc_left = [pygame.image.load('images/orcs/orc_left1.png'), pygame.image.load('images/orcs/orc_left2.png'), pygame.image.load('images/orcs/orc_left3.png')]
@@ -280,6 +283,7 @@ warg_list_in_the_game = []
 Player_animation_count = 0
 bg_y = 0
 
+orc_list_in_the_game = []
 
 
 
@@ -364,7 +368,7 @@ while running:
 
 
     #---процесс геймплея(арена)-------------------------------------------------------------------
-    if gameplay :
+    if gameplay:
         screen.blit(bg, (0, bg_y))
         screen.blit(bg, (0, bg_y - 800))
         if player_character.ability == "has agility":
@@ -532,6 +536,50 @@ while running:
                         gameplay = False
 
 
+
+        if orc_list_in_the_game:
+            for (i, elem) in enumerate(orc_list_in_the_game):
+                orc_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+                orc_heal_points = orc_label.render("Hp: " + str(elem.hp), False, "green")
+                orc_armor = orc_label.render("Armor: " + str(elem.armor), False, "green")
+
+
+                if abs(elem.x - player_x) <= 60 and abs(elem.y - player_y) <= 60:
+                    player_character.hp -= elem.Attack()
+                    player_y += 150
+                    if player_character.hp <= 0:
+                        player_character.hp = 0
+                        gameplay = False
+
+                elif abs(elem.x - player_x) > abs(elem.y - player_y):
+                    if elem.x > player_x:
+                        elem.x -= 4
+                        elem.anim += 1
+                        screen.blit(Orc_left[elem.anim % 3], (elem.x, elem.y))
+                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                    else:
+                        elem.x += 4
+                        elem.anim += 1
+                        screen.blit(Orc_right[elem.anim % 3], (elem.x, elem.y))
+                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                elif abs(elem.x - player_x) <= abs(elem.y - player_y):
+                    if elem.y > player_y:
+                        elem.y -= 4
+                        elem.anim += 1
+                        screen.blit(Orc_up[elem.anim % 3], (elem.x, elem.y))
+                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                    else:
+                        elem.y += 4
+                        elem.anim += 1
+                        screen.blit(Orc_down[elem.anim % 3], (elem.x, elem.y))
+                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+
+
+
 #---перс при бездействии-------------------------------------------
         if flag_animation:
             player_heal_points = player_label.render("Hp: " + str(player_character.hp), False, "Red")
@@ -641,6 +689,30 @@ while running:
                             if Arrow_list:
                                 Arrow_list.pop(i)
 
+                if orc_list_in_the_game:
+                    for (j, elem) in enumerate(orc_list_in_the_game):
+                        if abs(ar.x - elem.x) < 100 and abs(ar.y - elem.y) < 100:
+                            elem.y -= 50
+                            if elem.armor > 0:
+                                elem.armor -= Attack_point
+                                if elem.armor < 0:
+                                    elem.armor = 0
+                            else:
+                                elem.Protect(Attack_point)
+
+                            if elem.hp <= 0:
+                                orc_list_in_the_game.pop(j)
+                                print("the Orc is murdered...")
+                                flag_ability = 1
+
+                            if Arrow_list:
+                              Arrow_list.pop(i)
+
+                        if Arrow_list:
+                           if ar.y < -100:
+                              Arrow_list.pop(i)
+
+
 
 
     elif Start_game_flag == False:
@@ -652,6 +724,7 @@ while running:
             player_y = 500
             n_list_it_the_game.clear()
             warg_list_in_the_game.clear()
+            orc_list_in_the_game.clear()
             Arrow_list.clear()
             player_character.hp = All_Hp
             flag_ability = 1
@@ -669,7 +742,10 @@ while running:
             n_list_it_the_game.append(Nazgul(0))
 
         if event.type == n_timer:
-            warg_list_in_the_game.append(Warg(0))
+            warg_list_in_the_game.append(Warg())
+
+        if event.type == n_timer:
+            orc_list_in_the_game.append(Ork(randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)), 0))
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility":
             Arrow_list.append(Arrow.get_rect(topleft=(player_x, player_y - 30)))
