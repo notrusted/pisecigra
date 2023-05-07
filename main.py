@@ -234,7 +234,6 @@ Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"),pygame.image.load("im
 Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
 """Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
 Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")"""
-Arrow = pygame.image.load("images/Arrow.png")
 Nazgul_attack =[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
 
 Orc_right = [pygame.image.load('images/orcs/orc_right1.png'), pygame.image.load('images/orcs/orc_right2.png'), pygame.image.load('images/orcs/orc_right3.png')]
@@ -248,7 +247,9 @@ Warg_Left = [pygame.image.load("images/Warg_Left_1.png"),pygame.image.load("imag
 Warg_Right = [pygame.image.load("images/Warg_Right_1.png"),pygame.image.load("images/Warg_Right_2.png")]
 picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack]
 
-Arrow = pygame.transform.scale(Arrow, (Arrow.get_width() // 3, Arrow.get_height() // 3))
+Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arrow_Down.png'),pygame.image.load('images/Arrow_Left.png'),pygame.image.load('images/Arrow_Right.png')]
+for j in range(len(Arrow)):
+    Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
 
 
 
@@ -646,12 +647,25 @@ while running:
 
         if Arrow_list:
             for (i, ar) in enumerate(Arrow_list):
-                screen.blit(Arrow, (ar.x, ar.y))
-                ar.y -= 20
+                if ar[1] == 0:
+                    screen.blit(Arrow[0], (ar[0].x, ar[0].y))
+                    ar[0].y -= 20
+
+                elif ar[1] == 2:
+                    screen.blit(Arrow[2], (ar[0].x, ar[0].y))
+                    ar[0].x -= 20
+
+                elif ar[1] == 3:
+                    screen.blit(Arrow[3], (ar[0].x, ar[0].y))
+                    ar[0].x += 20
+
+                elif ar[1] == 1:
+                    screen.blit(Arrow[1], (ar[0].x, ar[0].y))
+                    ar[0].y += 20
 
                 if n_list_it_the_game:
                     for (j, elem) in enumerate(n_list_it_the_game):
-                        if abs(ar.x - elem.x) < 100 and abs(ar.y - elem.y) < 100:
+                        if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
                             elem.y -= 50
 
                             if elem.armor > 0:
@@ -667,15 +681,21 @@ while running:
                                 flag_ability = 1
 
                             if Arrow_list:
-                              Arrow_list.pop(i)
+                                Arrow_list.pop(i)
 
                         if Arrow_list:
-                           if ar.y < -100:
-                              Arrow_list.pop(i)
+                            if ar[0].y < -100:
+                                Arrow_list.pop(i)
+                            elif ar[0].y > 1100:
+                                Arrow_list.pop(i)
+                            elif ar[0].x < - 100:
+                                Arrow_list.pop(i)
+                            elif ar[0].x > 1000:
+                                Arrow_list.pop(i)
 
                 if warg_list_in_the_game:
-                    for (j1,elem1) in enumerate(warg_list_in_the_game):
-                        if abs(ar.x - elem1.x) < 100 and abs(ar.y - elem1.y) < 100:
+                    for (j1, elem1) in enumerate(warg_list_in_the_game):
+                        if abs(ar[0].x - elem1.x) < 100 and abs(ar[0].y - elem1.y) < 100:
                             elem1.y -= 50
 
                             if elem1.armor > 0:
@@ -695,7 +715,7 @@ while running:
 
                 if orc_list_in_the_game:
                     for (j, elem) in enumerate(orc_list_in_the_game):
-                        if abs(ar.x - elem.x) < 100 and abs(ar.y - elem.y) < 100:
+                        if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
                             elem.y -= 50
                             if elem.armor > 0:
                                 elem.armor -= Attack_point
@@ -710,11 +730,9 @@ while running:
                                 flag_ability = 1
 
                             if Arrow_list:
-                              Arrow_list.pop(i)
+                                Arrow_list.pop(i)
 
-                if Arrow_list:
-                    if ar.y < -100:
-                        Arrow_list.pop(i)
+
 
 
 
@@ -752,7 +770,22 @@ while running:
             orc_list_in_the_game.append(Ork(randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)), 0))
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility":
-            Arrow_list.append(Arrow.get_rect(topleft=(player_x+25, player_y-10)))
+            if Type_anim == 0:
+                side = 0
+                Arrow_list.append((Arrow[0].get_rect(topleft=(player_x + 25, player_y - 40)), side))
+
+            elif Type_anim == 1:
+                side = 2
+                Arrow_list.append((Arrow[2].get_rect(topleft=(player_x - 30, player_y)), side))
+
+            elif Type_anim == 2:
+                side = 3
+                Arrow_list.append((Arrow[3].get_rect(topleft=(player_x + 30, player_y)), side))
+
+            elif Type_anim == 3:
+                side = 1
+                Arrow_list.append((Arrow[1].get_rect(topleft=(player_x + 25, player_y + 20)), side))
+
             Arrow_How -= 1
             Attack_point = player_character.Attack()
 
