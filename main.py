@@ -53,7 +53,7 @@ class Character():
         surf.blit(self.la[ch][Character.count_animation], (x, y))
 
     def Player_coordinate(self):
-        return (player_x,player_y)
+        return (player_x, player_y)
 
 class Elf(Character):
 
@@ -393,7 +393,48 @@ def warg_mechanicks_go():
                 player_character.hp = 0
                 gameplay = False
 
+def visual_health(player):
+    global health_model, Fullhp, screen
+    health = player.hp
+    section = Fullhp // 9
+    level_hp = health // section
+    if level_hp == 9:
+        screen.blit(health_model[0], (100, 50))
+        screen.blit(health_model[0], (150, 50))
+        screen.blit(health_model[0], (200, 50))
+    elif level_hp == 8:
+        screen.blit(health_model[0], (100, 50))
+        screen.blit(health_model[0], (150, 50))
+        screen.blit(health_model[1], (200, 50))
+    elif level_hp == 7:
+        screen.blit(health_model[0], (100, 50))
+        screen.blit(health_model[0], (150, 50))
+        screen.blit(health_model[2], (200, 50))
+    elif level_hp == 6:
+        screen.blit(health_model[0], (100, 50))
+        screen.blit(health_model[0], (150, 50))
+
+    elif level_hp == 5:
+        screen.blit(health_model[0], (100, 50))
+        screen.blit(health_model[1], (150, 50))
+
+    elif level_hp == 4:
+        screen.blit(health_model[0], (100, 50))
+        screen.blit(health_model[2], (150, 50))
+
+    elif level_hp == 3:
+        screen.blit(health_model[0], (100, 50))
+
+    elif level_hp == 2:
+        screen.blit(health_model[1], (100, 50))
+
+    elif level_hp == 1 or health > 0:
+        screen.blit(health_model[2], (100, 50))
+
+
+
 #-------------------------------------------------------------------------------------------------------
+
 
 clock = pygame.time.Clock()
 
@@ -405,11 +446,11 @@ pygame.display.set_caption("The Hobbit: Pyton's Adventure")
 #pygame.display.set_icon(icon)
 # ---Подключение изображений--------------------------------------------------------------
 bg = pygame.image.load("images/Back.png")
-bg = pygame.transform.scale(bg,(1000,800))
+bg = pygame.transform.scale(bg, (1000, 800))
 #player = pygame.image.load("I-ICON.png")
 
 Walk_right = [pygame.image.load('images/Right-1.png'),pygame.image.load('images/Right-2.png')]
-Walk_left  = [pygame.image.load('images/Left-1.png'),pygame.image.load('images/Left-2.png')]
+Walk_left = [pygame.image.load('images/Left-1.png'),pygame.image.load('images/Left-2.png')]
 Walk_Up = [pygame.image.load('images/Up-1.png'),pygame.image.load("images/Up-2.png")]
 Walk_Down = [pygame.image.load('images/Down_-_1.png'),pygame.image.load('images/Down-2.png')]
 
@@ -430,10 +471,13 @@ Warg_Left = [pygame.image.load("images/Warg_Left_1.png"),pygame.image.load("imag
 Warg_Right = [pygame.image.load("images/Warg_Right_1.png"),pygame.image.load("images/Warg_Right_2.png")]
 picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack]
 
-Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arrow_Down.png'),pygame.image.load('images/Arrow_Left.png'),pygame.image.load('images/Arrow_Right.png')]
+health_model = [pygame.image.load('images/health1.png'), pygame.image.load('images/health2.png'), pygame.image.load('images/health3.png')]
+
+Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arrow_Down.png'), pygame.image.load('images/Arrow_Left.png'),pygame.image.load('images/Arrow_Right.png')]
 for j in range(len(Arrow)):
     Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
-
+for i in range(len(health_model)):
+    health_model[i] = pygame.transform.scale(health_model[i], (health_model[i].get_width() // 2, health_model[i].get_height() // 2))
 
 
 for i in range(len(picture_list)):
@@ -443,7 +487,7 @@ for i in range(len(picture_list)):
 warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
 for i in range(len(warg_picture_list)):
     for j in range(len(warg_picture_list[i])):
-        b = pygame.transform.scale(warg_picture_list[i][j],(warg_picture_list[i][j].get_width()* 2,warg_picture_list[i][j].get_height()*2))
+        b = pygame.transform.scale(warg_picture_list[i][j], (warg_picture_list[i][j].get_width()* 2,warg_picture_list[i][j].get_height()*2))
         warg_picture_list[i][j] = b
 
 
@@ -497,8 +541,7 @@ Attack_point = 0
 
 Start_game_flag = True
 entr = False #флаг на переключение экранов стартовый->выбор игрока
-
-
+Fullhp = 1
 running = True
 while running:
     #---Стартовый экран-------------------------------------------------------
@@ -535,6 +578,7 @@ while running:
                 print("Your choose is Elf")
                 player_character = Elf()
                 All_Hp = player_character.hp
+                Fullhp = All_Hp
                 Arrow_How = 100
                 Start_game_flag = False
 
@@ -543,6 +587,7 @@ while running:
                 print("Your choose is Human")
                 player_character = Human()
                 All_Hp = player_character.hp
+                Fullhp = All_Hp
                 Start_game_flag = False
 
             elif Character_label_Hobbit_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
@@ -550,6 +595,7 @@ while running:
                 print("Your choose is Hobbit")
                 player_character = Hobbit()
                 All_Hp = player_character.hp
+                Fullhp = All_Hp
                 Start_game_flag = False
 
 
@@ -557,6 +603,7 @@ while running:
     if gameplay:
         screen.blit(bg, (0, bg_y))
         screen.blit(bg, (0, bg_y - 800))
+
         if player_character.ability == "has agility":
             Arrow_label_how = Arrow_label.render("You have a " + str(Arrow_How) + " arrow's", False, "Brown")
             Arrow_label_press = Arrow_label.render("Press R...",False,"Brown")
@@ -735,6 +782,7 @@ while running:
 
                             if Arrow_list:
                                 Arrow_list.pop(i)
+        visual_health(player_character)
 
 
 
