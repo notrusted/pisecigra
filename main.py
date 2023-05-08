@@ -393,6 +393,7 @@ def warg_mechanicks_go():
                 player_character.hp = 0
                 gameplay = False
 
+#---функция отображения хп игрока-------------------------------------------------------------------------
 def visual_health(player):
     global health_model, Fullhp, screen
     health = player.hp
@@ -430,8 +431,6 @@ def visual_health(player):
 
     elif level_hp == 1 or health > 0:
         screen.blit(health_model[2], (100, 50))
-
-
 
 #-------------------------------------------------------------------------------------------------------
 
