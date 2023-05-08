@@ -493,6 +493,13 @@ for i in range(len(warg_picture_list)):
 
 #---------------------------------------------------------------------------------------------
 
+wave_flag = True
+num_mob = 0
+wave_how = randint(1,10)
+wave_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
+how_villians = 0
+
+
 
 
 n_flag = True
@@ -602,6 +609,11 @@ while running:
     if gameplay:
         screen.blit(bg, (0, bg_y))
         screen.blit(bg, (0, bg_y - 800))
+
+        wave_view_label = wave_label.render("You have a " + str(wave_how) + " Wave's", False, "Brown")
+        wave_villians_label = wave_label.render("Villian's: " + str(num_mob), False, "Brown")
+        screen.blit(wave_view_label,(20,660))
+        screen.blit(wave_villians_label,(20,700))
 
         if player_character.ability == "has agility":
             Arrow_label_how = Arrow_label.render("You have a " + str(Arrow_How) + " arrow's", False, "Brown")
@@ -728,6 +740,7 @@ while running:
                             if elem.hp <= 0:
                                 n_list_it_the_game.pop(j)
                                 print("the Nazgul is murdered...")
+                                num_mob -= 1
                                 flag_ability = 1
 
                             if Arrow_list:
@@ -758,6 +771,7 @@ while running:
                             if elem1.hp <= 0:
                                 warg_list_in_the_game.pop(j1)
                                 print("the Warg is murdered...")
+                                num_mob -= 1
                                 flag_ability = 1
 
                             if Arrow_list:
@@ -777,6 +791,7 @@ while running:
                             if elem.hp <= 0:
                                 orc_list_in_the_game.pop(j)
                                 print("the Orc is murdered...")
+                                num_mob -= 1
                                 flag_ability = 1
 
                             if Arrow_list:
@@ -811,14 +826,37 @@ while running:
             running = False
             pygame.quit()
 
-        if event.type == n_timer:
-            n_list_it_the_game.append(Nazgul(0))
 
-        if event.type == n_timer:
-            warg_list_in_the_game.append(Warg())
+        if wave_how > 0:
+            if wave_flag:
+              num_mob = randint(5, 15)
+              how_villians = num_mob
+              wave_flag = False
 
-        if event.type == n_timer:
-            orc_list_in_the_game.append(Ork(randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)), 0))
+
+            if how_villians > 0 and event.type == n_timer:
+                num = randint(1,3)
+                how_villians -= 1
+
+                if num == 1:
+                   n_list_it_the_game.append(Nazgul(0))
+
+                elif num == 2:
+                    warg_list_in_the_game.append(Warg())
+
+                elif num == 3:
+                    orc_list_in_the_game.append(Ork(randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)), 0))
+
+            if  how_villians == 0 and num_mob == 0:
+                wave_how -= 1
+                wave_flag = True
+
+
+        else:
+            print("The end")
+            pygame.quit()
+
+
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility":
             if Type_anim == 0:
@@ -864,6 +902,7 @@ while running:
                         if elem.hp <= 0:
                             n_list_it_the_game.pop(j)
                             print("the Nazgul is murdered...")
+                            num_mob -= 1
                             flag_ability = 1
 
 
@@ -884,6 +923,7 @@ while running:
                         if elem1.hp <= 0:
                             warg_list_in_the_game.pop(j1)
                             print("the Warg is murdered...")
+                            num_mob -= 1
                             flag_ability = 1
 
             if orc_list_in_the_game:
@@ -902,6 +942,7 @@ while running:
                         if elem.hp <= 0:
                             orc_list_in_the_game.pop(j)
                             print("the Ork is murdered...")
+                            num_mob -= 1
                             flag_ability = 1
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_c:
