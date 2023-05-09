@@ -205,7 +205,28 @@ class Ork(Monster):
         print('Ork try to protect')
         b = dmg
         self.hp = self.hp - dmg + (b * randint(0, 1) * randint(0, 1))
-#-------------------------------------------------------------------------------------------------------
+
+
+class Boss_ork(Ork):
+
+    def __int__(self, anim):
+        self.anim = anim
+        Monster.__init__(self, 200, 100, screen.get_width()//2, screen.get_height()//2, 40, Weapon('Super Dubina', 50))
+
+    def Attack(self):
+        print("Boss Ork attack with damage", self.damage + self.weapon.damage)
+        return self.damage + self.weapon.damage
+
+    def Protect(self, dmg):
+        print('Boss ork tru to protect')
+        b = dmg
+        self.hp = self.hp - dmg + (b * randint(0, 1) * randint(0, 1))
+
+
+
+
+
+#--------------------------------------------------------------------------------------------
 
 
 #--- функции механики перемещения мобов ----------------------------------------------------------------
