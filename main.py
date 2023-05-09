@@ -128,6 +128,14 @@ class Weapon:
         self.name = Name
         self.damage = Damage
 
+class Magic:
+    def __int__(self, name, dmg, anim, list_of_anim):
+        self.name = name
+        self.damage = dmg
+        self.anim = anim
+        self.animation = list_of_anim
+
+
 
 class Monster:
     def __init__(self, Hp, Armor, X,Y, Damage, Weapon, anim):#надо найти текстуры как для персонажа (list_animation)
@@ -211,7 +219,7 @@ class Boss_ork(Ork):
 
     def __int__(self, anim):
         self.anim = anim
-        Monster.__init__(self, 200, 100, screen.get_width()//2, screen.get_height()//2, 40, Weapon('Super Dubina', 50))
+        Monster.__init__(self, 200, 100, screen.get_width()//2, screen.get_height()//2, 40, Weapon('Super Dubina', 50), anim)
 
     def Attack(self):
         print("Boss Ork attack with damage", self.damage + self.weapon.damage)
@@ -222,7 +230,14 @@ class Boss_ork(Ork):
         b = dmg
         self.hp = self.hp - dmg + (b * randint(0, 1) * randint(0, 1))
 
+class Boss_ork_conqueror(Boss_ork):
+    def __int__(self, Magic):
+        Boss_ork.__init__(self, 200, 100, screen.get_width()//2, screen.get_height()//2, 40, Weapon('Sword Conqueror', 50), 3)
+        self.cry = "AAAARGHHHHHH"
+        self.ability = Magic
 
+    def Attack(self):
+        return self.damage
 
 
 
@@ -868,7 +883,7 @@ while running:
                 elif num == 3:
                     orc_list_in_the_game.append(Ork(randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)), 0))
 
-            if  how_villians == 0 and num_mob == 0:
+            if how_villians == 0 and num_mob == 0:
                 wave_how -= 1
                 wave_flag = True
 
