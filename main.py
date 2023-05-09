@@ -500,6 +500,11 @@ Orc_left = [pygame.image.load('images/orcs/orc_left1.png'), pygame.image.load('i
 Orc_up = [pygame.image.load('images/orcs/orc_up1.png'), pygame.image.load('images/orcs/orc_up2.png'), pygame.image.load('images/orcs/orc_up3.png')]
 Orc_down = [pygame.image.load('images/orcs/orc_down1.png'), pygame.image.load('images/orcs/orc_down2.png'), pygame.image.load('images/orcs/orc_stay.png')]
 
+Orc_conqueror_right = [pygame.image.load('images/orcs/orc_conqueror_right1.png'),pygame.image.load('images/orcs/orc_conqueror_right2.png'),pygame.image.load('images/orcs/orc_conqueror_right3.png')]
+Orc_conqueror_left = [pygame.image.load('images/orcs/orc_conqueror_left1.png'),pygame.image.load('images/orcs/orc_conqueror_left2.png'),pygame.image.load('images/orcs/orc_conqueror_left3.png')]
+Orc_conqueror_up = [pygame.image.load('images/orcs/orc_conqueror_up1.png'),pygame.image.load('images/orcs/orc_conqueror_up2.png'),pygame.image.load('images/orcs/orc_conqueror_up3.png')]
+Orc_conqueror_down = [pygame.image.load('images/orcs/orc_conqueror_down1.png'),pygame.image.load('images/orcs/orc_conqueror_down2.png'),pygame.image.load('images/orcs/orc_conqueror_down3.png')]
+
 Warg_Up = [pygame.image.load("images/Warg_Up_1.png"),pygame.image.load("images/Warg_Up_2.png")]
 Warg_Down = [pygame.image.load("images/Warg_Down_1.png"),pygame.image.load("images/Warg_Down_2.png"),pygame.image.load('images/Warg_Down_3.png')]
 Warg_Left = [pygame.image.load("images/Warg_Left_1.png"),pygame.image.load("images/Warg_Left_2.png")]
