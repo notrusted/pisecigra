@@ -222,7 +222,9 @@ class Boss:
         return self.dmg
 
 
-
+class Boss_ork_conqueror(Boss):
+    def __init__(self):
+        Boss.__init__(self, 200, 100, 60, Weapon('Sword', 70), Magic('protect_circle', 5, 2, []))
 
 
 #--------------------------------------------------------------------------------------------
