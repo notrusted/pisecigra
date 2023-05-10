@@ -210,30 +210,21 @@ class Ork(Monster):
         self.hp = self.hp - dmg + (b * randint(0, 1) * randint(0, 1))
 
 
-class Boss_ork(Ork):
+class Boss:
+    def __int__(self, hp, armor, dmg, Weapon, utility):
+        self.hp = hp
+        self.armor = armor
+        self.dmg = dmg
+        self.weapon = Weapon
+        self.utility = utility
 
-    def __int__(self, anim):
-        self.anim = anim
-        Monster.__init__(self, 200, 100, screen.get_width()//2, screen.get_height()//2, 40, Weapon('Super Dubina', 50), anim)
+    def base_attack(self):
+        return self.dmg
 
-    def Attack(self):
-        print("Boss Ork attack with damage", self.damage + self.weapon.damage)
-        return self.damage + self.weapon.damage
 
-    def Protect(self, dmg):
-        print('Boss ork tru to protect')
-        b = dmg
-        self.hp = self.hp - dmg + (b * randint(0, 1) * randint(0, 1))
-
-class Boss_ork_conqueror(Boss_ork):
-    def __int__(self, Magic):
-        Boss_ork.__init__(self, 200, 100, screen.get_width()//2, screen.get_height()//2, 40, Weapon('Sword Conqueror', 50), 3)
-        self.cry = "AAAARGHHHHHH"
-        self.ability = Magic
-
-    def Attack(self):
-        return self.damage
-
+class Boss_ork_conqueror(Boss):
+    def __init__(self):
+        Boss.__init__(self, 200, 100, 60, Weapon('Sword', 70), Magic('protect_circle', 5, 2, []))
 
 
 #--------------------------------------------------------------------------------------------
