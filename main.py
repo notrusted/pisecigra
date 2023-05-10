@@ -211,6 +211,19 @@ class Ork(Monster):
         self.hp = self.hp - dmg + (b * randint(0, 1) * randint(0, 1))
 
 
+class Boss:
+    def __int__(self, hp, armor, dmg, Weapon, utility):
+        self.hp = hp
+        self.armor = armor
+        self.dmg = dmg
+        self.weapon = Weapon
+        self.utility = utility
+
+    def base_attack(self):
+        return self.dmg
+
+
+
 class Boss_ork(Ork):
 
     def __int__(self, anim):
