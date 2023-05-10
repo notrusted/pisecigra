@@ -585,6 +585,9 @@ Start_game_flag = True
 entr = False #флаг на переключение экранов стартовый->выбор игрока
 Fullhp = 1
 running = True
+pygame.mixer.music.load("Sounds/Main theme.mp3")
+pygame.mixer.music.play(-1)
+flag_music=True
 while running:
     #---Стартовый экран-------------------------------------------------------
     if Start_game_flag:
@@ -643,6 +646,11 @@ while running:
 
     #---процесс геймплея(арена)-------------------------------------------------------------------
     if gameplay:
+        if flag_music:
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load("sounds/Alternative 2.mp3")
+            pygame.mixer.music.play(-1)
+            flag_music=False
         screen.blit(bg, (0, bg_y))
         screen.blit(bg, (0, bg_y - 800))
 
