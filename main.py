@@ -248,7 +248,7 @@ class BossOrkConqueror(Boss):
     def healing(self):
         if self.heal > 0:
             self.heal -= 1
-            self.heal += 100
+            self.hp += 100
 
     def standart_attack(self):
         return self.dmg + self.weapon.damage
@@ -548,6 +548,17 @@ health_model = [pygame.image.load('images/health1.png'), pygame.image.load('imag
 
 Arrow = [pygame.image.load("images/Arrow_Up.png"), pygame.image.load('images/Arrow_Down.png'),
          pygame.image.load('images/Arrow_Left.png'), pygame.image.load('images/Arrow_Right.png')]
+Orc_conqueror = [Orc_conqueror_up, Orc_conqueror_down, Orc_conqueror_right, Orc_conqueror_left]
+
+for i in range(len(Orc_conqueror)):
+    for j in range(len(Orc_conqueror[i])):
+        Orc_conqueror[i][j] = pygame.transform.scale(Orc_conqueror[i][j], (Orc_conqueror[i][j].get_width() * 1.5, Orc_conqueror[i][j].get_height() * 1.5))
+Orc_conqueror_up = Orc_conqueror[0]
+Orc_conqueror_down = Orc_conqueror[1]
+Orc_conqueror_right = Orc_conqueror[2]
+Orc_conqueror_left = Orc_conqueror[3]
+
+
 for j in range(len(Arrow)):
     Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
 for i in range(len(health_model)):
@@ -580,7 +591,8 @@ pygame.time.set_timer(n_timer, 10000)
 boss_timer_to_cry = pygame.USEREVENT + 1
 boss_timer_to_heal = pygame.USEREVENT + 1
 pygame.time.set_timer(boss_timer_to_cry, 1000)
-pygame.time.set_timer(boss_timer_to_heal, 10000)
+pygame.time.set_timer(boss_timer_to_heal, 1000)
+pygame.time.set_timer(n_timer, 10000)
 
 
 n_list_it_the_game = []
@@ -632,6 +644,9 @@ pygame.mixer.music.play(-1)
 flag_music = True
 flag_create_the_boss = False
 flag_win_the_boss = False
+def new_count_wave():
+    global wave_how
+    wave_how = randint(3, 15)
 while running:
     # ---Стартовый экран-------------------------------------------------------
     if Start_game_flag:
@@ -670,6 +685,7 @@ while running:
                 Fullhp = All_Hp
                 Arrow_How = 100
                 Start_game_flag = False
+                new_count_wave()
 
             elif Character_label_Human_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
                 gameplay = True
@@ -678,6 +694,7 @@ while running:
                 All_Hp = player_character.hp
                 Fullhp = All_Hp
                 Start_game_flag = False
+                new_count_wave()
 
             elif Character_label_Hobbit_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
                 gameplay = True
@@ -686,6 +703,8 @@ while running:
                 All_Hp = player_character.hp
                 Fullhp = All_Hp
                 Start_game_flag = False
+                new_count_wave()
+
 
     # ---процесс геймплея(арена)-------------------------------------------------------------------
     if gameplay:
@@ -771,6 +790,9 @@ while running:
                             if player_character.hp <= 0:
                                 player_character.hp = 0
                                 gameplay = False
+                                flag_win_the_boss = False
+                                flag_create_the_boss = False
+                                boss_list.clear()
 
                         elif abs(elem.coord_x - player_x) > abs(elem.coord_y - player_y):
                             if elem.coord_x > player_x:
@@ -990,6 +1012,7 @@ while running:
             Start_game_flag = True
             flag_create_the_boss = False
             flag_win_the_boss = False
+            wave_flag = True
 
 
     pygame.display.update()
@@ -1000,13 +1023,8 @@ while running:
             pygame.quit()
 
         if wave_how > 0:
-            if wave_flag:
-                num_mob = randint(1, 3)
-                how_villians = num_mob
-                wave_flag = False
 
-
-            if flag_create_the_boss:
+            if len(boss_list) != 0:
                 if event.type == boss_timer_to_cry:
                     boss_list[0].flag_orc_cry = False
                 if event.type == boss_timer_to_heal:
@@ -1029,6 +1047,11 @@ while running:
                 wave_how -= 1
                 wave_flag = True
                 flag_win_the_boss = False
+            if wave_flag:
+                num_mob = randint(1, 3)
+                how_villians = num_mob
+                wave_flag = False
+
 
             elif how_villians == 0 and num_mob == 0 and not flag_create_the_boss:
                 boss_list.append(BossOrkConqueror(200, 100, 60, Weapon('Sword Orc Boss', 40), Magic('Protective Dome', 5),
