@@ -181,7 +181,11 @@ class Nazgul(Monster):
 
 
 class Warg(Monster):
-    def __init__(self):
+    def __init__(self,flag1,flag2,flag3,flah4):
+        self.flag1 = flag1
+        self.flag2 = flag2
+        self.flag3 = flag3
+        self.flag4 = flah4
         Monster.__init__(self, randint(30, 90), randint(0, 20), 250, -100, randint(5, 15), Weapon('claws', randint(10,15)), 0)
 
     def Attack(self):
@@ -239,7 +243,8 @@ class Boss_warg(Boss):
         return self.dmg + self.weapon.damage
 
 
-    def protect(self,dmg):
+
+    def Protect(self,dmg):
         print('The Alpha Warg try to protect')
         b = dmg * randint(0,1) * randint(0,1)
         if b != 0:
@@ -357,7 +362,7 @@ def warg_mechanicks_go():
         warg_heal_points = warg_label.render("Hp: " + str(elem1.hp), False, "green")
         warg_armor = warg_label.render("Armor: " + str(elem1.armor), False, "green")
 
-        if warg_flag1 and elem1.y <= 1100:
+        if elem1.flag1 and elem1.y <= 1100:
             elem1.y += 15
 
             elem1.anim += 1
@@ -365,14 +370,14 @@ def warg_mechanicks_go():
             screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
             screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
 
-        if elem1.y > 1100 and warg_flag1:
+        if elem1.y > 1100 and elem1.flag1:
             a = player_character.Player_coordinate()
             elem1.x = -100
             elem1.y = a[1]
-            warg_flag1 = False
-            warg_flag2 = True
+            elem1.flag1 = False
+            elem1.flag2 = True
 
-        if warg_flag2 and elem1.x <= 900:
+        if elem1.flag2 and elem1.x <= 900:
             elem1.x += 15
 
             elem1.anim += 1
@@ -380,14 +385,14 @@ def warg_mechanicks_go():
             screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
             screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
 
-        if elem1.x > 900 and warg_flag2:
+        if elem1.x > 900 and elem1.flag2:
             a = player_character.Player_coordinate()
             elem1.x = a[0]
             elem1.y = 1100
-            warg_flag2 = False
-            warg_flag3 = True
+            elem1.flag2 = False
+            elem1.flag3 = True
 
-        if warg_flag3 and elem1.y >= -100:
+        if elem1.flag3 and elem1.y >= -100:
             elem1.y -= 15
 
             elem1.anim += 1
@@ -395,14 +400,14 @@ def warg_mechanicks_go():
             screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
             screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
 
-        if elem1.y < -100 and warg_flag3:
+        if elem1.y < -100 and elem1.flag3:
             a = player_character.Player_coordinate()
             elem1.x = 900
             elem1.y = a[1]
-            warg_flag3 = False
-            warg_flag4 = True
+            elem1.flag3 = False
+            elem1.flag4 = True
 
-        if warg_flag4 and elem1.x >= -100:
+        if elem1.flag4 and elem1.x >= -100:
             elem1.x -= 15
 
             elem1.anim += 1
@@ -410,12 +415,12 @@ def warg_mechanicks_go():
             screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
             screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
 
-        if elem1.x < -100 and warg_flag4:
+        if elem1.x < -100 and elem1.flag4:
             a = player_character.Player_coordinate()
             elem1.x = a[0]
             elem1.y = -100
-            warg_flag4 = False
-            warg_flag1 = True
+            elem1.flag4 = False
+            elem1.flag1 = True
 
         if abs(elem1.x - player_x) < 50 and abs(elem1.y - player_y) < 50:
             player_character.hp -= elem1.Attack()
@@ -983,6 +988,27 @@ while running:
 
                             if Arrow_list:
                                 Arrow_list.pop(i)
+
+                if Boss_warg_list_in_the_game:
+                    for (j1, elem2) in enumerate(Boss_warg_list_in_the_game):
+                        if abs(ar[0].x - elem2.x) < 100 and abs(ar[0].y - elem2.y) < 100:
+                            elem2.y -= 50
+
+                            if elem2.armor > 0:
+                                elem2.armor -= Attack_point
+                                if elem2.armor < 0:
+                                    elem2.armor = 0
+                            else:
+                                elem2.Protect(Attack_point)
+
+                            if elem2.hp <= 0:
+                                Boss_warg_list_in_the_game.pop(j1)
+                                print("the Alpha Warg is murdered...")
+                                num_mob -= 1
+                                flag_ability = 1
+
+                            if Arrow_list:
+                                Arrow_list.pop(i)
         visual_health(player_character)
 
 
@@ -1034,7 +1060,7 @@ while running:
                    n_list_it_the_game.append(Nazgul(0))
 
                 elif num == 2:
-                    warg_list_in_the_game.append(Warg())
+                    warg_list_in_the_game.append(Warg(True,False,False,False))
 
                 elif num == 3:
                     orc_list_in_the_game.append(Ork(randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)), 0))
@@ -1134,6 +1160,26 @@ while running:
                         if elem.hp <= 0:
                             orc_list_in_the_game.pop(j)
                             print("the Ork is murdered...")
+                            num_mob -= 1
+                            flag_ability = 1
+
+            if Boss_warg_list_in_the_game:
+                for (j1, elem2) in enumerate(Boss_warg_list_in_the_game):
+                    if abs(elem2.x - player_x) < 70 and abs(elem2.y - player_y) < 70:
+                        elem2.y -= 100
+
+                        if elem2.armor > 0:
+                            elem2.armor -= Attack_point
+                            if elem2.armor < 0:
+                                elem2.armor = 0
+                        else:
+                            elem2.Protect(Attack_point)
+
+                        Attack_point = 0
+
+                        if elem2.hp <= 0:
+                            Boss_warg_list_in_the_game.pop(j1)
+                            print("the Alpha Warg is murdered...")
                             num_mob -= 1
                             flag_ability = 1
 
