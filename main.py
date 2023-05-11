@@ -1,10 +1,10 @@
 import pygame
 from random import randint
-
+from file_for_images import *
 
 #---------------------------------------------------
 """
-Некит - музыка, текстуры, босс Назгул
+Некит - текстуры, босс Назгул
 Юра - босс волк, меню
 Илья - босс орк, + магия для босса + магия для персонажа
 абстраткный класс босса-?????????????
@@ -53,8 +53,7 @@ class Character():
 class Elf(Character):
 
     def __init__(self):
-        Character.__init__(self,90,30, "has agility",Weapon("Bow",30),[Walk_left,Walk_right,Walk_Up,Walk_Down])
-
+        Character.__init__(self,90,30, "has agility",Weapon("Bow",30),[Elf_left,Elf_right,Elf_up,Elf_down])
 
     def Attack(self):
         print("The Elf attack with damage", self.strong + self.weapon.damage)
@@ -100,7 +99,7 @@ class Human(Character):
 class Hobbit(Character):
 
     def __init__(self):
-        Character.__init__(self,50,70, 'can a hide', Weapon('Arnors knife', 15),[Walk_left,Walk_right,Walk_Up,Walk_Down])
+        Character.__init__(self,50,70, 'can a hide', Weapon('Arnors knife', 15),[Hobba_left,Hobba_right,Hobba_up,Hobba_down])
 
     def Attack(self):
         print( "The Hobbit attack with damage", self.strong + self.weapon.damage)
@@ -149,20 +148,6 @@ class Monster:
     def Protect(self, dmg):
         a = randint(0, 1)
         self.hp = self.hp - dmg + dmg * a * a
-    """def animation(self,surf: pygame.surface.Surface, symbol: str, x,y):
-        if Character.count_animation==0:
-            Character.count_animation=1
-        else:
-            Character.count_animation=0
-        if symbol=="l":
-            ch=0
-        elif symbol=="r":
-            ch=1
-        elif symbol=="u":
-            ch=2
-        elif symbol=="d":
-            ch=3
-        surf.blit(self.la[ch][Character.count_animation],(x,y))"""
 
 class Nazgul(Monster):
     def __init__(self,anim):
@@ -228,8 +213,11 @@ class Boss_ork_conqueror(Boss):
 
 
 #--------------------------------------------------------------------------------------------
-
-
+def convert_list_of_images(a:list,n,m):
+    for i in range(len(a)):
+        for j in range(len(a[i])):
+            res=pygame.transform.scale(a[i][j],(a[i][j].get_width()//n,a[i][j].get_height()//m))
+            a[i][j]=res
 #--- функции механики перемещения мобов ----------------------------------------------------------------
 def orc_mechanicks_go():
     global player_x, player_y, orc_list_in_the_game, orc_flag, gameplay
@@ -470,15 +458,25 @@ bg = pygame.image.load("images/Back.png")
 bg = pygame.transform.scale(bg, (1000, 800))
 #player = pygame.image.load("I-ICON.png")
 
-Walk_right = [pygame.image.load('images/Right-1.png'),pygame.image.load('images/Right-2.png')]
+"""Walk_right = [pygame.image.load('images/Right-1.png'),pygame.image.load('images/Right-2.png')]
 Walk_left = [pygame.image.load('images/Left-1.png'),pygame.image.load('images/Left-2.png')]
 Walk_Up = [pygame.image.load('images/Up-1.png'),pygame.image.load("images/Up-2.png")]
 Walk_Down = [pygame.image.load('images/Down_-_1.png'),pygame.image.load('images/Down-2.png')]
 
+Elf_left=[pygame.image.load("images/elf/elf_left.png").convert_alpha(),pygame.image.load("images/elf/elf_left1.png").convert_alpha()]
+Elf_right=[pygame.image.load("images/elf/elf_right.png").convert_alpha(),pygame.image.load("images/elf/elf_right1.png").convert_alpha()]
+Elf_up=[pygame.image.load("images/elf/elf_up.png").convert_alpha(),pygame.image.load("images/elf/elf_up1.png").convert_alpha()]
+Elf_down=[pygame.image.load("images/elf/elf_down.png").convert_alpha(),pygame.image.load("images/elf/elf_down1.png").convert_alpha()]
+
+Hobba_left=[pygame.image.load("images/hobba/hobba_left3.png"),pygame.image.load("images/hobba/hobba_left1.png")]
+Hobba_right=[pygame.image.load("images/hobba/hobba_right3.png"),pygame.image.load("images/hobba/hobba_right1.png")]
+Hobba_up=[pygame.image.load("images/hobba/hobba_up1.png"),pygame.image.load("images/hobba/hobba_up2.png"),pygame.image.load("images/hobba/hobba_up3.png")]
+Hobba_down=[pygame.image.load("images/hobba/hobba_down1.png"),pygame.image.load("images/hobba/hobba_down2.png"),pygame.image.load("images/hobba/hobba_down3.png")]
+
 Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"),pygame.image.load("images/Nazgul-2-1-right-eyes.png")]
 Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
-"""Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
-Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")"""
+""""""Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
+Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")""""""
 Nazgul_attack =[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
 
 Orc_right = [pygame.image.load('images/orcs/orc_right1.png'), pygame.image.load('images/orcs/orc_right2.png'), pygame.image.load('images/orcs/orc_right3.png')]
@@ -495,26 +493,26 @@ Warg_Up = [pygame.image.load("images/Warg_Up_1.png"),pygame.image.load("images/W
 Warg_Down = [pygame.image.load("images/Warg_Down_1.png"),pygame.image.load("images/Warg_Down_2.png"),pygame.image.load('images/Warg_Down_3.png')]
 Warg_Left = [pygame.image.load("images/Warg_Left_1.png"),pygame.image.load("images/Warg_Left_2.png")]
 Warg_Right = [pygame.image.load("images/Warg_Right_1.png"),pygame.image.load("images/Warg_Right_2.png")]
-picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack]
+picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack]"""
 
-health_model = [pygame.image.load('images/health1.png'), pygame.image.load('images/health2.png'), pygame.image.load('images/health3.png')]
+"""health_model = [pygame.image.load('images/health1.png'), pygame.image.load('images/health2.png'), pygame.image.load('images/health3.png')]
 
 Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arrow_Down.png'), pygame.image.load('images/Arrow_Left.png'),pygame.image.load('images/Arrow_Right.png')]
 for j in range(len(Arrow)):
     Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
 for i in range(len(health_model)):
-    health_model[i] = pygame.transform.scale(health_model[i], (health_model[i].get_width() // 2, health_model[i].get_height() // 2))
-
-
-for i in range(len(picture_list)):
+    health_model[i] = pygame.transform.scale(health_model[i], (health_model[i].get_width() // 2, health_model[i].get_height() // 2))"""
+"""warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
+picture_list=convert_list_of_images(picture_list,3,3)
+warg_picture_list=convert_list_of_images(warg_picture_list,1/2,1/2)
+""""""for i in range(len(picture_list)):
     for j in range(len(picture_list[i])):
         a=pygame.transform.scale(picture_list[i][j],(picture_list[i][j].get_width()//3,picture_list[i][j].get_height()//3))
-        picture_list[i][j]=a
-warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
-for i in range(len(warg_picture_list)):
+        picture_list[i][j]=a"""
+"""for i in range(len(warg_picture_list)):
     for j in range(len(warg_picture_list[i])):
         b = pygame.transform.scale(warg_picture_list[i][j], (warg_picture_list[i][j].get_width()* 2,warg_picture_list[i][j].get_height()*2))
-        warg_picture_list[i][j] = b
+        warg_picture_list[i][j] = b"""
 
 
 
@@ -686,16 +684,16 @@ while running:
         if flag_animation:
             player_heal_points = player_label.render("Hp: " + str(player_character.hp), False, "Red")
             if Type_anim == 0:
-                screen.blit(Walk_Up[0], (player_x, player_y))
+                screen.blit(player_character.la[2][0], (player_x, player_y))
                 screen.blit(player_heal_points, (player_x + 20, player_y - 30))
             elif Type_anim == 1:
-                screen.blit(Walk_left[0], (player_x, player_y))
+                screen.blit(player_character.la[0][0], (player_x, player_y))
                 screen.blit(player_heal_points, (player_x + 20, player_y - 30))
             elif Type_anim == 2:
-                screen.blit(Walk_right[0], (player_x, player_y))
+                screen.blit(player_character.la[1][0], (player_x, player_y))
                 screen.blit(player_heal_points, (player_x + 20, player_y - 30))
             elif Type_anim == 3:
-                screen.blit(Walk_Down[0], (player_x, player_y))
+                screen.blit(player_character.la[3][0], (player_x, player_y))
                 screen.blit(player_heal_points, (player_x + 20, player_y - 30))
 
         flag_animation = True
