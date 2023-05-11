@@ -133,7 +133,7 @@ class Weapon:
 
 
 class Magic:
-    def __int__(self, name, dmg):
+    def __init__(self, name, dmg):
         self.name = name
         self.damage = dmg
 
@@ -206,7 +206,7 @@ class Warg(Monster):
 
 
 class Ork(Monster):
-    def __int__(self, anim):
+    def __init__(self, anim):
         self.anim = anim
         Monster.__init__(self, randint(50, 100), randint(1, 20), 0, 0, randint(20, 50),
                          Weapon("Pushka", randint(5, 100)), 0)
@@ -222,7 +222,7 @@ class Ork(Monster):
 
 
 class Boss:
-    def __int__(self, hp, armor, dmg, weapon, utility):
+    def __init__(self, hp, armor, dmg, weapon, utility):
         self.hp = hp
         self.armor = armor
         self.dmg = dmg
@@ -235,12 +235,9 @@ class Boss:
 
 class BossOrkConqueror(Boss):
     def __init__(self, hp, armor, dmg, weapon, magic, cry):
-        self.hp = hp
-        self.armor = armor
-        self.dmg = dmg
-        self.weapon = weapon
-        self.utility = magic
+        Boss.__init__(self, hp, armor, dmg, weapon, magic)
         self.cry = cry
+
 
 
 # --------------------------------------------------------------------------------------------
@@ -888,7 +885,7 @@ while running:
 
         if wave_how > 0:
             if wave_flag:
-                num_mob = randint(5, 15)
+                num_mob = randint(1, 3)
                 how_villians = num_mob
                 wave_flag = False
 
@@ -903,16 +900,13 @@ while running:
                     warg_list_in_the_game.append(Warg())
 
                 elif num == 3:
-                    orc_list_in_the_game.append(
-                        Ork(randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)),
-                            0))
+                    orc_list_in_the_game.append(Ork(3))
 
             if how_villians == 0 and num_mob == 0:
-                global Magic
                 label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 50)
                 name_label_boss = label_Boss.render('BOSSSSSS', True, 'Red')
                 screen.blit(name_label_boss, (screen.get_width() // 2, screen.get_height() // 2))
-                boss = BossOrkConqueror(200, 100, 60, Weapon("Sword", 40), 7, "AAAARRRGHHH")
+                boss = BossOrkConqueror()
 
                 wave_how -= 1
                 wave_flag = True
@@ -945,8 +939,7 @@ while running:
         if Start_game_flag and event.type == pygame.KEYDOWN:
             entr = True
 
-        if gameplay and (
-                player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f:
+        if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f:
             a = player_character.Attack()
             if Attack_point <= a:
                 Attack_point = a
