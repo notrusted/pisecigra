@@ -1,27 +1,30 @@
 import pygame
 from random import randint
 
-
-#---------------------------------------------------
+# ---------------------------------------------------
 """
 Некит - музыка, текстуры, босс Назгул
 Юра - босс волк, меню
 Илья - босс орк, + магия для босса + магия для персонажа
 абстраткный класс босса-?????????????
 """
-#---------------------------------------------------
+# ---------------------------------------------------
 
 bonus_attack = 0
 flag_ability = 1
-#---КЛАССЫ--------------------------------------------------------------------------------------------
+
+
+# ---КЛАССЫ--------------------------------------------------------------------------------------------
 class Character():
-    count_animation=0
-    def __init__(self,Hp, Strong, Ability, Weapon, list_animation: list):
+    count_animation = 0
+
+    def __init__(self, Hp, Strong, Ability, Weapon, list_animation: list):
         self.strong = Strong
         self.hp = Hp
         self.ability = Ability
         self.weapon = Weapon
         self.la = list_animation
+
     def Attack(self):
         return (self.strong + self.weapon.damage)
 
@@ -32,7 +35,8 @@ class Character():
     def Use_the_Ability(self):
         print("use ability: ", self.ability)
         print()
-    def animation(self,surf: pygame.surface.Surface, symbol: str, x,y):
+
+    def animation(self, surf: pygame.surface.Surface, symbol: str, x, y):
         if Character.count_animation == 0:
             Character.count_animation = 1
         else:
@@ -50,23 +54,23 @@ class Character():
     def Player_coordinate(self):
         return (player_x, player_y)
 
+
 class Elf(Character):
 
     def __init__(self):
-        Character.__init__(self,90,30, "has agility",Weapon("Bow",30),[Walk_left,Walk_right,Walk_Up,Walk_Down])
-
+        Character.__init__(self, 90, 30, "has agility", Weapon("Bow", 30), [Walk_left, Walk_right, Walk_Up, Walk_Down])
 
     def Attack(self):
         print("The Elf attack with damage", self.strong + self.weapon.damage)
         return self.strong + self.weapon.damage
 
     def Protect(self):
-        a =  5 * randint(0,1)
+        a = 5 * randint(0, 1)
         self.hp = self.hp + a
         print("The Elf's protect give him a " + str(a) + " Hp")
 
     def Use_the_Ability(self):
-        global flag_ability,Arrow_How
+        global flag_ability, Arrow_How
         if flag_ability != 0:
             print("The Elf try to use him agility")
             Arrow_How += 15
@@ -76,7 +80,8 @@ class Elf(Character):
 class Human(Character):
 
     def __init__(self):
-        Character.__init__(self,150,40, "is a tracker", Weapon("sword", 15),[Walk_left,Walk_right,Walk_Up,Walk_Down])
+        Character.__init__(self, 150, 40, "is a tracker", Weapon("sword", 15),
+                           [Walk_left, Walk_right, Walk_Up, Walk_Down])
 
     def Attack(self):
         global bonus_attack
@@ -94,46 +99,47 @@ class Human(Character):
         global flag_ability, bonus_attack
         if flag_ability != 0:
             print('The Human Find the vulnerability')
-            bonus_attack += randint(20,35)
+            bonus_attack += randint(20, 35)
         flag_ability = 0
+
 
 class Hobbit(Character):
 
     def __init__(self):
-        Character.__init__(self,50,70, 'can a hide', Weapon('Arnors knife', 15),[Walk_left,Walk_right,Walk_Up,Walk_Down])
+        Character.__init__(self, 50, 70, 'can a hide', Weapon('Arnors knife', 15),
+                           [Walk_left, Walk_right, Walk_Up, Walk_Down])
 
     def Attack(self):
-        print( "The Hobbit attack with damage", self.strong + self.weapon.damage)
+        print("The Hobbit attack with damage", self.strong + self.weapon.damage)
         return self.strong + self.weapon.damage
 
     def Protect(self):
-        a = randint(0,1) * randint(1,5) * 5
+        a = randint(0, 1) * randint(1, 5) * 5
         self.hp = self.hp + a
-        print("The Hobbit's  protect give him a " + str(a) +' Hp')
+        print("The Hobbit's  protect give him a " + str(a) + ' Hp')
 
     def Use_the_Ability(self):
         global flag_ability
         if flag_ability != 0:
-            print( " The Hobbit was able to hide")
+            print(" The Hobbit was able to hide")
             self.hp += 15
         flag_ability = 0
+
 
 class Weapon:
     def __init__(self, Name, Damage):
         self.name = Name
         self.damage = Damage
 
+
 class Magic:
-    def __int__(self, name, dmg, anim, list_of_anim):
+    def __int__(self, name, dmg):
         self.name = name
         self.damage = dmg
-        self.anim = anim
-        self.animation = list_of_anim
-
 
 
 class Monster:
-    def __init__(self, Hp, Armor, X,Y, Damage, Weapon, anim):#надо найти текстуры как для персонажа (list_animation)
+    def __init__(self, Hp, Armor, X, Y, Damage, Weapon, anim):  # надо найти текстуры как для персонажа (list_animation)
         self.anim = anim
         self.hp = Hp
         self.armor = Armor
@@ -141,7 +147,7 @@ class Monster:
         self.weapon = Weapon
         self.x = X
         self.y = Y
-        #self.la=list_animation
+        # self.la=list_animation
 
     def Attack(self):
         return self.damage + self.weapon.damage
@@ -149,6 +155,7 @@ class Monster:
     def Protect(self, dmg):
         a = randint(0, 1)
         self.hp = self.hp - dmg + dmg * a * a
+
     """def animation(self,surf: pygame.surface.Surface, symbol: str, x,y):
         if Character.count_animation==0:
             Character.count_animation=1
@@ -164,11 +171,12 @@ class Monster:
             ch=3
         surf.blit(self.la[ch][Character.count_animation],(x,y))"""
 
-class Nazgul(Monster):
-    def __init__(self,anim):
-        self.anim = anim
-        Monster.__init__(self, randint(20, 50),  randint(5, 20), 250,-100,randint(1,15),Weapon("Morgul's knife",randint(5,10)), 0)
 
+class Nazgul(Monster):
+    def __init__(self, anim):
+        self.anim = anim
+        Monster.__init__(self, randint(20, 50), randint(5, 20), 250, -100, randint(1, 15),
+                         Weapon("Morgul's knife", randint(5, 10)), 0)
 
     def Attack(self):
         print('Nazgul attack with damage', self.damage + self.weapon.damage)
@@ -182,7 +190,8 @@ class Nazgul(Monster):
 
 class Warg(Monster):
     def __init__(self):
-        Monster.__init__(self, randint(30, 90), randint(0, 20), 250, -100, randint(5, 15), Weapon('claws', randint(10,15)), 0)
+        Monster.__init__(self, randint(30, 90), randint(0, 20), 250, -100, randint(5, 15),
+                         Weapon('claws', randint(10, 15)), 0)
 
     def Attack(self):
         print('The Warg Attack with damage', self.damage + self.weapon.damage)
@@ -195,10 +204,12 @@ class Warg(Monster):
 
         self.hp = self.hp - dmg + (b * a)
 
+
 class Ork(Monster):
     def __int__(self, anim):
         self.anim = anim
-        Monster.__init__(self,randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)), 0)
+        Monster.__init__(self, randint(50, 100), randint(1, 20), 0, 0, randint(20, 50),
+                         Weapon("Pushka", randint(5, 100)), 0)
 
     def Attack(self):
         print('Ork attack with damage', self.damage + self.weapon.damage)
@@ -211,26 +222,31 @@ class Ork(Monster):
 
 
 class Boss:
-    def __int__(self, hp, armor, dmg, Weapon, utility):
+    def __int__(self, hp, armor, dmg, weapon, utility):
         self.hp = hp
         self.armor = armor
         self.dmg = dmg
-        self.weapon = Weapon
+        self.weapon = weapon
         self.utility = utility
 
     def base_attack(self):
         return self.dmg
 
 
-class Boss_ork_conqueror(Boss):
-    def __init__(self):
-        Boss.__init__(self, 200, 100, 60, Weapon('Sword', 70), Magic('protect_circle', 5, 2, []))
+class BossOrkConqueror(Boss):
+    def __init__(self, hp, armor, dmg, weapon, magic, cry):
+        self.hp = hp
+        self.armor = armor
+        self.dmg = dmg
+        self.weapon = weapon
+        self.utility = magic
+        self.cry = cry
 
 
-#--------------------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------------
 
 
-#--- функции механики перемещения мобов ----------------------------------------------------------------
+# --- функции механики перемещения мобов ----------------------------------------------------------------
 def orc_mechanicks_go():
     global player_x, player_y, orc_list_in_the_game, orc_flag, gameplay
     if orc_list_in_the_game:
@@ -274,6 +290,7 @@ def orc_mechanicks_go():
                     screen.blit(Orc_down[elem.anim % 3], (elem.x, elem.y))
                     screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
                     screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+
 
 def nazgul_mechanicks_go():
     global player_x, player_y, n_list_it_the_game, n_flag, gameplay
@@ -325,6 +342,7 @@ def nazgul_mechanicks_go():
             if player_character.hp <= 0:
                 player_character.hp = 0
                 gameplay = False
+
 
 def warg_mechanicks_go():
     global warg_list_in_the_game, player_y, player_x, player_character, warg_flag1
@@ -415,7 +433,8 @@ def warg_mechanicks_go():
                 player_character.hp = 0
                 gameplay = False
 
-#---функция отображения хп игрока-------------------------------------------------------------------------
+
+# ---функция отображения хп игрока-------------------------------------------------------------------------
 def visual_health(player):
     global health_model, Fullhp, screen
     health = player.hp
@@ -454,86 +473,97 @@ def visual_health(player):
     elif level_hp == 1 or health > 0:
         screen.blit(health_model[2], (100, 50))
 
-#-------------------------------------------------------------------------------------------------------
+
+# -------------------------------------------------------------------------------------------------------
 
 
 clock = pygame.time.Clock()
 
-
 pygame.init()
-screen = pygame.display.set_mode((1000,800))
+screen = pygame.display.set_mode((1000, 800))
 pygame.display.set_caption("The Hobbit: Pyton's Adventure")
-#icon = pygame.image.load("I-ICON.png")
-#pygame.display.set_icon(icon)
+# icon = pygame.image.load("I-ICON.png")
+# pygame.display.set_icon(icon)
 # ---Подключение изображений--------------------------------------------------------------
 bg = pygame.image.load("images/Back.png")
 bg = pygame.transform.scale(bg, (1000, 800))
-#player = pygame.image.load("I-ICON.png")
+# player = pygame.image.load("I-ICON.png")
 
-Walk_right = [pygame.image.load('images/Right-1.png'),pygame.image.load('images/Right-2.png')]
-Walk_left = [pygame.image.load('images/Left-1.png'),pygame.image.load('images/Left-2.png')]
-Walk_Up = [pygame.image.load('images/Up-1.png'),pygame.image.load("images/Up-2.png")]
-Walk_Down = [pygame.image.load('images/Down_-_1.png'),pygame.image.load('images/Down-2.png')]
+Walk_right = [pygame.image.load('images/Right-1.png'), pygame.image.load('images/Right-2.png')]
+Walk_left = [pygame.image.load('images/Left-1.png'), pygame.image.load('images/Left-2.png')]
+Walk_Up = [pygame.image.load('images/Up-1.png'), pygame.image.load("images/Up-2.png")]
+Walk_Down = [pygame.image.load('images/Down_-_1.png'), pygame.image.load('images/Down-2.png')]
 
-Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"),pygame.image.load("images/Nazgul-2-1-right-eyes.png")]
-Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
+Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"), pygame.image.load("images/Nazgul-2-1-right-eyes.png")]
+Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"), pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
 """Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
 Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")"""
-Nazgul_attack =[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
+Nazgul_attack = [pygame.image.load("images/Nazgul-3-left.png"), pygame.image.load("images/Nazgul-3-rigt.png")]
 
-Orc_right = [pygame.image.load('images/orcs/orc_right1.png'), pygame.image.load('images/orcs/orc_right2.png'), pygame.image.load('images/orcs/orc_right3.png')]
-Orc_left = [pygame.image.load('images/orcs/orc_left1.png'), pygame.image.load('images/orcs/orc_left2.png'), pygame.image.load('images/orcs/orc_left3.png')]
-Orc_up = [pygame.image.load('images/orcs/orc_up1.png'), pygame.image.load('images/orcs/orc_up2.png'), pygame.image.load('images/orcs/orc_up3.png')]
-Orc_down = [pygame.image.load('images/orcs/orc_down1.png'), pygame.image.load('images/orcs/orc_down2.png'), pygame.image.load('images/orcs/orc_stay.png')]
+Orc_right = [pygame.image.load('images/orcs/orc_right1.png'), pygame.image.load('images/orcs/orc_right2.png'),
+             pygame.image.load('images/orcs/orc_right3.png')]
+Orc_left = [pygame.image.load('images/orcs/orc_left1.png'), pygame.image.load('images/orcs/orc_left2.png'),
+            pygame.image.load('images/orcs/orc_left3.png')]
+Orc_up = [pygame.image.load('images/orcs/orc_up1.png'), pygame.image.load('images/orcs/orc_up2.png'),
+          pygame.image.load('images/orcs/orc_up3.png')]
+Orc_down = [pygame.image.load('images/orcs/orc_down1.png'), pygame.image.load('images/orcs/orc_down2.png'),
+            pygame.image.load('images/orcs/orc_stay.png')]
 
-Orc_conqueror_right = [pygame.image.load('images/orcs/orc_conqueror_right1.png'),pygame.image.load('images/orcs/orc_conqueror_right2.png'),pygame.image.load('images/orcs/orc_conqueror_right3.png')]
-Orc_conqueror_left = [pygame.image.load('images/orcs/orc_conqueror_left1.png'),pygame.image.load('images/orcs/orc_conqueror_left2.png'),pygame.image.load('images/orcs/orc_conqueror_left3.png')]
-Orc_conqueror_up = [pygame.image.load('images/orcs/orc_conqueror_up1.png'),pygame.image.load('images/orcs/orc_conqueror_up2.png'),pygame.image.load('images/orcs/orc_conqueror_up3.png')]
-Orc_conqueror_down = [pygame.image.load('images/orcs/orc_conqueror_down1.png'),pygame.image.load('images/orcs/orc_conqueror_down2.png'),pygame.image.load('images/orcs/orc_conqueror_down3.png')]
+Orc_conqueror_right = [pygame.image.load('images/orcs/orc_conqueror_right1.png'),
+                       pygame.image.load('images/orcs/orc_conqueror_right2.png'),
+                       pygame.image.load('images/orcs/orc_conqueror_right3.png')]
+Orc_conqueror_left = [pygame.image.load('images/orcs/orc_conqueror_left1.png'),
+                      pygame.image.load('images/orcs/orc_conqueror_left2.png'),
+                      pygame.image.load('images/orcs/orc_conqueror_left3.png')]
+Orc_conqueror_up = [pygame.image.load('images/orcs/orc_conqueror_up1.png'),
+                    pygame.image.load('images/orcs/orc_conqueror_up2.png'),
+                    pygame.image.load('images/orcs/orc_conqueror_up3.png')]
+Orc_conqueror_down = [pygame.image.load('images/orcs/orc_conqueror_down1.png'),
+                      pygame.image.load('images/orcs/orc_conqueror_down2.png'),
+                      pygame.image.load('images/orcs/orc_conqueror_down3.png')]
 
-Warg_Up = [pygame.image.load("images/Warg_Up_1.png"),pygame.image.load("images/Warg_Up_2.png")]
-Warg_Down = [pygame.image.load("images/Warg_Down_1.png"),pygame.image.load("images/Warg_Down_2.png"),pygame.image.load('images/Warg_Down_3.png')]
-Warg_Left = [pygame.image.load("images/Warg_Left_1.png"),pygame.image.load("images/Warg_Left_2.png")]
-Warg_Right = [pygame.image.load("images/Warg_Right_1.png"),pygame.image.load("images/Warg_Right_2.png")]
-picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack]
+Warg_Up = [pygame.image.load("images/Warg_Up_1.png"), pygame.image.load("images/Warg_Up_2.png")]
+Warg_Down = [pygame.image.load("images/Warg_Down_1.png"), pygame.image.load("images/Warg_Down_2.png"),
+             pygame.image.load('images/Warg_Down_3.png')]
+Warg_Left = [pygame.image.load("images/Warg_Left_1.png"), pygame.image.load("images/Warg_Left_2.png")]
+Warg_Right = [pygame.image.load("images/Warg_Right_1.png"), pygame.image.load("images/Warg_Right_2.png")]
+picture_list = [Walk_left, Walk_right, Walk_Up, Walk_Down, Nazgul_left, Nazgul_right, Nazgul_attack]
 
-health_model = [pygame.image.load('images/health1.png'), pygame.image.load('images/health2.png'), pygame.image.load('images/health3.png')]
+health_model = [pygame.image.load('images/health1.png'), pygame.image.load('images/health2.png'),
+                pygame.image.load('images/health3.png')]
 
-Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arrow_Down.png'), pygame.image.load('images/Arrow_Left.png'),pygame.image.load('images/Arrow_Right.png')]
+Arrow = [pygame.image.load("images/Arrow_Up.png"), pygame.image.load('images/Arrow_Down.png'),
+         pygame.image.load('images/Arrow_Left.png'), pygame.image.load('images/Arrow_Right.png')]
 for j in range(len(Arrow)):
     Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
 for i in range(len(health_model)):
-    health_model[i] = pygame.transform.scale(health_model[i], (health_model[i].get_width() // 2, health_model[i].get_height() // 2))
-
+    health_model[i] = pygame.transform.scale(health_model[i],
+                                             (health_model[i].get_width() // 2, health_model[i].get_height() // 2))
 
 for i in range(len(picture_list)):
     for j in range(len(picture_list[i])):
-        a=pygame.transform.scale(picture_list[i][j],(picture_list[i][j].get_width()//3,picture_list[i][j].get_height()//3))
-        picture_list[i][j]=a
-warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
+        a = pygame.transform.scale(picture_list[i][j],
+                                   (picture_list[i][j].get_width() // 3, picture_list[i][j].get_height() // 3))
+        picture_list[i][j] = a
+warg_picture_list = [Warg_Left, Warg_Up, Warg_Right, Warg_Down]
 for i in range(len(warg_picture_list)):
     for j in range(len(warg_picture_list[i])):
-        b = pygame.transform.scale(warg_picture_list[i][j], (warg_picture_list[i][j].get_width()* 2,warg_picture_list[i][j].get_height()*2))
+        b = pygame.transform.scale(warg_picture_list[i][j],
+                                   (warg_picture_list[i][j].get_width() * 2, warg_picture_list[i][j].get_height() * 2))
         warg_picture_list[i][j] = b
 
-
-
-#---------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------
 
 wave_flag = True
 num_mob = 0
-wave_how = randint(1,10)
+wave_how = randint(1, 10)
 wave_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
 how_villians = 0
 
-
-
-
 n_flag = True
 n_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(n_timer,10000)
+pygame.time.set_timer(n_timer, 10000)
 n_list_it_the_game = []
-
 
 warg_flag1 = True
 warg_flag2 = False
@@ -541,14 +571,11 @@ warg_flag3 = False
 warg_flag4 = False
 warg_list_in_the_game = []
 
-
-
 Player_animation_count = 0
 bg_y = 0
 
 orc_list_in_the_game = []
 orc_flag = 0
-
 
 player_speed = 15
 player_x = 300
@@ -558,40 +585,39 @@ Type_anim = 0
 
 gameplay = True
 
-#---Подключение шрифтов----------------------------------------------------
+# ---Подключение шрифтов----------------------------------------------------
 player_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
 the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
 loose_label = the_end_label.render('You died', False, (12, 12, 12))
 restart_label = the_end_label.render("Start again", False, (35, 234, 32))
 restart_label_rect = restart_label.get_rect(topleft=(250, 400))
 Arrow_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 20)
-#--------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 
 Arrow_list = []
 Arrow_How = 0
 Attack_point = 0
 
-
 Start_game_flag = True
-entr = False #флаг на переключение экранов стартовый->выбор игрока
+entr = False  # флаг на переключение экранов стартовый->выбор игрока
 Fullhp = 1
 running = True
 pygame.mixer.music.load("Sounds/Main theme.mp3")
 pygame.mixer.music.play(-1)
-flag_music=True
+flag_music = True
 while running:
-    #---Стартовый экран-------------------------------------------------------
+    # ---Стартовый экран-------------------------------------------------------
     if Start_game_flag:
         gameplay = False
         screen.fill("Black")
         label = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 20)
         Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Yellow")
-        screen.blit(Game_Name,(250,400))
+        screen.blit(Game_Name, (250, 400))
         Game_start = label.render("Press any to start...", False, "Yellow")
         screen.blit(Game_start, (250, 600))
-    #-------------------------------------------------------------------------
+        # -------------------------------------------------------------------------
 
-    #---экран выбора героя----------------------------------------------------
+        # ---экран выбора героя----------------------------------------------------
         if entr:
             screen.fill("Black")
             Character_label = label.render("Choose your hero:", False, "Red")
@@ -608,7 +634,7 @@ while running:
             Character_label_Hobbit_rect = Character_label_Hobbit.get_rect(topleft=(250, 600))
 
             mouse = pygame.mouse.get_pos()
-            #реализация этого выбора
+            # реализация этого выбора
             if Character_label_Elf_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
                 gameplay = True
                 print("Your choose is Elf")
@@ -634,33 +660,34 @@ while running:
                 Fullhp = All_Hp
                 Start_game_flag = False
 
-
-    #---процесс геймплея(арена)-------------------------------------------------------------------
+    # ---процесс геймплея(арена)-------------------------------------------------------------------
     if gameplay:
         if flag_music:
             pygame.mixer.music.stop()
             pygame.mixer.music.load("sounds/Alternative 2.mp3")
             pygame.mixer.music.play(-1)
-            flag_music=False
+            flag_music = False
         screen.blit(bg, (0, bg_y))
         screen.blit(bg, (0, bg_y - 800))
 
         wave_view_label = wave_label.render("You have a " + str(wave_how) + " Wave's", False, "Brown")
         wave_villians_label = wave_label.render("Villian's: " + str(num_mob), False, "Brown")
-        screen.blit(wave_view_label,(20,660))
-        screen.blit(wave_villians_label,(20,700))
+        screen.blit(wave_view_label, (20, 660))
+        screen.blit(wave_villians_label, (20, 700))
 
         if player_character.ability == "has agility":
             Arrow_label_how = Arrow_label.render("You have a " + str(Arrow_How) + " arrow's", False, "Brown")
-            Arrow_label_press = Arrow_label.render("Press R...",False,"Brown")
-            Character_label_Elf_ability = Arrow_label.render("You can" + (1 - flag_ability) * "'t" + " use " + "The ability: " +
-                                                             str(player_character.ability), False, 'Brown')
+            Arrow_label_press = Arrow_label.render("Press R...", False, "Brown")
+            Character_label_Elf_ability = Arrow_label.render(
+                "You can" + (1 - flag_ability) * "'t" + " use " + "The ability: " +
+                str(player_character.ability), False, 'Brown')
             screen.blit(Arrow_label_how, (700, 30))
             screen.blit(Arrow_label_press, (700, 60))
             screen.blit(Character_label_Elf_ability, (500, 750))
 
         else:
-            Arrow_label_how = Arrow_label.render("You can touch with  " + str(player_character.weapon.name), False, "Brown")
+            Arrow_label_how = Arrow_label.render("You can touch with  " + str(player_character.weapon.name), False,
+                                                 "Brown")
             Arrow_label_press = Arrow_label.render("Press F...", False, "Brown")
             Character_label_Hobbit_and_Human_ability = Arrow_label.render(
                 "You can" + (1 - flag_ability) * "'t" + " use " + "The ability: " + str(player_character.ability),
@@ -669,7 +696,7 @@ while running:
             screen.blit(Arrow_label_press, (600, 60))
             screen.blit(Character_label_Hobbit_and_Human_ability, (500, 750))
 
-        #---реализация поведения и движения мобов-------------------------------------------
+        # ---реализация поведения и движения мобов-------------------------------------------
 
         if warg_list_in_the_game:
             warg_mechanicks_go()
@@ -679,10 +706,9 @@ while running:
 
         if orc_list_in_the_game:
             orc_mechanicks_go()
-        #-----------------------------------------------------------------------------------
+        # -----------------------------------------------------------------------------------
 
-
-#---перс при бездействии-------------------------------------------
+        # ---перс при бездействии-------------------------------------------
         if flag_animation:
             player_heal_points = player_label.render("Hp: " + str(player_character.hp), False, "Red")
             if Type_anim == 0:
@@ -699,7 +725,7 @@ while running:
                 screen.blit(player_heal_points, (player_x + 20, player_y - 30))
 
         flag_animation = True
-#---анимация персонажа-------------------------------------------
+        # ---анимация персонажа-------------------------------------------
         keys = pygame.key.get_pressed()
         if keys[pygame.K_d] and player_x < 800:
             player_character.animation(screen, "r", player_x, player_y)
@@ -740,7 +766,6 @@ while running:
 
         elif bg_y < 0:
             bg_y = 0
-
 
         if Arrow_list:
             for (i, ar) in enumerate(Arrow_list):
@@ -861,28 +886,34 @@ while running:
             running = False
             pygame.quit()
 
-
         if wave_how > 0:
             if wave_flag:
-              num_mob = randint(5, 15)
-              how_villians = num_mob
-              wave_flag = False
-
+                num_mob = randint(5, 15)
+                how_villians = num_mob
+                wave_flag = False
 
             if how_villians > 0 and event.type == n_timer:
-                num = randint(1,3)
+                num = randint(1, 3)
                 how_villians -= 1
 
                 if num == 1:
-                   n_list_it_the_game.append(Nazgul(0))
+                    n_list_it_the_game.append(Nazgul(0))
 
                 elif num == 2:
                     warg_list_in_the_game.append(Warg())
 
                 elif num == 3:
-                    orc_list_in_the_game.append(Ork(randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)), 0))
+                    orc_list_in_the_game.append(
+                        Ork(randint(50, 100), randint(1, 20), 0, 0, randint(20, 50), Weapon("Pushka", randint(5, 100)),
+                            0))
 
             if how_villians == 0 and num_mob == 0:
+                global Magic
+                label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 50)
+                name_label_boss = label_Boss.render('BOSSSSSS', True, 'Red')
+                screen.blit(name_label_boss, (screen.get_width() // 2, screen.get_height() // 2))
+                boss = BossOrkConqueror(200, 100, 60, Weapon("Sword", 40), 7, "AAAARRRGHHH")
+
                 wave_how -= 1
                 wave_flag = True
 
@@ -890,8 +921,6 @@ while running:
         else:
             print("The end")
             pygame.quit()
-
-
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility":
             if Type_anim == 0:
@@ -916,7 +945,8 @@ while running:
         if Start_game_flag and event.type == pygame.KEYDOWN:
             entr = True
 
-        if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f:
+        if gameplay and (
+                player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f:
             a = player_character.Attack()
             if Attack_point <= a:
                 Attack_point = a
@@ -940,9 +970,8 @@ while running:
                             num_mob -= 1
                             flag_ability = 1
 
-
             if warg_list_in_the_game:
-                for (j1,elem1) in enumerate(warg_list_in_the_game):
+                for (j1, elem1) in enumerate(warg_list_in_the_game):
                     if abs(elem1.x - player_x) < 70 and abs(elem1.y - player_y) < 70:
                         elem1.y -= 100
 
