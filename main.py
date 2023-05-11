@@ -124,7 +124,7 @@ class Weapon:
         self.damage = Damage
 
 class Magic:
-    def __int__(self, name, dmg, anim, list_of_anim):
+    def __init__(self, name, dmg, anim, list_of_anim):
         self.name = name
         self.damage = dmg
         self.anim = anim
@@ -211,12 +211,12 @@ class Ork(Monster):
 
 
 class Boss:
-    def __int__(self, hp, armor, dmg, Weapon, utility):
+    def __init__(self, hp, armor, dmg, Weapon , utility):
         self.hp = hp
         self.armor = armor
         self.dmg = dmg
         self.weapon = Weapon
-        self.utility = utility
+        #self.utility = utility
 
     def base_attack(self):
         return self.dmg
@@ -225,6 +225,29 @@ class Boss:
 class Boss_ork_conqueror(Boss):
     def __init__(self):
         Boss.__init__(self, 200, 100, 60, Weapon('Sword', 70), Magic('protect_circle', 5, 2, []))
+
+
+class Boss_warg(Monster):
+    def __init__(self,x,y,anim):
+        self.anim = anim
+        self.x = x
+        self.y = y
+        Boss.__init__(self,250,50,30,Weapon("Bloody claws",70),Magic('Growl',5,0,[]))
+
+    def base_attack(self):
+        print('The Alpha Warg attack with damage', self.dmg + self.weapon.damage)
+        return self.dmg + self.weapon.damage
+
+
+    def protect(self,dmg):
+        print('The Alpha Warg try to protect')
+        b = dmg * randint(0,1) * randint(0,1)
+        if b != 0:
+            self.hp += 15
+        self.hp = self.hp - dmg + b
+
+
+
 
 
 #--------------------------------------------------------------------------------------------
@@ -415,6 +438,111 @@ def warg_mechanicks_go():
                 player_character.hp = 0
                 gameplay = False
 
+def Boss_warg_mechanicks_go():
+    global Boss_warg_list_in_the_game, player_y, player_x, player_character
+    global  gameplay,Boss_warg_flag3,Boss_warg_flag1,Boss_warg_flag2,Boss_warg_flag4
+    for (i,elem2) in enumerate(Boss_warg_list_in_the_game):
+        Boss_warg_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+        Boss_warg_name = Boss_warg_label.render("The Alpha Warg",False,"green")
+        Boss_warg_heal_points = Boss_warg_label.render("Hp: " + str(elem2.hp), False, "green")
+        Boss_warg_armor = Boss_warg_label.render("Armor: " + str(elem2.armor), False, "green")
+
+        if Boss_warg_flag1 and elem2.y <= 1100:
+            elem2.y += 20
+
+            elem2.anim += 1
+            screen.blit(Boss_warg_Down[elem2.anim % 3], (elem2.x, elem2.y))
+            screen.blit(Boss_warg_heal_points, (elem2.x + 10, elem2.y - 30))
+            screen.blit(Boss_warg_armor, (elem2.x + 10, elem2.y - 60))
+            screen.blit(Boss_warg_name, (400, 20))
+
+
+        if elem2.y > 1100 and Boss_warg_flag1:
+            a = player_character.Player_coordinate()
+            elem2.x = -100
+            elem2.y = a[1]
+            Boss_warg_flag1 = False
+            Boss_warg_flag2 = True
+
+        if Boss_warg_flag2 and elem2.x <= 900:
+            elem2.x += 20
+
+            elem2.anim += 1
+            screen.blit(Boss_warg_Left[elem2.anim % 2], (elem2.x, elem2.y))
+            screen.blit(Boss_warg_heal_points, (elem2.x + 10, elem2.y - 30))
+            screen.blit(Boss_warg_armor, (elem2.x + 10, elem2.y - 60))
+            screen.blit(Boss_warg_name, (400, 20))
+
+
+        if elem2.x > 900 and Boss_warg_flag2:
+            a = player_character.Player_coordinate()
+            elem2.x = a[0]
+            elem2.y = 1100
+            Boss_warg_flag2 = False
+            Boss_warg_flag3 = True
+
+        if Boss_warg_flag3 and elem2.y >= -100:
+            elem2.y -= 20
+
+            elem2.anim += 1
+            screen.blit(Boss_warg_Up[elem2.anim % 2], (elem2.x, elem2.y))
+            screen.blit(Boss_warg_heal_points, (elem2.x + 10, elem2.y - 30))
+            screen.blit(Boss_warg_armor, (elem2.x + 10, elem2.y - 60))
+            screen.blit(Boss_warg_name, (400, 20))
+
+
+        if elem2.y < -100 and Boss_warg_flag3:
+            a = player_character.Player_coordinate()
+            elem2.x = 900
+            elem2.y = a[1]
+            Boss_warg_flag3 = False
+            Boss_warg_flag4 = True
+
+        if Boss_warg_flag4 and elem2.x >= -100:
+            elem2.x -= 20
+
+            elem2.anim += 1
+            screen.blit(Boss_warg_Right[elem2.anim % 2], (elem2.x, elem2.y))
+            screen.blit(Boss_warg_heal_points, (elem2.x + 10, elem2.y - 30))
+            screen.blit(Boss_warg_armor, (elem2.x + 10, elem2.y - 60))
+            screen.blit(Boss_warg_name, (400, 20))
+
+
+        if elem2.x < -100 and Boss_warg_flag4:
+            a = player_character.Player_coordinate()
+            elem2.x = a[0]
+            elem2.y = -100
+            Boss_warg_flag4 = False
+            Boss_warg_flag1 = True
+
+
+        if abs(elem2.x - player_x) < 50 and abs(elem2.y - player_y) < 50:
+            player_character.hp -= elem2.Attack()
+
+            if player_x > elem2.x:
+                player_x -= 50
+
+            elif player_x < elem2.x:
+                player_x += 50
+
+            if player_y < elem2.y:
+                player_y += 50
+
+            elif player_y > elem2.y:
+                player_y -= 50
+
+            if player_character.hp <= 0:
+                player_character.hp = 0
+                gameplay = False
+
+
+
+
+
+
+
+
+
 #---функция отображения хп игрока-------------------------------------------------------------------------
 def visual_health(player):
     global health_model, Fullhp, screen
@@ -500,6 +628,16 @@ picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Na
 health_model = [pygame.image.load('images/health1.png'), pygame.image.load('images/health2.png'), pygame.image.load('images/health3.png')]
 
 Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arrow_Down.png'), pygame.image.load('images/Arrow_Left.png'),pygame.image.load('images/Arrow_Right.png')]
+
+Boss_warg_Up = [pygame.image.load("images/Boss_warg_Up_1.png"),pygame.image.load('images/Boss_warg_Up_2.png')]
+Boss_warg_Down = [pygame.image.load("images/Boss_warg_Down_1.png"),pygame.image.load("images/Boss_warg_Down_2.png"),pygame.image.load('images/Boss_warg_Down_3.png')]
+Boss_warg_Left =  [pygame.image.load("images/Boss_warg_Left.png"),pygame.image.load("images/Boss_warg_Left_2.png")]
+Boss_warg_Right = [pygame.image.load("images/Boss_warg_Right.png"),pygame.image.load("images/Boss_warg_Right_2.png")]
+Boss_warg_picture_list = [Boss_warg_Up,Boss_warg_Down,Boss_warg_Left,Boss_warg_Right]
+
+
+
+
 for j in range(len(Arrow)):
     Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
 for i in range(len(health_model)):
@@ -516,6 +654,10 @@ for i in range(len(warg_picture_list)):
         b = pygame.transform.scale(warg_picture_list[i][j], (warg_picture_list[i][j].get_width()* 2,warg_picture_list[i][j].get_height()*2))
         warg_picture_list[i][j] = b
 
+for i in range(len(Boss_warg_picture_list)):
+    for j in range(len(Boss_warg_picture_list[i])):
+        b = pygame.transform.scale(Boss_warg_picture_list[i][j], (Boss_warg_picture_list[i][j].get_width()* 4,Boss_warg_picture_list[i][j].get_height()* 4))
+        Boss_warg_picture_list[i][j] = b
 
 
 #---------------------------------------------------------------------------------------------
@@ -540,6 +682,13 @@ warg_flag2 = False
 warg_flag3 = False
 warg_flag4 = False
 warg_list_in_the_game = []
+
+Boss_warg_list_in_the_game = []
+Boss_warg_flag1 = True
+Boss_warg_flag2 = False
+Boss_warg_flag3 = False
+Boss_warg_flag4 = False
+Test_flag = True
 
 
 
@@ -679,6 +828,9 @@ while running:
 
         if orc_list_in_the_game:
             orc_mechanicks_go()
+
+        if Boss_warg_list_in_the_game:
+            Boss_warg_mechanicks_go()
         #-----------------------------------------------------------------------------------
 
 
@@ -872,6 +1024,11 @@ while running:
             if how_villians > 0 and event.type == n_timer:
                 num = randint(1,3)
                 how_villians -= 1
+
+
+                if Test_flag:
+                    Boss_warg_list_in_the_game.append(Boss_warg(250,-100,0))
+                    Test_flag = False
 
                 if num == 1:
                    n_list_it_the_game.append(Nazgul(0))
