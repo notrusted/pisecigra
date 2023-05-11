@@ -227,7 +227,7 @@ class Boss_ork_conqueror(Boss):
         Boss.__init__(self, 200, 100, 60, Weapon('Sword', 70), Magic('protect_circle', 5, 2, []))
 
 
-class Boss_warg(Monster):
+class Boss_warg(Boss):
     def __init__(self,x,y,anim):
         self.anim = anim
         self.x = x
@@ -517,7 +517,7 @@ def Boss_warg_mechanicks_go():
 
 
         if abs(elem2.x - player_x) < 50 and abs(elem2.y - player_y) < 50:
-            player_character.hp -= elem2.Attack()
+            player_character.hp -= elem2.base_attack()
 
             if player_x > elem2.x:
                 player_x -= 50
