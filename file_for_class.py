@@ -93,6 +93,20 @@ class Boss:
 
     def base_attack(self):
         return self.dmg
+class Nazgul_boss(Boss):
+    def __int__(self,x,y,list_animation:list):
+        Boss.__init__(self,100,50,75,Weapon("Morgul Blade",100),Magic("Freezy",10))
+        self.x=x
+        self.y=y
+        self.list_animation=list_animation
+    def standart_attack(self):
+        return self.dmg+self.weapon.damage
+    def special_attack(self,speed):
+        speed-=5
+        return self.utility.damage
+
+
+
 
 
 class BossOrkConqueror(Boss):

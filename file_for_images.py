@@ -49,6 +49,12 @@ Boss_warg_Left =  [pygame.image.load("images/Boss_warg_Left.png"),pygame.image.l
 Boss_warg_Right = [pygame.image.load("images/Boss_warg_Right.png"),pygame.image.load("images/Boss_warg_Right_2.png")]
 Boss_warg_Heal = [pygame.image.load("images/Boss_warg_Heal_1.png"),pygame.image.load("images/Boss_warg_Heal_2.png"),pygame.image.load("images/Boss_warg_Heal_3.png"),pygame.image.load("images/Boss_warg_Heal_4.png")]
 
+boss_nazgul_left = [pygame.image.load("images/nazgul_boss/nazgul_left1.png"),pygame.image.load("images/nazgul_boss/nazgul_left2.png")]
+boss_nazgul_right = [pygame.image.load("images/nazgul_boss/nazgul_right1.png"),pygame.image.load("images/nazgul_boss/nazgul_right2.png")]
+boss_nazgul_up = [pygame.image.load("images/nazgul_boss/nazgul_up1.png"),pygame.image.load("images/nazgul_boss/nazgul_up2.png")]
+boss_nazgul_down = [pygame.image.load("images/nazgul_boss/nazgul_down1.png"),pygame.image.load("images/nazgul_boss/nazgul_down2.png")]
+
+
 Rings = [pygame.image.load("images/Ring.png"),pygame.image.load("images/Ring_blue.png"),pygame.image.load("images/Ring_Green.png")]
 Rings_active = [pygame.image.load("images/Ring_active.png"),pygame.image.load("images/Ring_Blue_active.png"),pygame.image.load("images/Ring_Green_active.png")]
 health_model = [pygame.image.load('images/health1.png'), pygame.image.load('images/health2.png'), pygame.image.load('images/health3.png')]
@@ -59,6 +65,7 @@ picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Na
 warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
 hobba_picture_list=[Hobba_up,Hobba_down,Hobba_right,Hobba_left]
 Rings_picture = [Rings,Rings_active]
+boss_nazgul_picture_list=[boss_nazgul_up,boss_nazgul_left,boss_nazgul_down,boss_nazgul_right]
 
 convert_list_of_images(Arrow,3,3)
 convert_list_of_images(health_model,2,2)
@@ -67,3 +74,4 @@ convert_list_of_images(warg_picture_list,1/2,1/2)
 convert_list_of_images(hobba_picture_list,7,7)
 convert_list_of_images(Boss_warg_picture_list,1/4,1/4)
 convert_list_of_images(Rings_picture,6,6)
+convert_list_of_images(boss_nazgul_picture_list,1/3,1/3)
