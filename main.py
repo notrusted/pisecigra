@@ -228,6 +228,7 @@ class BossOrkConqueror(Boss):
         self.anim = 0
         self.flag_orc_cry = True
         self.flag_boss_to_heal = True
+        self.time = pygame.USEREVENT + 1
 
     def healing(self):
         if self.heal > 0:
@@ -875,7 +876,7 @@ while running:
 
         if Boss_warg_list_in_the_game:
             Boss_warg_mechanicks_go()
-        # -----------------------------------------------------------------------------------
+        # ---BOSSES--------------------------------------------------------------------------------
         if boss_list:
             for (i, elem) in enumerate(boss_list):
                 if elem.name == "Boss_warg":
@@ -907,7 +908,6 @@ while running:
                             elem.heal -= 1
                             elem.healing()
                             elem.flag_boss_to_heal = False
-                            pygame.time.set_timer(boss_timer_to_heal, 10000)
                         else:
                             if abs(elem.coord_x - player_x) <= 60 and abs(elem.coord_y - player_y) <= 60:
                                 player_character.hp -= elem.standart_attack()
@@ -1173,6 +1173,13 @@ while running:
             pygame.quit()
 
         if wave_how > 0:
+            if boss_list:
+                for (i, elem) in enumerate(boss_list):
+                    if elem.name == "BossOrkConqueror":
+                        pygame.time.set_timer(elem.time, 10000)
+                    if elem.name == "BossOrkConqueror" and event.type == elem.time:
+                        elem.flag_orc_cry = False
+                        elem.flag_boss_to_heal = True
 
             if how_villians > 0:
                 if event.type == n_timer:
@@ -1198,7 +1205,7 @@ while running:
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = randint(1, 2)
+                    randomize_select = 1
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
