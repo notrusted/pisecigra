@@ -173,7 +173,7 @@ class Warg(Monster):
         self.flag2 = flag2
         self.flag3 = flag3
         self.flag4 = flag4
-        Monster.__init__(self, randint(30, 90), randint(0, 20), 250, -100, randint(5, 15),
+        Monster.__init__(self, randint(30, 90), randint(0, 20), randint(100,700), -100, randint(5, 15),
                          Weapon('claws', randint(10, 15)), 0)
 
     def Attack(self):
@@ -242,7 +242,7 @@ class Boss_warg(Boss):
         self.anim = anim
         self.x = x
         self.y = y
-        Boss.__init__(self,250,50,30,Weapon("Bloody claws",70),Magic('Growl',5,))
+        Boss.__init__(self,250,50,30,Weapon("Bloody claws",70),Magic('Growl',5))
 
     def base_attack(self):
         print('The Alpha Warg attack with damage', self.dmg + self.weapon.damage)
@@ -250,13 +250,15 @@ class Boss_warg(Boss):
 
     def special_ability(self):
         print('The Alpha Warg try to heal...')
-        warg_list_in_the_game.append(Warg(True,False,False,False))
-        self.hp += 20
+        a = randint(1, 3)
+        for i in range(a):
+            warg_list_in_the_game.append(Warg(True, False, False, False))
+        self.hp += 15
 
 
 
     def Protect(self,dmg):
-        print('The Alpha Warg try dto protect')
+        print('The Alpha Warg try to protect')
         b = dmg * randint(0,1) * randint(0,1)
         if b != 0:
             self.hp += 15
@@ -274,7 +276,7 @@ def convert_list_of_images(a:list,n,m):
         for j in range(len(a[i])):
             res=pygame.transform.scale(a[i][j],(a[i][j].get_width()//n,a[i][j].get_height()//m))
             a[i][j]=res
-#--- функции механики перемещения мобов ------------------ddw----------------------------------------------
+#--- функции механики перемещения мобов ----------------------------------------------------------------
 def orc_mechanicks_go():
     global player_x, player_y, orc_list_in_the_game, orc_flag, gameplay
     if orc_list_in_the_game:
@@ -490,6 +492,7 @@ def Boss_warg_mechanicks_go():
 
                 if elem2.hp <= 100:
                     Boss_warg_Heal_flag = True
+                    elem2.armor += 100
                     elem2.x = -100
                     elem2.y = 200
 
@@ -511,6 +514,7 @@ def Boss_warg_mechanicks_go():
 
                 if elem2.hp <= 100:
                     Boss_warg_Heal_flag = True
+                    elem2.armor += 100
                     elem2.x = -100
                     elem2.y = 200
 
@@ -532,6 +536,7 @@ def Boss_warg_mechanicks_go():
 
                 if elem2.hp <= 100:
                     Boss_warg_Heal_flag = True
+                    elem2.armor += 100
                     elem2.x = -100
                     elem2.y = 200
 
@@ -553,6 +558,7 @@ def Boss_warg_mechanicks_go():
 
                 if elem2.hp <= 100:
                     Boss_warg_Heal_flag = True
+                    elem2.armor += 100
                     elem2.x = -100
                     elem2.y = 200
 
@@ -594,7 +600,7 @@ def Boss_warg_mechanicks_go():
 
             else:
                 if heal_anim != 3:
-                    screen.blits(Boss_warg_Heal[heal_anim], (elem2.x, elem2.y))
+                    screen.blit(Boss_warg_Heal[heal_anim], (elem2.x, elem2.y))
                     screen.blit(Boss_warg_heal_points, (elem2.x + 10, elem2.y - 30))
                     screen.blit(Boss_warg_armor, (elem2.x + 10, elem2.y - 60))
                     screen.blit(Boss_warg_name, (400, 20))
@@ -649,6 +655,7 @@ def visual_health(player):
 
     elif level_hp == 1 or health > 0:
         screen.blit(health_model[2], (100, 50))
+
 
 # -------------------------------------------------------------------------------------------------------
 
@@ -747,7 +754,18 @@ for i in range(len(Boss_warg_picture_list)):
         Boss_warg_picture_list[i][j] = b
 
 
-# --------------------------------www-------------------------------------------------------------
+
+Rings = [pygame.image.load("images/Ring.png"),pygame.image.load("images/Ring_blue.png"),pygame.image.load("images/Ring_Green.png")]
+Rings_active = [pygame.image.load("images/Ring_active.png"),pygame.image.load("images/Ring_Blue_active.png"),pygame.image.load("images/Ring_Green_active.png")]
+Rings_picture = [Rings,Rings_active]
+
+for i in range(len(Rings_picture)):
+    for j in range(len(Rings_picture[i])):
+        b = pygame.transform.scale(Rings_picture[i][j], (Rings_picture[i][j].get_width()/6,Rings_picture[i][j].get_height()/6))
+        Rings_picture[i][j] = b
+
+
+# ---------------------------------------------------------------------------------------------
 
 wave_flag = True
 num_mob = 0
@@ -898,6 +916,10 @@ while running:
             screen.blit(Arrow_label_how, (700, 30))
             screen.blit(Arrow_label_press, (700, 60))
             screen.blit(Character_label_Elf_ability, (500, 750))
+            if (1 - flag_ability) == 1:
+                screen.blit(Rings[0], (400, 710))
+            else:
+                screen.blit(Rings_active[0], (400, 710))
 
         else:
             Arrow_label_how = Arrow_label.render("You can touch with  " + str(player_character.weapon.name), False,
@@ -909,6 +931,17 @@ while running:
             screen.blit(Arrow_label_how, (600, 30))
             screen.blit(Arrow_label_press, (600, 60))
             screen.blit(Character_label_Hobbit_and_Human_ability, (500, 750))
+            if player_character.ability == "is a tracker":
+                if (1 - flag_ability) == 1:
+                    screen.blit(Rings[1], (400, 710))
+                else:
+                    screen.blit(Rings_active[1], (400, 710))
+
+            else:
+                if (1 - flag_ability) == 1:
+                    screen.blit(Rings[2], (400, 710))
+                else:
+                    screen.blit(Rings_active[2], (400, 710))
 
         # ---реализация поведения и движения мобов-------------------------------------------
 
