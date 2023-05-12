@@ -62,6 +62,8 @@ warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
 hobba_picture_list=[Hobba_up,Hobba_down,Hobba_right,Hobba_left]
 Rings_picture = [Rings,Rings_active]
 
+protectiveDome = pygame.image.load("images/orcs/protective_dome.png")
+
 """for j in range(len(Arrow)):
     Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
 for i in range(len(health_model)):
