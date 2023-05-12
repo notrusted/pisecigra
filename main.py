@@ -675,7 +675,7 @@ bg = pygame.transform.scale(bg, (1000, 800))
 # player = pygame.image.load("I-ICON.png")
 # ---------------------------------------------------------------------------------------------
 
-wave_flag = True
+wave_flag = False
 num_mob = 0
 wave_how = randint(1, 10)
 wave_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
@@ -782,6 +782,9 @@ while running:
                 Fullhp = All_Hp
                 Arrow_How = 100
                 Start_game_flag = False
+                wave_how = randint(1, 10)
+                wave_flag = True
+
 
             elif Character_label_Human_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
                 gameplay = True
@@ -790,6 +793,9 @@ while running:
                 All_Hp = player_character.hp
                 Fullhp = All_Hp
                 Start_game_flag = False
+                wave_how = randint(1, 10)
+                wave_flag = True
+
 
             elif Character_label_Hobbit_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
                 gameplay = True
@@ -798,9 +804,15 @@ while running:
                 All_Hp = player_character.hp
                 Fullhp = All_Hp
                 Start_game_flag = False
+                wave_how = randint(1, 10)
+                wave_flag = True
+
 
     # ---процесс геймплея(арена)-------------------------------------------------------------------
     if gameplay:
+        print(len(boss_list), flag_create_the_boss)
+        print(num_mob)
+        print(how_villians)
         if flag_music:
             pygame.mixer.music.stop()
             pygame.mixer.music.load("sounds/Alternative 2.mp3")
@@ -865,65 +877,66 @@ while running:
             Boss_warg_mechanicks_go()
         # -----------------------------------------------------------------------------------
         if boss_list:
-
             for (i, elem) in enumerate(boss_list):
-                label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 50)
-                name_label_boss = label_Boss.render('BOSSSSSS', True, 'Red')
-                screen.blit(name_label_boss, (screen.get_width() // 2 - 100, 50))
-                label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 10)
-                cry_label_boss = label_Boss.render(elem.cry, False, 'White')
-                hp_boss = label_Boss.render("HP BOSS: " + str(elem.hp), True, 'Red')
-                armor_boss = label_Boss.render("ARMOR BOSS: " + str(elem.armor), True, 'Red')
-                screen.blit(hp_boss, (screen.get_width() // 2 - 100, 100))
-                if elem.flag_go_to_center:
-                    elem.coord_x -= 5
-                    elem.anim += 1
-                    screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
-                    if elem.coord_x - screen.get_width()//2 < 10:
-                        elem.flag_go_to_center = False
-                        pygame.time.set_timer(boss_timer_to_cry, 1000)
-                elif elem.flag_orc_cry:
-                    screen.blit(Orc_conqueror_down[1], (elem.coord_x, elem.coord_y))
-                    screen.blit(cry_label_boss, (elem.coord_x + 5 + randint(-1, 1), elem.coord_y - 5 + randint(-1, 1)))
+                if elem.name == "Boss_warg":
+                    Boss_warg_mechanicks_go()
+                if elem.name == "BossOrkConqueror":
+                    label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 50)
+                    name_label_boss = label_Boss.render('BOSSSSSS', True, 'Red')
+                    screen.blit(name_label_boss, (screen.get_width() // 2 - 100, 50))
+                    label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 10)
+                    cry_label_boss = label_Boss.render(elem.cry, False, 'White')
+                    hp_boss = label_Boss.render("HP BOSS: " + str(elem.hp), True, 'Red')
+                    armor_boss = label_Boss.render("ARMOR BOSS: " + str(elem.armor), True, 'Red')
+                    screen.blit(hp_boss, (screen.get_width() // 2 - 100, 100))
+                    if elem.flag_go_to_center:
+                        elem.coord_x -= 5
+                        elem.anim += 1
+                        screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                        if elem.coord_x - screen.get_width()//2 < 10:
+                            elem.flag_go_to_center = False
+                            pygame.time.set_timer(boss_timer_to_cry, 1000)
+                    elif elem.flag_orc_cry:
+                        screen.blit(Orc_conqueror_down[1], (elem.coord_x, elem.coord_y))
+                        screen.blit(cry_label_boss, (elem.coord_x + 5 + randint(-1, 1), elem.coord_y - 5 + randint(-1, 1)))
 
-                elif elem.hp > 0:
+                    elif elem.hp > 0:
 
-                    if elem.hp < 50 and elem.heal > 0 and elem.flag_boss_to_heal:
-                        #запускает щит и остаётся на месте
-                        elem.heal -= 1
-                        elem.healing()
-                        elem.flag_boss_to_heal = False
-                        pygame.time.set_timer(boss_timer_to_heal, 10000)
-                    else:
-                        if abs(elem.coord_x - player_x) <= 60 and abs(elem.coord_y - player_y) <= 60:
-                            player_character.hp -= elem.standart_attack()
-                            player_y += 150
-                            if player_character.hp <= 0:
-                                player_character.hp = 0
-                                gameplay = False
+                        if elem.hp < 50 and elem.heal > 0 and elem.flag_boss_to_heal:
+                            #запускает щит и остаётся на месте
+                            elem.heal -= 1
+                            elem.healing()
+                            elem.flag_boss_to_heal = False
+                            pygame.time.set_timer(boss_timer_to_heal, 10000)
+                        else:
+                            if abs(elem.coord_x - player_x) <= 60 and abs(elem.coord_y - player_y) <= 60:
+                                player_character.hp -= elem.standart_attack()
+                                player_y += 150
+                                if player_character.hp <= 0:
+                                    player_character.hp = 0
+                                    gameplay = False
 
-                        elif abs(elem.coord_x - player_x) > abs(elem.coord_y - player_y):
-                            if elem.coord_x > player_x:
-                                elem.coord_x -= 4
-                                elem.anim += 1
-                                screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                            elif abs(elem.coord_x - player_x) > abs(elem.coord_y - player_y):
+                                if elem.coord_x > player_x:
+                                    elem.coord_x -= 4
+                                    elem.anim += 1
+                                    screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
-                            else:
-                                elem.coord_x += 4
-                                elem.anim += 1
-                                screen.blit(Orc_conqueror_right[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                else:
+                                    elem.coord_x += 4
+                                    elem.anim += 1
+                                    screen.blit(Orc_conqueror_right[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
-                        elif abs(elem.coord_x - player_x) <= abs(elem.coord_y - player_y):
-                            orc_flag = 0
-                            if elem.coord_y > player_y:
-                                elem.coord_y -= 4
-                                elem.anim += 1
-                                screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                            elif abs(elem.coord_x - player_x) <= abs(elem.coord_y - player_y):
+                                if elem.coord_y > player_y:
+                                    elem.coord_y -= 4
+                                    elem.anim += 1
+                                    screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
-                            else:
-                                elem.coord_y += 4
-                                elem.anim += 1
-                                screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                else:
+                                    elem.coord_y += 4
+                                    elem.anim += 1
+                                    screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
 
         # ---перс при бездействии-------------------------------------------
@@ -1079,48 +1092,51 @@ while running:
                                 continue
                 if boss_list:
                     for (j, elem) in enumerate(boss_list):
-                        if abs(ar[0].x - elem.coord_x) < 100 and abs(ar[0].y - elem.coord_y) < 100:
-                            elem.coord_y -= 50
-                            if elem.armor > 0:
-                                elem.armor -= Attack_point
-                                if elem.armor < 0:
-                                    elem.armor = 0
-                            else:
-                                elem.hp -= Attack_point
+                        if elem.name == "BossOrkConqueror":
+                            if abs(ar[0].x - elem.coord_x) < 100 and abs(ar[0].y - elem.coord_y) < 100:
+                                elem.coord_y -= 50
+                                if elem.armor > 0:
+                                    elem.armor -= Attack_point
+                                    if elem.armor < 0:
+                                        elem.armor = 0
+                                else:
+                                    elem.hp -= Attack_point
 
-                            if elem.hp <= 0:
-                                boss_list.pop(j)
-                                print("the Boss Orc Conqueror is murdered...")
-                                flag_create_the_boss = False
-                                flag_win_the_boss = True
+                                if elem.hp <= 0:
+                                    boss_list.pop(j)
+                                    print("the Boss Orc Conqueror is murdered...")
+                                    wave_flag = True
+                                    wave_how -= 1
 
-                            if Arrow_list:
-                                Arrow_list.pop(i)
-                                continue
+                                if Arrow_list:
+                                    Arrow_list.pop(i)
+                                    continue
 
-                if Boss_warg_list_in_the_game:
-                    for (j1, elem2) in enumerate(Boss_warg_list_in_the_game):
-                        if abs(ar[0].x - elem2.x) < 100 and abs(ar[0].y - elem2.y) < 100:
-                            if Boss_warg_Heal_flag == False:
-                                elem2.y -= 50
+                        if elem.name == 'Boss_warg':
 
-                            if elem2.armor > 0:
-                                elem2.armor -= Attack_point
-                                if elem2.armor < 0:
-                                    elem2.armor = 0
-                            else:
-                                elem2.Protect(Attack_point)
+                            for (j1, elem2) in enumerate(Boss_warg_list_in_the_game):
+                                if abs(ar[0].x - elem2.x) < 100 and abs(ar[0].y - elem2.y) < 100:
+                                    if Boss_warg_Heal_flag == False:
+                                        elem2.y -= 50
 
-                            if elem2.hp <= 0:
-                                Boss_warg_list_in_the_game.pop(j1)
-                                print("the Alpha Warg is murdered...")
-                                num_mob -= 1
-                                flag_ability = 1
+                                    if elem2.armor > 0:
+                                        elem2.armor -= Attack_point
+                                        if elem2.armor < 0:
+                                            elem2.armor = 0
+                                    else:
+                                        elem2.Protect(Attack_point)
 
-                            if Arrow_list:
-                                Arrow_list.pop(i)
-                                continue
+                                    if elem2.hp <= 0:
+                                        Boss_warg_list_in_the_game.pop(j1)
+                                        print("the Alpha Warg is murdered...")
+                                        num_mob -= 1
+                                        wave_flag = True
+                                        wave_how -= 1
+                                        flag_ability = 1
 
+                                    if Arrow_list:
+                                        Arrow_list.pop(i)
+                                        continue
 
         visual_health(player_character)
 
@@ -1147,8 +1163,6 @@ while running:
             flag_ability = 1
             Arrow_How = 0
             Start_game_flag = True
-            flag_create_the_boss = False
-            flag_win_the_boss = False
 
 
     pygame.display.update()
@@ -1159,48 +1173,44 @@ while running:
             pygame.quit()
 
         if wave_how > 0:
-            if wave_flag:
-                num_mob = randint(1, 3)
-                how_villians = num_mob
-                wave_flag = False
+
+            if how_villians > 0:
+                if event.type == n_timer:
+                    num = randint(1, 3)
+                    how_villians -= 1
+
+                    if num == 1:
+                        n_list_it_the_game.append(Nazgul(0))
+
+                    elif num == 2:
+                        warg_list_in_the_game.append(Warg(True,False,False,False))
+
+                    elif num == 3:
+                        orc_list_in_the_game.append(Ork(3))
 
 
-            if flag_create_the_boss:
-                if event.type == boss_timer_to_cry:
-                    boss_list[0].flag_orc_cry = False
-                if event.type == boss_timer_to_heal:
-                    boss_list[0].flag_boss_to_heal = True
+            else:
+                if wave_flag:
+                    print("зашёл в wave_flag")
+                    num_mob = randint(1, 3)
+                    how_villians = num_mob
+                    wave_flag = False
+                    flag_create_the_boss = True
 
-            if how_villians > 0 and event.type == n_timer:
-                num = randint(1, 3)
-                how_villians -= 1
-
-                if num == 1:
-                    n_list_it_the_game.append(Nazgul(0))
-
-                elif num == 2:
-                    warg_list_in_the_game.append(Warg(True,False,False,False))
-
-                elif num == 3:
-                    orc_list_in_the_game.append(Ork(3))
-
-
-            if flag_win_the_boss:
-                wave_how -= 1
-                wave_flag = True
-                flag_win_the_boss = False
-
-            elif how_villians == 0 and num_mob == 0 and not flag_create_the_boss:
-                #a = randint(1,2)
-                #if a == 1:
-                boss_list.append(
-                    BossOrkConqueror(200, 100, 60, Weapon('Sword Orc Boss', 40), Magic('Protective Dome', 5),
-                                         "AAAAAAARGHHH", screen.get_width() + 50, screen.get_height() // 2, 3))
-                flag_create_the_boss = True
+                if num_mob == 0 and flag_create_the_boss:
+                    randomize_select = randint(1, 2)
+                    if randomize_select == 1:
+                        boss_list.append(
+                            BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
+                                             'AAARRRRGHHH', screen.get_width() + 75, screen.get_height() // 2, 3))
+                        print("create the boss")
+                    elif randomize_select == 2:
+                        boss_list.append(Boss_warg(100, 100, 3))
+                        print("create the boss")
+                    flag_create_the_boss = False
 
 
-                #elif a == 2:
-                #Boss_warg_list_in_the_game.append(Boss_warg(250, -100, 0))
+
 
 
 
@@ -1333,7 +1343,6 @@ while running:
                         if elem2.hp <= 0:
                             Boss_warg_list_in_the_game.pop(j1)
                             print("the Alpha Warg is murdered...")
-                            num_mob -= 1
                             flag_ability = 1
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_c:
