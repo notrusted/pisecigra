@@ -1114,7 +1114,7 @@ while running:
                                 continue
                 if boss_list:
                     for (j, elem) in enumerate(boss_list):
-                        if elem.name == "BossOrkConqueror" and elem.flag_go_to_center == False:
+                        if elem.name == "BossOrkConqueror" and elem.flag_go_to_center == False and not elem.flag_protective_dome_enable:
                             if abs(ar[0].x - elem.coord_x) < 100 and abs(ar[0].y - elem.coord_y) < 100:
                                 elem.coord_y -= 50
                                 if elem.armor > 0:
@@ -1349,43 +1349,45 @@ while running:
                             flag_ability = 1
             if boss_list:
                 for (j, elem) in enumerate(boss_list):
-                    if abs(elem.coord_x - player_x) < 70 and abs(elem.coord_y - player_y) < 70:
-                        elem.coord_y -= 100
-                        if elem.armor > 0:
-                            elem.armor -= Attack_point
-                            if elem.armor < 0:
-                                elem.armor = 0
-                        else:
-                            elem.hp -= Attack_point
+                    if elem.name == "BossOrkConqueror":
+                        if abs(elem.coord_x - player_x) < 70 and abs(elem.coord_y - player_y) < 70:
+                            elem.coord_y -= 100
+                            if elem.armor > 0:
+                                elem.armor -= Attack_point
+                                if elem.armor < 0:
+                                    elem.armor = 0
+                            else:
+                                elem.hp -= Attack_point
 
-                        if elem.hp <= 0:
-                            boss_list.pop(j)
-                            print("the Ork is murdered...")
-                            flag_ability = 1
-                            flag_create_the_boss = False
-                            flag_win_the_boss = True
+                            if elem.hp <= 0:
+                                boss_list.pop(j)
+                                print("the Ork is murdered...")
+                                flag_ability = 1
+                                wave_flag = True
+                                wave_how -= 1
 
-            if Boss_warg_list_in_the_game:
-                for (j1, elem2) in enumerate(Boss_warg_list_in_the_game):
-                    if abs(elem2.x - player_x) < 70 and abs(elem2.y - player_y) < 70:
-                        if Boss_warg_Heal_flag == False:
-                            elem2.y -= 100
+                    if elem.name == "Boss_warg":
+                        if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
+                            if Boss_warg_Heal_flag == False:
+                                elem.y -= 100
+
+                            if elem.armor > 0:
+                                elem.armor -= Attack_point
+                                if elem.armor < 0:
+                                    elem.armor = 0
+                            else:
+                                elem.Protect(Attack_point)
+
+                            Attack_point = 0
+
+                            if elem.hp <= 0:
+                                Boss_warg_list_in_the_game.pop(j)
+                                print("the Alpha Warg is murdered...")
+                                flag_ability = 1
+                                wave_flag = True
+                                wave_how -= 1
 
 
-
-                        if elem2.armor > 0:
-                            elem2.armor -= Attack_point
-                            if elem2.armor < 0:
-                                elem2.armor = 0
-                        else:
-                            elem2.Protect(Attack_point)
-
-                        Attack_point = 0
-
-                        if elem2.hp <= 0:
-                            Boss_warg_list_in_the_game.pop(j1)
-                            print("the Alpha Warg is murdered...")
-                            flag_ability = 1
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_c:
             player_character.Use_the_Ability()
