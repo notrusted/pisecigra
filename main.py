@@ -230,7 +230,7 @@ class BossOrkConqueror(Boss):
         self.flag_orc_cry = True
         self.flag_boss_to_heal = True
         self.time = pygame.USEREVENT + 1
-        self.time_definition = Falser
+        self.time_definition = False
         self.time_to_protective_enable = pygame.USEREVENT + 1
         self.time_to_protective_enable_DEFINITION = False
         self.time_to_protective_unable = pygame.USEREVENT + 1
@@ -1240,7 +1240,7 @@ while running:
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = 2
+                    randomize_select = randint(1,2)
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
