@@ -816,8 +816,8 @@ gameplay = True
 # ---Подключение шрифтов----------------------------------------------------
 player_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
 the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
-loose_label = the_end_label.render('You died', False, (12, 12, 12))
-restart_label = the_end_label.render("Start again", False, (35, 234, 32))
+loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
+restart_label = the_end_label.render("Start again", False, "Black")
 restart_label_rect = restart_label.get_rect(topleft=(250, 400))
 Arrow_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 20)
 # --------------------------------------------------------------------------
@@ -1223,8 +1223,9 @@ while running:
 
     elif Start_game_flag == False:
         screen.fill("White")
-        screen.blit(loose_label, (250, 500))
-        screen.blit(restart_label, (250, 400))
+        screen.blit(pygame.image.load("images/THE_END.png"),(0,0))
+        screen.blit(loose_label, (320, 500))
+        screen.blit(restart_label, (320, 400))
         mouse = pygame.mouse.get_pos()
         if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
             player_y = 500
