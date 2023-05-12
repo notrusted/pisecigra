@@ -242,7 +242,7 @@ class Boss_warg(Boss):
         self.anim = anim
         self.x = x
         self.y = y
-        Boss.__init__(self,250,50,30,Weapon("Bloody claws",70),Magic('Growl',5,0,[]))
+        Boss.__init__(self,250,50,30,Weapon("Bloody claws",70),Magic('Growl',5,))
 
     def base_attack(self):
         print('The Alpha Warg attack with damage', self.dmg + self.weapon.damage)
@@ -256,7 +256,7 @@ class Boss_warg(Boss):
 
 
     def Protect(self,dmg):
-        print('The Alpha Warg try to protect')
+        print('The Alpha Warg try dto protect')
         b = dmg * randint(0,1) * randint(0,1)
         if b != 0:
             self.hp += 15
@@ -274,7 +274,7 @@ def convert_list_of_images(a:list,n,m):
         for j in range(len(a[i])):
             res=pygame.transform.scale(a[i][j],(a[i][j].get_width()//n,a[i][j].get_height()//m))
             a[i][j]=res
-#--- функции механики перемещения мобов ----------------------------------------------------------------
+#--- функции механики перемещения мобов ------------------ddw----------------------------------------------
 def orc_mechanicks_go():
     global player_x, player_y, orc_list_in_the_game, orc_flag, gameplay
     if orc_list_in_the_game:
@@ -594,7 +594,7 @@ def Boss_warg_mechanicks_go():
 
             else:
                 if heal_anim != 3:
-                    screen.blit(Boss_warg_Heal[heal_anim], (elem2.x, elem2.y))
+                    screen.blits(Boss_warg_Heal[heal_anim], (elem2.x, elem2.y))
                     screen.blit(Boss_warg_heal_points, (elem2.x + 10, elem2.y - 30))
                     screen.blit(Boss_warg_armor, (elem2.x + 10, elem2.y - 60))
                     screen.blit(Boss_warg_name, (400, 20))
@@ -650,7 +650,6 @@ def visual_health(player):
     elif level_hp == 1 or health > 0:
         screen.blit(health_model[2], (100, 50))
 
-
 # -------------------------------------------------------------------------------------------------------
 
 
@@ -666,7 +665,7 @@ bg = pygame.image.load("images/Back.png")
 bg = pygame.transform.scale(bg, (1000, 800))
 # player = pygame.image.load("I-ICON.png")
 
-Walk_right = [pygame.image.load('images/Right-1.png'),pygame.image.load('images/Right-2.png')]
+"""Walk_right = [pygame.image.load('images/Right-1.png'),pygame.image.load('images/Right-2.png')]
 Walk_left = [pygame.image.load('images/Left-1.png'),pygame.image.load('images/Left-2.png')]
 Walk_Up = [pygame.image.load('images/Up-1.png'),pygame.image.load("images/Up-2.png")]
 Walk_Down = [pygame.image.load('images/Down_-_1.png'),pygame.image.load('images/Down-2.png')]
@@ -733,7 +732,7 @@ for i in range(len(picture_list)):
 for i in range(len(warg_picture_list)):
     for j in range(len(warg_picture_list[i])):
         b = pygame.transform.scale(warg_picture_list[i][j], (warg_picture_list[i][j].get_width()* 2,warg_picture_list[i][j].get_height()*2))
-        warg_picture_list[i][j] = b
+        warg_picture_list[i][j] = b"""
 
 Boss_warg_Up = [pygame.image.load("images/Boss_warg_Up_1.png"),pygame.image.load('images/Boss_warg_Up_2.png')]
 Boss_warg_Down = [pygame.image.load("images/Boss_warg_Down_1.png"),pygame.image.load("images/Boss_warg_Down_2.png"),pygame.image.load('images/Boss_warg_Down_3.png')]
@@ -748,7 +747,7 @@ for i in range(len(Boss_warg_picture_list)):
         Boss_warg_picture_list[i][j] = b
 
 
-# ---------------------------------------------------------------------------------------------
+# --------------------------------www-------------------------------------------------------------
 
 wave_flag = True
 num_mob = 0
