@@ -57,7 +57,7 @@ class Character():
 class Elf(Character):
 
     def __init__(self):
-        Character.__init__(self,90,30, "has agility",Weapon("Bow",30),[Elf_left,Elf_right,Elf_up,Elf_down])
+        Character.__init__(self,190,30, "has agility",Weapon("Bow",30),[Elf_left,Elf_right,Elf_up,Elf_down])
 
     def Attack(self):
         print("The Elf attack with damage", self.strong + self.weapon.damage)
@@ -79,7 +79,7 @@ class Elf(Character):
 class Human(Character):
 
     def __init__(self):
-        Character.__init__(self,150,40, "is a tracker", Weapon("sword", 15),[Walk_left,Walk_right,Walk_Up,Walk_Down])
+        Character.__init__(self,200,40, "is a tracker", Weapon("sword", 15),[Walk_left,Walk_right,Walk_Up,Walk_Down])
 
     def Attack(self):
         global bonus_attack
@@ -103,7 +103,7 @@ class Human(Character):
 class Hobbit(Character):
 
     def __init__(self):
-        Character.__init__(self,50,70, 'can a hide', Weapon('Arnors knife', 15),[Hobba_left,Hobba_right,Hobba_up,Hobba_down])
+        Character.__init__(self,150,70, 'can a hide', Weapon('Arnors knife', 15),[Hobba_left,Hobba_right,Hobba_up,Hobba_down])
 
     def Attack(self):
         print("The Hobbit attack with damage", self.strong + self.weapon.damage)
@@ -154,7 +154,7 @@ class Monster:
 class Nazgul(Monster):
     def __init__(self, anim):
         self.anim = anim
-        Monster.__init__(self, randint(20, 50), randint(5, 20), 250, -100, randint(1, 15),
+        Monster.__init__(self, randint(200, 240), randint(5, 20), 250, -100, randint(40, 45),
                          Weapon("Morgul's knife", randint(5, 10)), 0)
 
     def Attack(self):
@@ -173,7 +173,7 @@ class Warg(Monster):
         self.flag2 = flag2
         self.flag3 = flag3
         self.flag4 = flag4
-        Monster.__init__(self, randint(30, 90), randint(0, 20), randint(100,700), -100, randint(5, 15),
+        Monster.__init__(self, randint(130, 190), randint(0, 20), randint(100,700), -100, randint(30, 35),
                          Weapon('claws', randint(10, 15)), 0)
 
     def Attack(self):
@@ -191,8 +191,8 @@ class Warg(Monster):
 class Ork(Monster):
     def __init__(self, anim):
         self.anim = anim
-        Monster.__init__(self, randint(50, 100), randint(1, 20), 0, 0, randint(20, 50),
-                         Weapon("Pushka", randint(5, 100)), 0)
+        Monster.__init__(self, randint(150, 200), randint(1, 20), 0, 0, randint(20, 40),
+                         Weapon("Pushka", randint(5, 10)), 0)
 
     def Attack(self):
         print('Ork attack with damage', self.damage + self.weapon.damage)
@@ -242,7 +242,7 @@ class Boss_warg(Boss):
         self.anim = anim
         self.x = x
         self.y = y
-        Boss.__init__(self,250,50,30,Weapon("Bloody claws",70),Magic('Growl',5))
+        Boss.__init__(self,350,200,30,Weapon("Bloody claws",50),Magic('Growl',5))
 
     def base_attack(self):
         print('The Alpha Warg attack with damage', self.dmg + self.weapon.damage)
@@ -492,7 +492,7 @@ def Boss_warg_mechanicks_go():
 
                 if elem2.hp <= 100:
                     Boss_warg_Heal_flag = True
-                    elem2.armor += 100
+                    elem2.armor += 500
                     elem2.x = -100
                     elem2.y = 200
 
@@ -514,7 +514,7 @@ def Boss_warg_mechanicks_go():
 
                 if elem2.hp <= 100:
                     Boss_warg_Heal_flag = True
-                    elem2.armor += 100
+                    elem2.armor += 500
                     elem2.x = -100
                     elem2.y = 200
 
@@ -536,7 +536,7 @@ def Boss_warg_mechanicks_go():
 
                 if elem2.hp <= 100:
                     Boss_warg_Heal_flag = True
-                    elem2.armor += 100
+                    elem2.armor += 500
                     elem2.x = -100
                     elem2.y = 200
 
@@ -558,7 +558,7 @@ def Boss_warg_mechanicks_go():
 
                 if elem2.hp <= 100:
                     Boss_warg_Heal_flag = True
-                    elem2.armor += 100
+                    elem2.armor += 500
                     elem2.x = -100
                     elem2.y = 200
 
@@ -566,16 +566,16 @@ def Boss_warg_mechanicks_go():
                 player_character.hp -= elem2.base_attack()
 
                 if player_x > elem2.x:
-                    player_x -= 50
+                    player_x -= 150
 
                 elif player_x < elem2.x:
-                    player_x += 50
+                    player_x += 150
 
                 if player_y < elem2.y:
-                    player_y += 50
+                    player_y += 150
 
                 elif player_y > elem2.y:
-                    player_y -= 50
+                    player_y -= 150
 
                 if player_character.hp <= 0:
                     player_character.hp = 0
@@ -1100,7 +1100,8 @@ while running:
                 if Boss_warg_list_in_the_game:
                     for (j1, elem2) in enumerate(Boss_warg_list_in_the_game):
                         if abs(ar[0].x - elem2.x) < 100 and abs(ar[0].y - elem2.y) < 100:
-                            elem2.y -= 50
+                            if Boss_warg_Heal_flag == False:
+                                elem2.y -= 50
 
                             if elem2.armor > 0:
                                 elem2.armor -= Attack_point
@@ -1312,7 +1313,10 @@ while running:
             if Boss_warg_list_in_the_game:
                 for (j1, elem2) in enumerate(Boss_warg_list_in_the_game):
                     if abs(elem2.x - player_x) < 70 and abs(elem2.y - player_y) < 70:
-                        elem2.y -= 100
+                        if Boss_warg_Heal_flag == False:
+                            elem2.y -= 100
+
+
 
                         if elem2.armor > 0:
                             elem2.armor -= Attack_point
