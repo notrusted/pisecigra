@@ -44,11 +44,23 @@ Warg_Up = [pygame.image.load("images/Warg_Up_1.png"),pygame.image.load("images/W
 Warg_Down = [pygame.image.load("images/Warg_Down_1.png"),pygame.image.load("images/Warg_Down_2.png"),pygame.image.load('images/Warg_Down_3.png')]
 Warg_Left = [pygame.image.load("images/Warg_Left_1.png"),pygame.image.load("images/Warg_Left_2.png")]
 Warg_Right = [pygame.image.load("images/Warg_Right_1.png"),pygame.image.load("images/Warg_Right_2.png")]
+
+Boss_warg_Up = [pygame.image.load("images/Boss_warg_Up_1.png"),pygame.image.load('images/Boss_warg_Up_2.png')]
+Boss_warg_Down = [pygame.image.load("images/Boss_warg_Down_1.png"),pygame.image.load("images/Boss_warg_Down_2.png"),pygame.image.load('images/Boss_warg_Down_3.png')]
+Boss_warg_Left =  [pygame.image.load("images/Boss_warg_Left.png"),pygame.image.load("images/Boss_warg_Left_2.png")]
+Boss_warg_Right = [pygame.image.load("images/Boss_warg_Right.png"),pygame.image.load("images/Boss_warg_Right_2.png")]
+Boss_warg_Heal = [pygame.image.load("images/Boss_warg_Heal_1.png"),pygame.image.load("images/Boss_warg_Heal_2.png"),pygame.image.load("images/Boss_warg_Heal_3.png"),pygame.image.load("images/Boss_warg_Heal_4.png")]
+
+Rings = [pygame.image.load("images/Ring.png"),pygame.image.load("images/Ring_blue.png"),pygame.image.load("images/Ring_Green.png")]
+Rings_active = [pygame.image.load("images/Ring_active.png"),pygame.image.load("images/Ring_Blue_active.png"),pygame.image.load("images/Ring_Green_active.png")]
+health_model = [pygame.image.load('images/health1.png'), pygame.image.load('images/health2.png'), pygame.image.load('images/health3.png')]
+Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arrow_Down.png'), pygame.image.load('images/Arrow_Left.png'),pygame.image.load('images/Arrow_Right.png')]
+
+Boss_warg_picture_list = [Boss_warg_Up,Boss_warg_Down,Boss_warg_Left,Boss_warg_Right,Boss_warg_Heal]
 picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack]
 warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
 hobba_picture_list=[Hobba_up,Hobba_down,Hobba_right,Hobba_left]
-health_model = [pygame.image.load('images/health1.png'), pygame.image.load('images/health2.png'), pygame.image.load('images/health3.png')]
-Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arrow_Down.png'), pygame.image.load('images/Arrow_Left.png'),pygame.image.load('images/Arrow_Right.png')]
+Rings_picture = [Rings,Rings_active]
 
 """for j in range(len(Arrow)):
     Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
@@ -59,4 +71,5 @@ convert_list_of_images(health_model,2,2)
 convert_list_of_images(picture_list,3,3)
 convert_list_of_images(warg_picture_list,1/2,1/2)
 convert_list_of_images(hobba_picture_list,7,7)
-a=5
+convert_list_of_images(Boss_warg_picture_list,1/4,1/4)
+convert_list_of_images(Rings_picture,6,6)
