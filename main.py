@@ -696,7 +696,6 @@ Boss_warg_flag2 = False
 Boss_warg_flag3 = False
 Boss_warg_flag4 = False
 Boss_warg_Heal_flag = False
-Test_flag = True
 heal_anim = 0
 Boss_warg_ability_flag = False
 
@@ -1141,6 +1140,7 @@ while running:
             orc_list_in_the_game.clear()
             Arrow_list.clear()
             boss_list.clear()
+            Boss_warg_list_in_the_game.clear()
             player_character.hp = All_Hp
             flag_ability = 1
             Arrow_How = 0
@@ -1183,22 +1183,27 @@ while running:
                     orc_list_in_the_game.append(Ork(3))
 
 
-                if Test_flag:
-                    Boss_warg_list_in_the_game.append(Boss_warg(250,-100,0))
-                    Test_flag = False
-
-
             if flag_win_the_boss:
                 wave_how -= 1
                 wave_flag = True
                 flag_win_the_boss = False
 
             elif how_villians == 0 and num_mob == 0 and not flag_create_the_boss:
-                boss_list.append(BossOrkConqueror(200, 100, 60, Weapon('Sword Orc Boss', 40), Magic('Protective Dome', 5),
-                                        "AAAAAAARGHHH", screen.get_width() + 50, screen.get_height()//2, 3))
+                #a = randint(1,2)
+                #if a == 1:
+                    boss_list.append(
+                        BossOrkConqueror(200, 100, 60, Weapon('Sword Orc Boss', 40), Magic('Protective Dome', 5),
+                                         "AAAAAAARGHHH", screen.get_width() + 50, screen.get_height() // 2, 3))
 
+
+
+                #elif a == 2:
+                    #Boss_warg_list_in_the_game.append(Boss_warg(250, -100, 0))
 
                 flag_create_the_boss = True
+
+
+
 
 
         else:
