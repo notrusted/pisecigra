@@ -26,8 +26,6 @@ Hobba_down=[pygame.image.load("images/hobba/hobba_down1.png"),pygame.image.load(
 
 Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"),pygame.image.load("images/Nazgul-2-1-right-eyes.png")]
 Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
-"""Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
-Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")"""
 Nazgul_attack =[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
 
 Orc_right = [pygame.image.load('images/orcs/orc_right1.png'), pygame.image.load('images/orcs/orc_right2.png'), pygame.image.load('images/orcs/orc_right3.png')]
@@ -62,10 +60,6 @@ warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
 hobba_picture_list=[Hobba_up,Hobba_down,Hobba_right,Hobba_left]
 Rings_picture = [Rings,Rings_active]
 
-"""for j in range(len(Arrow)):
-    Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
-for i in range(len(health_model)):
-    health_model[i] = pygame.transform.scale(health_model[i], (health_model[i].get_width() // 2, health_model[i].get_height() // 2))"""
 convert_list_of_images(Arrow,3,3)
 convert_list_of_images(health_model,2,2)
 convert_list_of_images(picture_list,3,3)

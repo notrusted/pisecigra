@@ -1,10 +1,11 @@
 import pygame
 from random import randint
 from file_for_images import *
+from file_for_class import *
 
 #---------------------------------------------------
 """
-Некит - музыка, текстуры, босс Назгул
+Некит - босс Назгул
 Юра - босс волк, меню
 Илья - босс орк, + магия для босса + магия для персонажа
 абстраткный класс босса-?????????????
@@ -121,7 +122,7 @@ class Hobbit(Character):
             self.hp += 15
         flag_ability = 0
 
-class Weapon:
+"""class Weapon:
     def __init__(self, Name, Damage):
         self.name = Name
         self.damage = Damage
@@ -263,19 +264,13 @@ class Boss_warg(Boss):
         if b != 0:
             self.hp += 15
         self.hp = self.hp - dmg + b
+"""
 
 
 
 
 
 
-
-#--------------------------------------------------------------------------------------------
-def convert_list_of_images(a:list,n,m):
-    for i in range(len(a)):
-        for j in range(len(a[i])):
-            res=pygame.transform.scale(a[i][j],(a[i][j].get_width()//n,a[i][j].get_height()//m))
-            a[i][j]=res
 #--- функции механики перемещения мобов ----------------------------------------------------------------
 def orc_mechanicks_go():
     global player_x, player_y, orc_list_in_the_game, orc_flag, gameplay
@@ -665,13 +660,8 @@ clock = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((1000,800))
 pygame.display.set_caption("The Hobbit: Pyton's Adventure")
-#icon = pygame.image.load("I-ICON.png")
-#pygame.display.set_icon(icon)
-# ---Подключение изображений--------------------------------------------------------------
 bg = pygame.image.load("images/Back.png")
 bg = pygame.transform.scale(bg, (1000, 800))
-# player = pygame.image.load("I-ICON.png")
-# ---------------------------------------------------------------------------------------------
 
 wave_flag = True
 num_mob = 0
@@ -702,7 +692,7 @@ Boss_warg_ability_flag = False
 
 
 
-warg_list_in_the_game = []
+#warg_list_in_the_game = []
 
 Player_animation_count = 0
 bg_y = 0
@@ -1194,13 +1184,10 @@ while running:
                     boss_list.append(
                         BossOrkConqueror(200, 100, 60, Weapon('Sword Orc Boss', 40), Magic('Protective Dome', 5),
                                          "AAAAAAARGHHH", screen.get_width() + 50, screen.get_height() // 2, 3))
+                    flag_create_the_boss = True
+            #elif a == 2:
+                #Boss_warg_list_in_the_game.append(Boss_warg(250, -100, 0))
 
-
-
-                #elif a == 2:
-                    #Boss_warg_list_in_the_game.append(Boss_warg(250, -100, 0))
-
-                flag_create_the_boss = True
 
 
 
