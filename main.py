@@ -219,6 +219,7 @@ class Boss:
 class BossOrkConqueror(Boss):
     def __init__(self, hp, armor, dmg, weapon, magic, cry, coord_x, coord_y, heal_boss):
         Boss.__init__(self, hp, armor, dmg, weapon, magic)
+        self.hp = hp
         self.name = "BossOrkConqueror"
         self.cry = cry
         self.coord_x = coord_x
@@ -229,11 +230,19 @@ class BossOrkConqueror(Boss):
         self.flag_orc_cry = True
         self.flag_boss_to_heal = True
         self.time = pygame.USEREVENT + 1
+        self.time_definition = False
+        self.time_to_protective_enable = pygame.USEREVENT + 1
+        self.time_to_protective_enable_DEFINITION = False
+        self.time_to_protective_unable = pygame.USEREVENT + 1
+        self.time_to_protective_unable_DEFINITION = False
+        self.flag_protective_dome_enable = False
+        self.flag_protective_dome_unable = True
+        self.can_protectiveDome = True
 
     def healing(self):
         if self.heal > 0:
             self.heal -= 1
-            self.heal += 100
+            self.hp += 100
 
     def standart_attack(self):
         return self.dmg + self.weapon.damage
@@ -811,9 +820,6 @@ while running:
 
     # ---процесс геймплея(арена)-------------------------------------------------------------------
     if gameplay:
-        print(len(boss_list), flag_create_the_boss)
-        print(num_mob)
-        print(how_villians)
         if flag_music:
             pygame.mixer.music.stop()
             pygame.mixer.music.load("sounds/Alternative 2.mp3")
@@ -890,53 +896,69 @@ while running:
                     hp_boss = label_Boss.render("HP BOSS: " + str(elem.hp), True, 'Red')
                     armor_boss = label_Boss.render("ARMOR BOSS: " + str(elem.armor), True, 'Red')
                     screen.blit(hp_boss, (screen.get_width() // 2 - 100, 100))
+                    #screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
                     if elem.flag_go_to_center:
                         elem.coord_x -= 5
                         elem.anim += 1
                         screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
-                        if elem.coord_x - screen.get_width()//2 < 10:
+                        if elem.coord_x - screen.get_width()//2 < 30:
                             elem.flag_go_to_center = False
-                            pygame.time.set_timer(boss_timer_to_cry, 1000)
+                            pygame.time.set_timer(elem.time, 1000)
+                            elem.time_definition = True
                     elif elem.flag_orc_cry:
                         screen.blit(Orc_conqueror_down[1], (elem.coord_x, elem.coord_y))
                         screen.blit(cry_label_boss, (elem.coord_x + 5 + randint(-1, 1), elem.coord_y - 5 + randint(-1, 1)))
 
                     elif elem.hp > 0:
 
-                        if elem.hp < 50 and elem.heal > 0 and elem.flag_boss_to_heal:
+                        if elem.hp < 120:
+
                             #запускает щит и остаётся на месте
-                            elem.heal -= 1
-                            elem.healing()
-                            elem.flag_boss_to_heal = False
-                        else:
-                            if abs(elem.coord_x - player_x) <= 60 and abs(elem.coord_y - player_y) <= 60:
-                                player_character.hp -= elem.standart_attack()
-                                player_y += 150
-                                if player_character.hp <= 0:
-                                    player_character.hp = 0
-                                    gameplay = False
+                            if elem.can_protectiveDome and elem.heal > 0:
+                                print("elem.heal", elem.heal)
+                                elem.can_protectiveDome = False
+                                elem.flag_protective_dome_enable = True
+                                elem.flag_protective_dome_unable = False
+                                pygame.time.set_timer(elem.time_to_protective_enable, 5000)
+                                elem.healing()
+                                elem.time_to_protective_enable_DEFINITION = True
 
-                            elif abs(elem.coord_x - player_x) > abs(elem.coord_y - player_y):
-                                if elem.coord_x > player_x:
-                                    elem.coord_x -= 4
-                                    elem.anim += 1
-                                    screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
-                                else:
-                                    elem.coord_x += 4
-                                    elem.anim += 1
-                                    screen.blit(Orc_conqueror_right[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                        if abs(elem.coord_x - player_x) <= 60 and abs(elem.coord_y - player_y) <= 60:
+                            player_character.hp -= elem.standart_attack()
+                            player_y += 150
+                            if player_character.hp <= 0:
+                                 player_character.hp = 0
+                                 gameplay = False
 
-                            elif abs(elem.coord_x - player_x) <= abs(elem.coord_y - player_y):
-                                if elem.coord_y > player_y:
-                                    elem.coord_y -= 4
-                                    elem.anim += 1
-                                    screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                        elif abs(elem.coord_x - player_x) > abs(elem.coord_y - player_y):
+                            if elem.coord_x > player_x:
+                                elem.coord_x -= 4
+                                elem.anim += 1
+                                if elem.flag_protective_dome_enable:
+                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                            else:
+                                elem.coord_x += 4
+                                elem.anim += 1
+                                if elem.flag_protective_dome_enable:
+                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                screen.blit(Orc_conqueror_right[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
-                                else:
-                                    elem.coord_y += 4
-                                    elem.anim += 1
-                                    screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                        elif abs(elem.coord_x - player_x) <= abs(elem.coord_y - player_y):
+                            if elem.coord_y > player_y:
+                                elem.coord_y -= 4
+                                elem.anim += 1
+                                if elem.flag_protective_dome_enable:
+                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
+
+                            else:
+                                elem.coord_y += 4
+                                elem.anim += 1
+                                if elem.flag_protective_dome_enable:
+                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
 
         # ---перс при бездействии-------------------------------------------
@@ -1092,7 +1114,7 @@ while running:
                                 continue
                 if boss_list:
                     for (j, elem) in enumerate(boss_list):
-                        if elem.name == "BossOrkConqueror":
+                        if elem.name == "BossOrkConqueror" and elem.flag_go_to_center == False:
                             if abs(ar[0].x - elem.coord_x) < 100 and abs(ar[0].y - elem.coord_y) < 100:
                                 elem.coord_y -= 50
                                 if elem.armor > 0:
@@ -1176,10 +1198,27 @@ while running:
             if boss_list:
                 for (i, elem) in enumerate(boss_list):
                     if elem.name == "BossOrkConqueror":
-                        pygame.time.set_timer(elem.time, 10000)
-                    if elem.name == "BossOrkConqueror" and event.type == elem.time:
-                        elem.flag_orc_cry = False
-                        elem.flag_boss_to_heal = True
+                        if event.type == elem.time_to_protective_enable and elem.time_to_protective_enable_DEFINITION:
+                            print("внутри флага включающего щит")
+                            elem.time_to_protective_enable_DEFINITION = False
+                            elem.flag_protective_dome_unable = True
+                            elem.flag_protective_dome_enable = False
+                            pygame.time.set_timer(elem.time_to_protective_unable, 1000)
+                            elem.time_to_protective_unable_DEFINITION = True
+
+                        if event.type == elem.time_to_protective_unable and elem.time_to_protective_unable_DEFINITION:
+                            print("elem.time_to_protective_Unable")
+                            elem.time_to_protective_unable_DEFINITION = False
+                            elem.can_protectiveDome = True
+
+
+                        if elem.time_definition and event.type == elem.time:
+                            print("зашел в чек клика")
+                            elem.time_definition = False
+                            elem.flag_orc_cry = False
+                            elem.flag_boss_to_heal = True
+
+
 
             if how_villians > 0:
                 if event.type == n_timer:
@@ -1215,10 +1254,6 @@ while running:
                         boss_list.append(Boss_warg(100, 100, 3))
                         print("create the boss")
                     flag_create_the_boss = False
-
-
-
-
 
 
         else:
