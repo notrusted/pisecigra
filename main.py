@@ -219,6 +219,7 @@ class Boss:
 class BossOrkConqueror(Boss):
     def __init__(self, hp, armor, dmg, weapon, magic, cry, coord_x, coord_y, heal_boss):
         Boss.__init__(self, hp, armor, dmg, weapon, magic)
+        self.name = "BossOrkConqueror"
         self.cry = cry
         self.coord_x = coord_x
         self.coord_y = coord_y
@@ -239,6 +240,7 @@ class BossOrkConqueror(Boss):
 
 class Boss_warg(Boss):
     def __init__(self,x,y,anim):
+        self.name = "Boss_warg"
         self.anim = anim
         self.x = x
         self.y = y
@@ -1191,18 +1193,14 @@ while running:
             elif how_villians == 0 and num_mob == 0 and not flag_create_the_boss:
                 #a = randint(1,2)
                 #if a == 1:
-                    boss_list.append(
-                        BossOrkConqueror(200, 100, 60, Weapon('Sword Orc Boss', 40), Magic('Protective Dome', 5),
+                boss_list.append(
+                    BossOrkConqueror(200, 100, 60, Weapon('Sword Orc Boss', 40), Magic('Protective Dome', 5),
                                          "AAAAAAARGHHH", screen.get_width() + 50, screen.get_height() // 2, 3))
-
-
-
-                #elif a == 2:
-                    #Boss_warg_list_in_the_game.append(Boss_warg(250, -100, 0))
-
                 flag_create_the_boss = True
 
 
+                #elif a == 2:
+                #Boss_warg_list_in_the_game.append(Boss_warg(250, -100, 0))
 
 
 
