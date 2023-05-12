@@ -666,7 +666,7 @@ bg = pygame.image.load("images/Back.png")
 bg = pygame.transform.scale(bg, (1000, 800))
 # player = pygame.image.load("I-ICON.png")
 
-"""Walk_right = [pygame.image.load('images/Right-1.png'),pygame.image.load('images/Right-2.png')]
+Walk_right = [pygame.image.load('images/Right-1.png'),pygame.image.load('images/Right-2.png')]
 Walk_left = [pygame.image.load('images/Left-1.png'),pygame.image.load('images/Left-2.png')]
 Walk_Up = [pygame.image.load('images/Up-1.png'),pygame.image.load("images/Up-2.png")]
 Walk_Down = [pygame.image.load('images/Down_-_1.png'),pygame.image.load('images/Down-2.png')]
@@ -683,8 +683,8 @@ Hobba_down=[pygame.image.load("images/hobba/hobba_down1.png"),pygame.image.load(
 
 Nazgul_right = [pygame.image.load("images/Nazgul-2-1.png"),pygame.image.load("images/Nazgul-2-1-right-eyes.png")]
 Nazgul_left = [pygame.image.load("images/Nazgul-2-1-left.png"),pygame.image.load("images/Nazgul-2-1-left-eyes.png")]
-""""""Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
-Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")""""""
+Nazgul_attack_left = pygame.image.load("images/Nazgul-3-left.png")
+Nazgul_attack_right = pygame.image.load("images/Nazgul-3-rigt.png")
 Nazgul_attack =[pygame.image.load("images/Nazgul-3-left.png"),pygame.image.load("images/Nazgul-3-rigt.png")]
 
 Orc_right = [pygame.image.load('images/orcs/orc_right1.png'), pygame.image.load('images/orcs/orc_right2.png'),
@@ -722,18 +722,18 @@ Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arro
 for j in range(len(Arrow)):
     Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
 for i in range(len(health_model)):
-    health_model[i] = pygame.transform.scale(health_model[i], (health_model[i].get_width() // 2, health_model[i].get_height() // 2))"""
-"""warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
+    health_model[i] = pygame.transform.scale(health_model[i], (health_model[i].get_width() // 2, health_model[i].get_height() // 2))
+warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
 picture_list=convert_list_of_images(picture_list,3,3)
 warg_picture_list=convert_list_of_images(warg_picture_list,1/2,1/2)
-""""""for i in range(len(picture_list)):
+for i in range(len(picture_list)):
     for j in range(len(picture_list[i])):
         a=pygame.transform.scale(picture_list[i][j],(picture_list[i][j].get_width()//3,picture_list[i][j].get_height()//3))
-        picture_list[i][j]=a"""
-"""for i in range(len(warg_picture_list)):
+        picture_list[i][j]=a
+for i in range(len(warg_picture_list)):
     for j in range(len(warg_picture_list[i])):
         b = pygame.transform.scale(warg_picture_list[i][j], (warg_picture_list[i][j].get_width()* 2,warg_picture_list[i][j].get_height()*2))
-        warg_picture_list[i][j] = b"""
+        warg_picture_list[i][j] = b
 
 Boss_warg_Up = [pygame.image.load("images/Boss_warg_Up_1.png"),pygame.image.load('images/Boss_warg_Up_2.png')]
 Boss_warg_Down = [pygame.image.load("images/Boss_warg_Down_1.png"),pygame.image.load("images/Boss_warg_Down_2.png"),pygame.image.load('images/Boss_warg_Down_3.png')]
