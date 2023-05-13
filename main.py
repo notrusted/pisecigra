@@ -309,26 +309,31 @@ def warg_mechanicks_go():
                 gameplay = False
 
 def Boss_nazgul_mechanicks():
+    global screen
     Boss_nazgul_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
     Boss_nazgul_name = Boss_nazgul_label.render("King of nazguls", False, "blue")
     Boss_nazgul_heal_points = Boss_nazgul_label.render("Hp: " + str(elem.hp), False, "green")
     Boss_nazgul_armor = Boss_nazgul_label.render("Armor: " + str(elem.armor), False, "green")
     screen.blit(boss_nazgul_down[0],(500,500))
     if elem.hp>0:
+        if  elem.y <= 1100:
+            screen.blit(Boss_nazgul_heal_points, (elem.x + 10, elem.y - 30))
+            screen.blit(Boss_nazgul_armor, (elem.x + 10, elem.y - 60))
+            screen.blit(Boss_nazgul_name, (400, 20))
         if elem.hp<=50:
             elem.flag_go_to_center=True
-        if elem.flag_go_to_center:
+        """if elem.flag_go_to_center:
             elem.coord_x -= 5
             elem.anim += 1
-            """#screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+            #screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
             if elem.coord_x - screen.get_width()//2 < 30:
                     elem.flag_go_to_center = False
                     pygame.time.set_timer(elem.time, 1000)
-                    elem.time_definition = True"""
+                    elem.time_definition = True
             elem.flag_invicivble=True
             pygame.time.set_timer(elem.time_invic,20000)
             elem.invicible(screen)
-
+"""
         if elem.flag_invicible==True:
             if elem.flag_heal:
                 elem.hp+=5
@@ -1020,6 +1025,25 @@ while running:
                                 if Arrow_list:
                                     Arrow_list.pop(i)
                                     continue
+                        elif elem.name=="King of nazgul":
+                            if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100 and not elem.flag_invicible:
+                                elem.y -= 50
+                                if elem.armor > 0:
+                                    elem.armor -= Attack_point
+                                    if elem.armor < 0:
+                                        elem.armor = 0
+                                else:
+                                    elem.hp -= Attack_point
+
+                                if elem.hp <= 0:
+                                    boss_list.pop(j)
+                                    print("the Boss King of nazgul is murdered...")
+                                    wave_flag = True
+                                    wave_how -= 1
+
+                                if Arrow_list:
+                                    Arrow_list.pop(i)
+                                    continue
 
         visual_health(player_character)
 
@@ -1112,7 +1136,7 @@ while running:
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = randint(2,2)
+                    randomize_select = randint(3,3)
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
