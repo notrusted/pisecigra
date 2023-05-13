@@ -963,6 +963,10 @@ while running:
                                 if Arrow_list:
                                     Arrow_list.pop(i)
                                     continue
+                        elif elem.name == "BossOrkConqueror" and elem.flag_protective_dome_enable:
+                            if abs(ar[0].x - elem.coord_x) < 20 and abs(ar[0].y - elem.coord_y) < 20:
+                                if Arrow_list:
+                                    Arrow_list.pop(i)
 
                         if elem.name == 'The Alpha Warg':
 
