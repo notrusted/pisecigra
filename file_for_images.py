@@ -82,6 +82,7 @@ protectiveDome = pygame.transform.scale(protectiveDome, (protectiveDome.get_widt
 button_play_up = pygame.image.load('images/buttons/play.png')
 button_play_down = pygame.image.load('images/buttons/play_pressed.png')
 
+button_R = pygame.image.load('images/buttons/R.png')
 
 """for j in range(len(Arrow)):
     Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))

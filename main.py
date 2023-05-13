@@ -506,23 +506,33 @@ def visual_health(player):
     elif level_hp == 6:
         screen.blit(health_model[0], (100, 50))
         screen.blit(health_model[0], (150, 50))
+        screen.blit(health_model[2], (200, 50))
 
     elif level_hp == 5:
         screen.blit(health_model[0], (100, 50))
         screen.blit(health_model[1], (150, 50))
+        screen.blit(health_model[2], (200, 50))
 
     elif level_hp == 4:
         screen.blit(health_model[0], (100, 50))
         screen.blit(health_model[2], (150, 50))
+        screen.blit(health_model[2], (200, 50))
 
     elif level_hp == 3:
         screen.blit(health_model[0], (100, 50))
+        screen.blit(health_model[2], (150, 50))
+        screen.blit(health_model[2], (200, 50))
 
     elif level_hp == 2:
         screen.blit(health_model[1], (100, 50))
+        screen.blit(health_model[2], (150, 50))
+        screen.blit(health_model[2], (200, 50))
 
     elif level_hp == 1 or health > 0:
         screen.blit(health_model[2], (100, 50))
+        screen.blit(health_model[2], (150, 50))
+        screen.blit(health_model[2], (200, 50))
+
 
 
 # -------------------------------------------------------------------------------------------------------
@@ -591,7 +601,7 @@ the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
 loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
 restart_label = the_end_label.render("Start again", False, "Black")
 restart_label_rect = restart_label.get_rect(topleft=(250, 400))
-Arrow_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 20)
+Arrow_label = pygame.font.Font("fonts/Angkor-Regular.ttf", 20)
 # --------------------------------------------------------------------------
 
 Arrow_list = []
@@ -642,6 +652,7 @@ while running:
         # ---экран выбора героя----------------------------------------------------
         if entr:
             screen.fill("Black")
+
             screen.blit(pygame.image.load("images/CHOICE_screen2.png"),(0,0))
             Character_label = label.render("Choose your hero:", False, "Red")
             screen.blit(Character_label, (400, 100))
@@ -708,13 +719,14 @@ while running:
         screen.blit(wave_villians_label, (20, 700))
 
         if player_character.ability == "has agility":
-            Arrow_label_how = Arrow_label.render("You have a " + str(Arrow_How) + " arrow's", False, "Brown")
-            Arrow_label_press = Arrow_label.render("Press R...", False, "Brown")
+            Arrow_label_how = Arrow_label.render("You have a " + str(Arrow_How) + " arrow's", True, "Black")
+            Arrow_label_press = Arrow_label.render("Press ", True, "Black")
             Character_label_Elf_ability = Arrow_label.render(
                 "You can" + (1 - flag_ability) * "'t" + " use " + "The ability: " +
                 str(player_character.ability), False, 'Brown')
             screen.blit(Arrow_label_how, (700, 30))
             screen.blit(Arrow_label_press, (700, 60))
+            screen.blit(button_R, (780, 60))
             screen.blit(Character_label_Elf_ability, (500, 750))
             if (1 - flag_ability) == 1:
                 screen.blit(Rings[0], (400, 710))
