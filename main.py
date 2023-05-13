@@ -1112,7 +1112,7 @@ while running:
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = randint(3,3)
+                    randomize_select = randint(2,2)
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
