@@ -1014,6 +1014,9 @@ while running:
             Arrow_How = 0
             n_timer = pygame.USEREVENT + 1
             pygame.time.set_timer(n_timer, 10000)
+            attack_timer = pygame.USEREVENT + 1
+            pygame.time.set_timer(attack_timer, 1000)
+            attack_flag = True
             Start_game_flag = True
 
 
