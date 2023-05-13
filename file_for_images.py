@@ -73,6 +73,8 @@ warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]
 hobba_picture_list=[Hobba_up,Hobba_down,Hobba_right,Hobba_left]
 Rings_picture = [Rings,Rings_active]
 boss_nazgul_picture_list=[boss_nazgul_up,boss_nazgul_left,boss_nazgul_down,boss_nazgul_right]
+screen_saver = pygame.image.load('images/Back/Back.jpg')
+screen_saver = pygame.transform.scale(screen_saver, (1000, 800))
 
 protectiveDome = pygame.image.load("images/orcs/protective_dome.png")
 protectiveDome = pygame.transform.scale(protectiveDome, (protectiveDome.get_width() // 3, protectiveDome.get_height() // 3))

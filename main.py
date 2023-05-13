@@ -610,16 +610,27 @@ pygame.mixer.music.play(-1)
 flag_music = True
 flag_create_the_boss = False
 flag_win_the_boss = False
+flag_project_screen = True
+timer_for_screensaver = pygame.USEREVENT + 1
+pygame.time.set_timer(timer_for_screensaver, 4000)
 while running:
     # ---Стартовый экран-------------------------------------------------------
     if Start_game_flag:
         gameplay = False
         screen.fill("Black")
-        label = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 20)
-        Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Yellow")
-        screen.blit(Game_Name, (250, 400))
-        Game_start = label.render("Press any to start...", False, "Yellow")
-        screen.blit(Game_start, (250, 600))
+        label = pygame.font.Font('fonts/gwent_extrabold.ttf', 60)
+        project_company = label.render("JIN Project", True, "White")
+        if flag_project_screen:
+            screen.blit(screen_saver, (0,0))
+            screen.blit(project_company, (screen.get_width() // 2 - 150, screen.get_height() // 2))
+        else:
+            screen.blit(screen_saver, (0, 0))
+            label = pygame.font.Font('fonts/gwent_extrabold.ttf', 30)
+            Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Black")
+            screen.blit(Game_Name, (50, 50))
+            Game_start = label.render("Press any to start...", False, "Yellow")
+            screen.blit(Game_start, (250, 600))
+
         # -------------------------------------------------------------------------
 
         # ---экран выбора героя----------------------------------------------------
@@ -1107,6 +1118,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
+        if event.type == timer_for_screensaver and flag_project_screen:
+            flag_project_screen = False
 
         if wave_how > 0:
             if boss_list:
