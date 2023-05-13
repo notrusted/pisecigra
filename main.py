@@ -973,7 +973,7 @@ while running:
                                     elem.Protect(Attack_point)
 
                                 if elem.hp <= 0:
-                                    Boss_warg_list_in_the_game.pop(j)
+                                    boss_list.pop(j)
                                     print("the Alpha Warg is murdered...")
                                     num_mob -= 1
                                     wave_flag = True
@@ -1208,7 +1208,7 @@ while running:
                             Attack_point = 0
 
                             if elem.hp <= 0:
-                                Boss_warg_list_in_the_game.pop(j)
+                                boss_list.pop(j)
                                 print("the Alpha Warg is murdered...")
                                 flag_ability = 1
                                 wave_flag = True
