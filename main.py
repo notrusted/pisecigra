@@ -536,6 +536,10 @@ Boss_warg_Heal_flag = False
 heal_anim = 0
 Boss_warg_ability_flag = False
 
+attack_timer = pygame.USEREVENT + 1
+pygame.time.set_timer(attack_timer, 1000)
+attack_flag = True
+
 
 
 
@@ -1008,6 +1012,8 @@ while running:
             player_character.hp = All_Hp
             flag_ability = 1
             Arrow_How = 0
+            n_timer = pygame.USEREVENT + 1
+            pygame.time.set_timer(n_timer, 10000)
             Start_game_flag = True
 
 
@@ -1091,8 +1097,16 @@ while running:
                     if elem.name == "The Alpha Warg":
                         elem.special_ability()
 
+        if event.type == attack_timer:
+            attack_flag = True
 
-        if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility":
+            attack_timer = pygame.USEREVENT + 1
+            pygame.time.set_timer(attack_timer, 1000)
+
+
+        if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility" and attack_flag:
+            attack_flag = False
+
             if Type_anim == 0:
                 side = 0
                 Arrow_list.append((Arrow[0].get_rect(topleft=(player_x + 25, player_y - 40)), side))
@@ -1115,7 +1129,8 @@ while running:
         if Start_game_flag and event.type == pygame.KEYDOWN:
             entr = True
 
-        if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f:
+        if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f and attack_flag:
+            attack_flag = False
             a = player_character.Attack()
             if Attack_point <= a:
                 Attack_point = a
