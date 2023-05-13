@@ -598,17 +598,18 @@ while running:
         # ---экран выбора героя----------------------------------------------------
         if entr:
             screen.fill("Black")
+            screen.blit(pygame.image.load("images/CHOICE_screen.png"),(0,0))
             Character_label = label.render("Choose your hero:", False, "Red")
-            screen.blit(Character_label, (250, 200))
+            screen.blit(Character_label, (400, 100))
             Character_label_Elf = label.render("Forest Elf", False, "Yellow")
-            screen.blit(Character_label_Elf, (250, 400))
+            screen.blit(Character_label_Elf, (250, 200))
             Character_label_Human = label.render("Human", False, "Yellow")
-            screen.blit(Character_label_Human, (250, 500))
+            screen.blit(Character_label_Human, (250, 400))
             Character_label_Hobbit = label.render("Hobbit", False, "Yellow")
             screen.blit(Character_label_Hobbit, (250, 600))
 
-            Character_label_Elf_rect = Character_label_Elf.get_rect(topleft=(250, 400))
-            Character_label_Human_rect = Character_label_Human.get_rect(topleft=(250, 500))
+            Character_label_Elf_rect = Character_label_Elf.get_rect(topleft=(250, 200))
+            Character_label_Human_rect = Character_label_Human.get_rect(topleft=(250, 400))
             Character_label_Hobbit_rect = Character_label_Hobbit.get_rect(topleft=(250, 600))
 
             mouse = pygame.mouse.get_pos()
