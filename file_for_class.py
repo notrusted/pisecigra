@@ -135,7 +135,7 @@ class BossOrkConqueror(Boss):
     def healing(self):
         if self.heal > 0:
             self.heal -= 1
-            self.heal += 100
+            self.hp += 100
 
     def standart_attack(self):
         return self.dmg + self.weapon.damage

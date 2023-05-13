@@ -2,7 +2,7 @@ import pygame
 from random import randint
 from file_for_images import *
 from file_for_class import *
-
+#пуш для Некита
 #---------------------------------------------------
 """
 Некит - босс Назгул
@@ -710,8 +710,8 @@ while running:
         if orc_list_in_the_game:
             orc_mechanicks_go()
 
-        if Boss_warg_list_in_the_game:
-            Boss_warg_mechanicks_go()
+        """if Boss_warg_list_in_the_game:
+            Boss_warg_mechanicks_go()"""
         # ---BOSSES--------------------------------------------------------------------------------
         if boss_list:
             for (i, elem) in enumerate(boss_list):
