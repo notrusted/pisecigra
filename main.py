@@ -628,6 +628,12 @@ while running:
             label = pygame.font.Font('fonts/gwent_extrabold.ttf', 30)
             Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Black")
             screen.blit(Game_Name, (50, 50))
+            button_play_rect = button_play_up.get_rect(topleft=(60, 100))
+            if button_play_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                screen.blit(button_play_down, (60, 100))
+                entr = True
+            else:
+                screen.blit(button_play_up, (60, 100))
             Game_start = label.render("Press any to start...", False, "Yellow")
             screen.blit(Game_start, (250, 600))
 

@@ -200,4 +200,7 @@ class Boss_warg(Boss):
         if b != 0:
             self.hp += 15
         self.hp = self.hp - dmg + b
+
+
+
 warg_list_in_the_game = []

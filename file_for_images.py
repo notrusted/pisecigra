@@ -79,6 +79,10 @@ screen_saver = pygame.transform.scale(screen_saver, (1000, 800))
 protectiveDome = pygame.image.load("images/orcs/protective_dome.png")
 protectiveDome = pygame.transform.scale(protectiveDome, (protectiveDome.get_width() // 3, protectiveDome.get_height() // 3))
 
+button_play_up = pygame.image.load('images/buttons/play.png')
+button_play_down = pygame.image.load('images/buttons/play_pressed.png')
+
+
 """for j in range(len(Arrow)):
     Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
 for i in range(len(health_model)):
