@@ -55,7 +55,7 @@ boss_nazgul_left = [pygame.image.load("images/nazgul_boss/nazgul_left1.png"),pyg
 boss_nazgul_right = [pygame.image.load("images/nazgul_boss/nazgul_right1.png"),pygame.image.load("images/nazgul_boss/nazgul_right2.png")]
 boss_nazgul_up = [pygame.image.load("images/nazgul_boss/nazgul_up1.png"),pygame.image.load("images/nazgul_boss/nazgul_up2.png")]
 boss_nazgul_down = [pygame.image.load("images/nazgul_boss/nazgul_down1.png"),pygame.image.load("images/nazgul_boss/nazgul_down2.png")]
-
+invic_boss_nazgul=[pygame.image.load("images/nazgul_boss/invic.png")]
 
 Rings = [pygame.image.load("images/Ring.png"),pygame.image.load("images/Ring_blue.png"),pygame.image.load("images/Ring_Green.png")]
 Rings_active = [pygame.image.load("images/Ring_active.png"),pygame.image.load("images/Ring_Blue_active.png"),pygame.image.load("images/Ring_Green_active.png")]
@@ -84,3 +84,5 @@ convert_list_of_images(hobba_picture_list,7,7)
 convert_list_of_images(Boss_warg_picture_list,1/4,1/4)
 convert_list_of_images(Rings_picture,6,6)
 convert_list_of_images(boss_nazgul_picture_list,1/3,1/3)
+#convert_list_of_images(invic_boss_nazgul,1/3,1/3)
+

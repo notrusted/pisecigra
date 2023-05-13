@@ -308,6 +308,32 @@ def warg_mechanicks_go():
                 player_character.hp = 0
                 gameplay = False
 
+def Boss_nazgul_mechanicks():
+    Boss_nazgul_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+    Boss_nazgul_name = Boss_nazgul_label.render("King of nazguls", False, "blue")
+    Boss_nazgul_heal_points = Boss_nazgul_label.render("Hp: " + str(elem.hp), False, "green")
+    Boss_nazgul_armor = Boss_nazgul_label.render("Armor: " + str(elem.armor), False, "green")
+    screen.blit(boss_nazgul_down[0],(500,500))
+    if elem.hp>0:
+        if elem.hp<=50:
+            elem.flag_go_to_center=True
+        if elem.flag_go_to_center:
+            elem.coord_x -= 5
+            elem.anim += 1
+            """#screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+            if elem.coord_x - screen.get_width()//2 < 30:
+                    elem.flag_go_to_center = False
+                    pygame.time.set_timer(elem.time, 1000)
+                    elem.time_definition = True"""
+            elem.flag_invicivble=True
+            pygame.time.set_timer(elem.time_invic,20000)
+            elem.invicible(screen)
+
+        if elem.flag_invicible==True:
+            if elem.flag_heal:
+                elem.hp+=5
+                elem.flag_heal=False
+                pygame.time.set_timer(elem.time_heal,2000)
 
 def Boss_warg_mechanicks_go():
     global Boss_warg_list_in_the_game, player_y, player_x, player_character, heal_anim, n_timer, Boss_warg_ability_flag, \
@@ -598,7 +624,7 @@ while running:
         # ---экран выбора героя----------------------------------------------------
         if entr:
             screen.fill("Black")
-            screen.blit(pygame.image.load("images/CHOICE_screen.png"),(0,0))
+            screen.blit(pygame.image.load("images/CHOICE_screen2.png"),(0,0))
             Character_label = label.render("Choose your hero:", False, "Red")
             screen.blit(Character_label, (400, 100))
             Character_label_Elf = label.render("Forest Elf", False, "Yellow")
@@ -717,6 +743,8 @@ while running:
             for (i, elem) in enumerate(boss_list):
                 if elem.name == "The Alpha Warg":
                     Boss_warg_mechanicks_go()
+                if elem.name == "King of nazgul":
+                    Boss_nazgul_mechanicks()
                 if elem.name == "BossOrkConqueror":
                     label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 50)
                     name_label_boss = label_Boss.render('BOSSSSSS', True, 'Red')
@@ -1055,7 +1083,9 @@ while running:
                             elem.time_definition = False
                             elem.flag_orc_cry = False
                             elem.flag_boss_to_heal = True
-
+                    if elem.name=="King of nazgul":
+                        if event.type==elem.time_heal:
+                            elem.flag_heal=True
 
 
             if how_villians > 0:
@@ -1082,7 +1112,7 @@ while running:
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = randint(1,2)
+                    randomize_select = randint(3,3)
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
@@ -1091,6 +1121,8 @@ while running:
                     elif randomize_select == 2:
                         boss_list.append(Boss_warg(100, 100, 3))
                         print("create the boss")
+                    elif randomize_select==3:
+                        boss_list.append(Nazgul_boss(screen.get_width()//2,screen.get_width()//2))
                     flag_create_the_boss = False
 
 

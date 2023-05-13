@@ -1,5 +1,6 @@
 import pygame
 from random import randint
+from file_for_images import *
 class Weapon:
     def __init__(self, Name, Damage):
         self.name = Name
@@ -94,18 +95,24 @@ class Boss:
     def base_attack(self):
         return self.dmg
 class Nazgul_boss(Boss):
-    def __int__(self,x,y,list_animation:list):
-        Boss.__init__(self,100,50,75,Weapon("Morgul Blade",100),Magic("Freezy",10))
+    def __init__(self,x,y):
+        Boss.__init__(self,100,50,75,Weapon("Morgul Blade",100),Magic("cry of the Nazgull",10))
         self.x=x
         self.y=y
-        self.list_animation=list_animation
+        self.list_animation=[boss_nazgul_left,boss_nazgul_right,boss_nazgul_up,boss_nazgul_down]
+        self.name="King of nazgul"
+        self.flag_invicible=False
+        self.flag_go_to_center=False
+        self.time_invic = pygame.USEREVENT + 1
+        self.time_heal = pygame.USEREVENT + 1
     def standart_attack(self):
         return self.dmg+self.weapon.damage
     def special_attack(self,speed):
         speed-=5
         return self.utility.damage
-
-
+    def invicible(self,surface):
+        self.armor=1000
+        surface.blit(invic_boss_nazgul,(self.x-130,self.y-100))
 
 
 
