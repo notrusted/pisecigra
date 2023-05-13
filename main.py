@@ -624,7 +624,7 @@ while running:
         # ---экран выбора героя----------------------------------------------------
         if entr:
             screen.fill("Black")
-            screen.blit(pygame.image.load("images/CHOICE_screen.png"),(0,0))
+            screen.blit(pygame.image.load("images/CHOICE_screen2.png"),(0,0))
             Character_label = label.render("Choose your hero:", False, "Red")
             screen.blit(Character_label, (400, 100))
             Character_label_Elf = label.render("Forest Elf", False, "Yellow")
