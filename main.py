@@ -959,7 +959,7 @@ while running:
                                     Arrow_list.pop(i)
                                     continue
 
-                        if elem.name == 'Boss_warg':
+                        if elem.name == 'The Alpha Warg':
 
                             if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
                                 if Boss_warg_Heal_flag == False:
@@ -1088,7 +1088,7 @@ while running:
 
             if boss_list:
                 for (i, elem) in enumerate(boss_list):
-                    if elem.name == "Boss_warg":
+                    if elem.name == "The Alpha Warg":
                         elem.special_ability()
 
 
@@ -1193,7 +1193,7 @@ while running:
                                 wave_flag = True
                                 wave_how -= 1
 
-                    if elem.name == "Boss_warg":
+                    if elem.name == "The Alpha Warg":
                         if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
                             if Boss_warg_Heal_flag == False:
                                 elem.y -= 100
