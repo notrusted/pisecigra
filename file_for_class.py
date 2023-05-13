@@ -11,6 +11,22 @@ class Magic:
         self.name = name
         self.damage = dmg
 
+class Portal(Magic):
+    def __init__(self, x, y, surface):
+        Magic.__init__(self, "Portal", 0)
+        self.flag_to_visual = True
+        self.time_to_visual = pygame.USEREVENT + 1
+        pygame.time.set_timer(self.time_to_visual, 5000)
+        self.x = x
+        self.y = y
+        self.surface = surface
+        self.anim = 0
+
+    def visual(self, surface, portal_vis: list):
+        if self.flag_to_visual:
+            self.anim += 1
+            surface.blit(portal_vis[self.anim % 4], (self.x, self.y))
+
 
 class Monster:
     def __init__(self, Hp, Armor, X, Y, Damage, Weapon, anim):  # надо найти текстуры как для персонажа (list_animation)
@@ -138,6 +154,11 @@ class BossOrkConqueror(Boss):
         self.flag_protective_dome_enable = False
         self.flag_protective_dome_unable = True
         self.can_protectiveDome = True
+        self.can_portal = True
+        self.flag_go_to_portal = False
+        self.time_reload_can_portal = pygame.USEREVENT + 1
+        self.portal1 = []
+        self.portal2 = []
 
     def healing(self):
         if self.heal > 0:
@@ -146,6 +167,10 @@ class BossOrkConqueror(Boss):
 
     def standart_attack(self):
         return self.dmg + self.weapon.damage
+
+
+
+
 
 
 class Boss_warg(Boss):

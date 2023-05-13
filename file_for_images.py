@@ -62,6 +62,11 @@ Rings_active = [pygame.image.load("images/Ring_active.png"),pygame.image.load("i
 health_model = [pygame.image.load('images/health/full.png'), pygame.image.load('images/health/half.png'), pygame.image.load('images/health/empty.png')]
 Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arrow_Down.png'), pygame.image.load('images/Arrow_Left.png'),pygame.image.load('images/Arrow_Right.png')]
 
+portal_png = [pygame.image.load('images/portal/portal1.png'), pygame.image.load('images/portal/portal2.png'), pygame.image.load('images/portal/portal3.png'), pygame.image.load('images/portal/portal4.png')]
+
+for i in range(len(portal_png)):
+    portal_png[i] = pygame.transform.scale(portal_png[i], (portal_png[i].get_width() // 5, portal_png[i].get_height() // 5))
+
 Boss_warg_picture_list = [Boss_warg_Up,Boss_warg_Down,Boss_warg_Left,Boss_warg_Right,Boss_warg_Heal]
 picture_list=[Walk_left,Walk_right,Walk_Up,Walk_Down,Nazgul_left,Nazgul_right,Nazgul_attack]
 warg_picture_list =[Warg_Left,Warg_Up,Warg_Right,Warg_Down]

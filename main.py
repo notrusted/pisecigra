@@ -599,6 +599,7 @@ Arrow_How = 0
 Attack_point = 0
 
 boss_list = []
+portal_list = []
 
 Start_game_flag = True
 entr = False  # флаг на переключение экранов стартовый->выбор игрока
@@ -754,6 +755,7 @@ while running:
                     hp_boss = label_Boss.render("HP BOSS: " + str(elem.hp), True, 'Red')
                     armor_boss = label_Boss.render("ARMOR BOSS: " + str(elem.armor), True, 'Red')
                     screen.blit(hp_boss, (screen.get_width() // 2 - 100, 100))
+
                     #screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
                     if elem.flag_go_to_center:
                         elem.coord_x -= 5
@@ -768,7 +770,10 @@ while running:
                         screen.blit(cry_label_boss, (elem.coord_x + 5 + randint(-1, 1), elem.coord_y - 5 + randint(-1, 1)))
 
                     elif elem.hp > 0:
-
+                        if portal_list:
+                            for port in portal_list:
+                                if port.flag_to_visual:
+                                    port.visual(screen, portal_png)
                         if elem.hp < 120:
 
                             #запускает щит и остаётся на месте
@@ -789,35 +794,78 @@ while running:
                                  player_character.hp = 0
                                  gameplay = False
 
-                        elif abs(elem.coord_x - player_x) > abs(elem.coord_y - player_y):
-                            if elem.coord_x > player_x:
-                                elem.coord_x -= 4
-                                elem.anim += 1
-                                if elem.flag_protective_dome_enable:
-                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                        if abs(elem.coord_x - player_x) > 140 and abs(elem.coord_y - player_y) > 140 and elem.can_portal:
+                            elem.can_portal = False
+                            portal_list.append(Portal(elem.coord_x + 20, elem.coord_y, screen))
+                            elem.portal1 = [elem.coord_x + 20, elem.coord_y]
+                            portal_list.append(Portal(player_x, player_y, screen))
+                            elem.portal2 = [player_x, player_y]
+                            elem.flag_go_to_portal = True
+
+                        if elem.flag_go_to_portal:
+                            if elem.portal1[0] == elem.coord_x and elem.portal1[1] == elem.coord_y:
+                                elem.flag_go_to_portal = False
+                                elem.coord_x = elem.portal2[0]
+                                elem.coord_y = elem.portal2[1]
                             else:
-                                elem.coord_x += 4
-                                elem.anim += 1
-                                if elem.flag_protective_dome_enable:
-                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                screen.blit(Orc_conqueror_right[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                if abs(elem.coord_x - elem.portal1[0]) > abs(elem.coord_y - elem.portal1[1]):
+                                    if elem.coord_x > elem.portal1[0]:
+                                        elem.coord_x -= 4
+                                        elem.anim += 1
+                                        if elem.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                        screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                    else:
+                                        elem.coord_x += 4
+                                        elem.anim += 1
+                                        if elem.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                        screen.blit(Orc_conqueror_right[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
-                        elif abs(elem.coord_x - player_x) <= abs(elem.coord_y - player_y):
-                            if elem.coord_y > player_y:
-                                elem.coord_y -= 4
-                                elem.anim += 1
-                                if elem.flag_protective_dome_enable:
-                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                elif abs(elem.coord_x - elem.portal1[0]) <= abs(elem.coord_y - elem.portal1[1]):
+                                    if elem.coord_y > elem.portal1[1]:
+                                        elem.coord_y -= 4
+                                        elem.anim += 1
+                                        if elem.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                        screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
-                            else:
-                                elem.coord_y += 4
-                                elem.anim += 1
-                                if elem.flag_protective_dome_enable:
-                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                    else:
+                                        elem.coord_y += 4
+                                        elem.anim += 1
+                                        if elem.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                        screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
+                        else:
+                            if abs(elem.coord_x - player_x) > abs(elem.coord_y - player_y):
+                                if elem.coord_x > player_x:
+                                    elem.coord_x -= 4
+                                    elem.anim += 1
+                                    if elem.flag_protective_dome_enable:
+                                        screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                    screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                else:
+                                    elem.coord_x += 4
+                                    elem.anim += 1
+                                    if elem.flag_protective_dome_enable:
+                                      screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                    screen.blit(Orc_conqueror_right[elem.anim % 3], (elem.coord_x, elem.coord_y))
+
+                            elif abs(elem.coord_x - player_x) <= abs(elem.coord_y - player_y):
+                                if elem.coord_y > player_y:
+                                    elem.coord_y -= 4
+                                    elem.anim += 1
+                                    if elem.flag_protective_dome_enable:
+                                        screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                    screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
+
+                                else:
+                                    elem.coord_y += 4
+                                    elem.anim += 1
+                                    if elem.flag_protective_dome_enable:
+                                        screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                    screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
         # ---перс при бездействии-------------------------------------------
         if flag_animation:
@@ -1083,10 +1131,17 @@ while running:
                             elem.time_definition = False
                             elem.flag_orc_cry = False
                             elem.flag_boss_to_heal = True
+
+                        if event.type == elem.time_reload_can_portal and not elem.can_portal:
+                            elem.can_portal = True
                     if elem.name=="King of nazgul":
                         if event.type==elem.time_heal:
                             elem.flag_heal=True
-
+            if portal_list:
+                for (i, elem) in enumerate(portal_list):
+                    if event.type == elem.time_to_visual and elem.flag_to_visual:
+                        elem.flag_to_visual = False
+                        portal_list.pop(i)
 
             if how_villians > 0:
                 if event.type == n_timer:
@@ -1112,7 +1167,7 @@ while running:
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = randint(2,2)
+                    randomize_select = randint(1,1)
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
