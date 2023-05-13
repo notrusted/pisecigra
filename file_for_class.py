@@ -143,6 +143,7 @@ class BossOrkConqueror(Boss):
 
 class Boss_warg(Boss):
     def __init__(self,x,y,anim):
+        self.name = "The Alpha Warg"
         self.anim = anim
         self.x = x
         self.y = y

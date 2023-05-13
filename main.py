@@ -710,7 +710,7 @@ while running:
         # ---BOSSES--------------------------------------------------------------------------------
         if boss_list:
             for (i, elem) in enumerate(boss_list):
-                if elem.name == "Boss_warg":
+                if elem.name == "The Alpha Warg":
                     Boss_warg_mechanicks_go()
                 if elem.name == "BossOrkConqueror":
                     label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 50)
