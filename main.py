@@ -681,7 +681,7 @@ while running:
 
             mouse = pygame.mouse.get_pos()
             # реализация этого выбора
-            if Character_label_Elf_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
+            if Character_label_Elf_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
                 gameplay = True
                 print("Your choose is Elf")
                 player_character = Elf()
@@ -693,7 +693,7 @@ while running:
                 wave_flag = True
 
 
-            elif Character_label_Human_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
+            elif Character_label_Human_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
                 gameplay = True
                 print("Your choose is Human")
                 player_character = Human()
@@ -704,7 +704,7 @@ while running:
                 wave_flag = True
 
 
-            elif Character_label_Hobbit_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
+            elif Character_label_Hobbit_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
                 gameplay = True
                 print("Your choose is Hobbit")
                 player_character = Hobbit()
