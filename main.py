@@ -623,6 +623,9 @@ flag_win_the_boss = False
 flag_project_screen = True
 timer_for_screensaver = pygame.USEREVENT + 1
 pygame.time.set_timer(timer_for_screensaver, 4000)
+button_play = Button([button_play_up, button_play_down], 60, 100)
+buttons = [button_play]
+
 while running:
     # ---Стартовый экран-------------------------------------------------------
     if Start_game_flag:
@@ -638,12 +641,21 @@ while running:
             label = pygame.font.Font('fonts/gwent_extrabold.ttf', 30)
             Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Black")
             screen.blit(Game_Name, (50, 50))
-            button_play_rect = button_play_up.get_rect(topleft=(60, 100))
-            if button_play_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
-                screen.blit(button_play_down, (60, 100))
-                entr = True
-            else:
-                screen.blit(button_play_up, (60, 100))
+            for (i, elem) in enumerate(buttons):
+                elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
+                if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                    elem.flag_to_pressed = True
+                    elem.try_to_click = True
+                    elem.visual(screen)
+
+                else:
+                    print("зашёд в else")
+                    if elem.try_to_click:
+                        elem.try_to_click = False
+                        pygame.time.set_timer(elem.timer_keyup, 10)
+                        elem.timer_keyup_DEFINITION = True
+                    elem.flag_to_pressed = False
+                    elem.visual(screen)
             Game_start = label.render("Press any to start...", False, "Yellow")
             screen.blit(Game_start, (250, 600))
 
@@ -1139,6 +1151,14 @@ while running:
         if event.type == timer_for_screensaver and flag_project_screen:
             flag_project_screen = False
 
+        if Start_game_flag:
+            for (i, elem) in enumerate(buttons):
+                if event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
+                    print("зашёл в проверку ентр")
+                    entr = True
+                    elem.timer_keyup_DEFINITION = False
+
+
         if wave_how > 0:
             if boss_list:
                 for (i, elem) in enumerate(boss_list):
@@ -1252,8 +1272,6 @@ while running:
             Arrow_How -= 1
             Attack_point = player_character.Attack()
 
-        if Start_game_flag and event.type == pygame.KEYDOWN:
-            entr = True
 
         if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f and attack_flag:
             attack_flag = False
