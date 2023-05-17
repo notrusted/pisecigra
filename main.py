@@ -309,31 +309,53 @@ def warg_mechanicks_go():
                 gameplay = False
 
 def Boss_nazgul_mechanicks():
+    global totem_list,gameplay
     Boss_nazgul_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
     Boss_nazgul_name = Boss_nazgul_label.render("King of nazguls", False, "blue")
     Boss_nazgul_heal_points = Boss_nazgul_label.render("Hp: " + str(elem.hp), False, "green")
     Boss_nazgul_armor = Boss_nazgul_label.render("Armor: " + str(elem.armor), False, "green")
-    screen.blit(boss_nazgul_down[0],(500,500))
-    if elem.hp>0:
-        if elem.hp<=50:
-            elem.flag_go_to_center=True
-        if elem.flag_go_to_center:
-            elem.coord_x -= 5
-            elem.anim += 1
-            """#screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
-            if elem.coord_x - screen.get_width()//2 < 30:
-                    elem.flag_go_to_center = False
-                    pygame.time.set_timer(elem.time, 1000)
-                    elem.time_definition = True"""
-            elem.flag_invicivble=True
-            pygame.time.set_timer(elem.time_invic,20000)
-            elem.invicible(screen)
 
-        if elem.flag_invicible==True:
-            if elem.flag_heal:
-                elem.hp+=5
-                elem.flag_heal=False
-                pygame.time.set_timer(elem.time_heal,2000)
+    #screen.blit(boss_nazgul_down[0],(screen.get_width()//2,200))
+
+    if elem.hp>0:
+        screen.blit(Boss_nazgul_heal_points, (elem.x + 10, elem.y - 30))
+        screen.blit(Boss_nazgul_armor, (elem.x + 10, elem.y - 60))
+        screen.blit(Boss_nazgul_name, (400, 20))
+        if elem.flag_for_proza:
+            elem.proza(screen)
+        else:
+            if elem.hp>50 and elem.flag_invicible==False:
+                elem.go_to(screen,player_x,player_y)
+                if abs(player_x-elem.x)<25 and abs(player_y-elem.y)<25:
+                    player_character.hp-=(elem.standart_attack(screen,player_x,player_y))
+            if elem.hp<=50:
+                elem.flag_go_to_center=True
+            if elem.flag_go_to_center:
+                elem.go_to(screen,screen.get_width()//2,screen.get_height()//2)
+                if elem.check==True:
+                    elem.flag_invicible=True
+                    elem.check=False
+                    elem.flag_go_to_center=False
+            if elem.flag_invicible:
+                elem.invicible(screen)
+                if elem.totem_spawn:
+                    totem_list=[Totem(elem.x-200,elem.y-200),Totem(elem.x-200,elem.y+200),Totem(elem.x+200,elem.y-200),Totem(elem.x+200,elem.y+200)]
+                    elem.totem_spawn=False
+                for i in totem_list:
+                    i.spawn(screen)
+                    i.draw(screen)
+                if elem.hp<100 and len(totem_list)!=0:
+                    if elem.flag_heal:
+                        elem.hp+=5
+                        elem.flag_heal=False
+                        pygame.time.set_timer(elem.time_heal,1000)
+                else:
+                    elem.flag_invicible=False
+                    totem_list.clear()
+                    elem.totem_spawn=True
+            if player_character.hp <= 0:#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                player_character.hp = 0
+                gameplay = False
 
 def Boss_warg_mechanicks_go():
     global Boss_warg_list_in_the_game, player_y, player_x, player_character, heal_anim, n_timer, Boss_warg_ability_flag, \
@@ -542,6 +564,7 @@ clock = pygame.time.Clock()
 
 pygame.init()
 screen = pygame.display.set_mode((1000,800))
+#print(screen.get_width()//2,screen.get_height()//2)
 pygame.display.set_caption("The Hobbit: Pyton's Adventure")
 bg = pygame.image.load("images/Back.png")
 bg = pygame.transform.scale(bg, (1000, 800))
@@ -586,7 +609,7 @@ bg_y = 0
 
 orc_list_in_the_game = []
 orc_flag = 0
-
+totem_list=[]
 player_speed = 15
 player_x = 300
 player_y = 250
@@ -972,7 +995,17 @@ while running:
                 elif ar[1] == 1:
                     screen.blit(Arrow[1], (ar[0].x, ar[0].y))
                     ar[0].y += 20
+                if totem_list:
+                    for (j, elem) in enumerate(totem_list):
+                        if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
+                            elem.Protect(Attack_point)
+                            if elem.hp <= 0:
+                                totem_list.pop(j)
+                                print("Totem destroyed...")
 
+                            if Arrow_list:
+                                Arrow_list.pop(i)
+                                continue
                 if n_list_it_the_game:
                     for (j, elem) in enumerate(n_list_it_the_game):
                         if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
@@ -1049,6 +1082,27 @@ while running:
                                 continue
                 if boss_list:
                     for (j, elem) in enumerate(boss_list):
+                        if elem.name == "King of nazgul" and elem.flag_go_to_center == False:
+                            if abs(ar[0].x - elem.x) < 200 and abs(ar[0].y - elem.y) < 200 and elem.flag_invicible==False:
+                                elem.y -= 50
+                                if elem.armor > 0:
+                                    elem.armor -= Attack_point
+                                    if elem.armor < 0:
+                                        elem.armor = 0
+                                else:
+                                    elem.hp -= Attack_point
+
+                                if elem.hp <= 0:
+                                    boss_list.pop(j)
+                                    print("the King of nazgul is murdered...")
+                                    num_mob -= 1
+                                    wave_flag = True
+                                    wave_how -= 1
+                                    flag_ability = 1
+
+                                if Arrow_list:
+                                    Arrow_list.pop(i)
+                                    continue
                         if elem.name == "BossOrkConqueror" and elem.flag_go_to_center == False and not elem.flag_protective_dome_enable:
                             if abs(ar[0].x - elem.coord_x) < 100 and abs(ar[0].y - elem.coord_y) < 100:
                                 elem.coord_y -= 50
@@ -1113,6 +1167,7 @@ while running:
         mouse = pygame.mouse.get_pos()
         if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
             player_y = 500
+            totem_list.clear()
             n_list_it_the_game.clear()
             warg_list_in_the_game.clear()
             orc_list_in_the_game.clear()
@@ -1192,13 +1247,13 @@ while running:
             else:
                 if wave_flag:
                     print("зашёл в wave_flag")
-                    num_mob = randint(1, 3)
+                    num_mob = randint(1, 1)
                     how_villians = num_mob
                     wave_flag = False
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = randint(1,1)
+                    randomize_select = randint(3,3)
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
@@ -1208,7 +1263,7 @@ while running:
                         boss_list.append(Boss_warg(100, 100, 3))
                         print("create the boss")
                     elif randomize_select==3:
-                        boss_list.append(Nazgul_boss(screen.get_width()//2,screen.get_width()//2))
+                        boss_list.append(Nazgul_boss(screen.get_width()//2 + 15, 300))
                     flag_create_the_boss = False
 
 
@@ -1260,6 +1315,13 @@ while running:
             a = player_character.Attack()
             if Attack_point <= a:
                 Attack_point = a
+            if totem_list:
+                for (j,elem) in enumerate(totem_list):
+                    if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
+                        elem.Protect(Attack_point)
+                    if elem.hp<=0:
+                        totem_list.pop(j)
+                        print("Totem destoyed...")
             if n_list_it_the_game:
                 for (j, elem) in enumerate(n_list_it_the_game):
                     if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
