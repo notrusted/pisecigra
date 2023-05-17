@@ -576,10 +576,11 @@ attack_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(attack_timer, 1000)
 attack_flag = True
 
-
+arrow_pop_flag = False
 
 
 #warg_list_in_the_game = []
+arrow_pop_set = set()
 
 Player_animation_count = 0
 bg_y = 0
@@ -1004,17 +1005,18 @@ while running:
                                 flag_ability = 1
 
                             if Arrow_list:
-                                Arrow_list.pop(i)
+                                arrow_pop_set.add(i)
 
-                        if Arrow_list:
+
+                        if Arrow_list and arrow_pop_flag == False:
                             if ar[0].y < -100:
-                                Arrow_list.pop(i)
+                                arrow_pop_set.add(i)
                             elif ar[0].y > 1100:
-                                Arrow_list.pop(i)
+                                arrow_pop_set.add(i)
                             elif ar[0].x < - 100:
-                                Arrow_list.pop(i)
+                                arrow_pop_set.add(i)
                             elif ar[0].x > 1000:
-                                Arrow_list.pop(i)
+                                arrow_pop_set.add(i)
                                 continue
 
                 if warg_list_in_the_game:
@@ -1035,8 +1037,8 @@ while running:
                                 num_mob -= 1
                                 flag_ability = 1
 
-                            if Arrow_list:
-                                Arrow_list.pop(i)
+                            if Arrow_list and arrow_pop_flag == False:
+                                arrow_pop_set.add(i)
                                 continue
 
                 if orc_list_in_the_game:
@@ -1056,8 +1058,8 @@ while running:
                                 num_mob -= 1
                                 flag_ability = 1
 
-                            if Arrow_list:
-                                Arrow_list.pop(i)
+                            if Arrow_list and arrow_pop_flag == False:
+                                arrow_pop_set.add(i)
                                 continue
                 if boss_list:
                     for (j, elem) in enumerate(boss_list):
@@ -1077,12 +1079,12 @@ while running:
                                     wave_flag = True
                                     wave_how -= 1
 
-                                if Arrow_list:
-                                    Arrow_list.pop(i)
+                                if Arrow_list and arrow_pop_flag == False:
+                                    arrow_pop_set.add(i)
                                     continue
                         elif elem.name == "BossOrkConqueror" and elem.flag_protective_dome_enable:
                             if abs(ar[0].x - elem.coord_x) < 20 and abs(ar[0].y - elem.coord_y) < 20:
-                                if Arrow_list:
+                                if Arrow_list and arrow_pop_flag == False:
                                     Arrow_list.pop(i)
 
                         if elem.name == 'The Alpha Warg':
@@ -1106,11 +1108,18 @@ while running:
                                     wave_how -= 1
                                     flag_ability = 1
 
-                                if Arrow_list:
-                                    Arrow_list.pop(i)
+                                if Arrow_list and arrow_pop_flag == False:
+                                    arrow_pop_set.add(i)
                                     continue
 
+        for num in arrow_pop_set:
+            Arrow_list.pop(num)
+
+        arrow_pop_set.clear()
+
         visual_health(player_character)
+
+
 
 
 
@@ -1218,7 +1227,7 @@ while running:
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = randint(1,1)
+                    randomize_select = randint(1,2)
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
@@ -1377,5 +1386,7 @@ while running:
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_c:
             player_character.Use_the_Ability()
+
+        arrow_pop_flag = False
 
     clock.tick(20)
