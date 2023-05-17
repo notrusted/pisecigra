@@ -62,6 +62,8 @@ Rings_active = [pygame.image.load("images/Ring_active.png"),pygame.image.load("i
 health_model = [pygame.image.load('images/health/full.png'), pygame.image.load('images/health/half.png'), pygame.image.load('images/health/empty.png')]
 Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arrow_Down.png'), pygame.image.load('images/Arrow_Left.png'),pygame.image.load('images/Arrow_Right.png')]
 
+totem_picture=[pygame.image.load('images/totem.png')]
+
 portal_png = [pygame.image.load('images/portal/portal1.png'), pygame.image.load('images/portal/portal2.png'), pygame.image.load('images/portal/portal3.png'), pygame.image.load('images/portal/portal4.png')]
 
 for i in range(len(portal_png)):
@@ -96,5 +98,6 @@ convert_list_of_images(hobba_picture_list,7,7)
 convert_list_of_images(Boss_warg_picture_list,1/4,1/4)
 convert_list_of_images(Rings_picture,6,6)
 convert_list_of_images(boss_nazgul_picture_list,1/3,1/3)
+convert_list_of_images(totem_picture,3,3)
 #convert_list_of_images(invic_boss_nazgul,1/3,1/3)
 
