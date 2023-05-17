@@ -2,7 +2,7 @@ import pygame
 from random import randint
 from file_for_images import *
 from file_for_class import *
-
+#пуш для Некита
 #---------------------------------------------------
 """
 Некит - босс Назгул
@@ -75,9 +75,7 @@ class Elf(Character):
             print("The Elf try to use him agility")
             Arrow_How += 15
         flag_ability = 0
-    def invicible(self,surface,player_x,player_y):
-        self.armor=1000
-        surface.blit(invic_boss_nazgul,(player_x,player_y))
+
 
 class Human(Character):
 
@@ -310,6 +308,54 @@ def warg_mechanicks_go():
                 player_character.hp = 0
                 gameplay = False
 
+def Boss_nazgul_mechanicks():
+    global totem_list,gameplay
+    Boss_nazgul_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+    Boss_nazgul_name = Boss_nazgul_label.render("King of nazguls", False, "blue")
+    Boss_nazgul_heal_points = Boss_nazgul_label.render("Hp: " + str(elem.hp), False, "green")
+    Boss_nazgul_armor = Boss_nazgul_label.render("Armor: " + str(elem.armor), False, "green")
+
+    #screen.blit(boss_nazgul_down[0],(screen.get_width()//2,200))
+
+    if elem.hp>0:
+        screen.blit(Boss_nazgul_heal_points, (elem.x + 10, elem.y - 30))
+        screen.blit(Boss_nazgul_armor, (elem.x + 10, elem.y - 60))
+        screen.blit(Boss_nazgul_name, (400, 20))
+        if elem.flag_for_proza:
+            elem.proza(screen)
+        else:
+            if elem.hp>50 and elem.flag_invicible==False:
+                elem.go_to(screen,player_x,player_y)
+                if abs(player_x-elem.x)<25 and abs(player_y-elem.y)<25:
+                    player_character.hp-=(elem.standart_attack(screen,player_x,player_y))
+            if elem.hp<=50:
+                elem.flag_go_to_center=True
+            if elem.flag_go_to_center:
+                elem.go_to(screen,screen.get_width()//2,screen.get_height()//2)
+                if elem.check==True:
+                    elem.flag_invicible=True
+                    elem.check=False
+                    elem.flag_go_to_center=False
+            if elem.flag_invicible:
+                elem.invicible(screen)
+                if elem.totem_spawn:
+                    totem_list=[Totem(elem.x-200,elem.y-200),Totem(elem.x-200,elem.y+200),Totem(elem.x+200,elem.y-200),Totem(elem.x+200,elem.y+200)]
+                    elem.totem_spawn=False
+                for i in totem_list:
+                    i.spawn(screen)
+                    i.draw(screen)
+                if elem.hp<100 and len(totem_list)!=0:
+                    if elem.flag_heal:
+                        elem.hp+=5
+                        elem.flag_heal=False
+                        pygame.time.set_timer(elem.time_heal,1000)
+                else:
+                    elem.flag_invicible=False
+                    totem_list.clear()
+                    elem.totem_spawn=True
+            if player_character.hp <= 0:#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                player_character.hp = 0
+                gameplay = False
 
 def Boss_warg_mechanicks_go():
     global Boss_warg_list_in_the_game, player_y, player_x, player_character, heal_anim, n_timer, Boss_warg_ability_flag, \
@@ -482,23 +528,33 @@ def visual_health(player):
     elif level_hp == 6:
         screen.blit(health_model[0], (100, 50))
         screen.blit(health_model[0], (150, 50))
+        screen.blit(health_model[2], (200, 50))
 
     elif level_hp == 5:
         screen.blit(health_model[0], (100, 50))
         screen.blit(health_model[1], (150, 50))
+        screen.blit(health_model[2], (200, 50))
 
     elif level_hp == 4:
         screen.blit(health_model[0], (100, 50))
         screen.blit(health_model[2], (150, 50))
+        screen.blit(health_model[2], (200, 50))
 
     elif level_hp == 3:
         screen.blit(health_model[0], (100, 50))
+        screen.blit(health_model[2], (150, 50))
+        screen.blit(health_model[2], (200, 50))
 
     elif level_hp == 2:
         screen.blit(health_model[1], (100, 50))
+        screen.blit(health_model[2], (150, 50))
+        screen.blit(health_model[2], (200, 50))
 
     elif level_hp == 1 or health > 0:
         screen.blit(health_model[2], (100, 50))
+        screen.blit(health_model[2], (150, 50))
+        screen.blit(health_model[2], (200, 50))
+
 
 
 # -------------------------------------------------------------------------------------------------------
@@ -508,6 +564,7 @@ clock = pygame.time.Clock()
 
 pygame.init()
 screen = pygame.display.set_mode((1000,800))
+#print(screen.get_width()//2,screen.get_height()//2)
 pygame.display.set_caption("The Hobbit: Pyton's Adventure")
 bg = pygame.image.load("images/Back.png")
 bg = pygame.transform.scale(bg, (1000, 800))
@@ -538,6 +595,10 @@ Boss_warg_Heal_flag = False
 heal_anim = 0
 Boss_warg_ability_flag = False
 
+attack_timer = pygame.USEREVENT + 1
+pygame.time.set_timer(attack_timer, 1000)
+attack_flag = True
+
 
 
 
@@ -548,7 +609,7 @@ bg_y = 0
 
 orc_list_in_the_game = []
 orc_flag = 0
-
+totem_list=[]
 player_speed = 15
 player_x = 300
 player_y = 250
@@ -563,7 +624,7 @@ the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
 loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
 restart_label = the_end_label.render("Start again", False, "Black")
 restart_label_rect = restart_label.get_rect(topleft=(250, 400))
-Arrow_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 20)
+Arrow_label = pygame.font.Font("fonts/Angkor-Regular.ttf", 20)
 # --------------------------------------------------------------------------
 
 Arrow_list = []
@@ -571,6 +632,7 @@ Arrow_How = 0
 Attack_point = 0
 
 boss_list = []
+portal_list = []
 
 Start_game_flag = True
 entr = False  # флаг на переключение экранов стартовый->выбор игрока
@@ -581,32 +643,51 @@ pygame.mixer.music.play(-1)
 flag_music = True
 flag_create_the_boss = False
 flag_win_the_boss = False
+flag_project_screen = True
+timer_for_screensaver = pygame.USEREVENT + 1
+pygame.time.set_timer(timer_for_screensaver, 4000)
 while running:
     # ---Стартовый экран-------------------------------------------------------
     if Start_game_flag:
         gameplay = False
         screen.fill("Black")
-        label = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 20)
-        Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Yellow")
-        screen.blit(Game_Name, (250, 400))
-        Game_start = label.render("Press any to start...", False, "Yellow")
-        screen.blit(Game_start, (250, 600))
+        label = pygame.font.Font('fonts/gwent_extrabold.ttf', 60)
+        project_company = label.render("JIN Project", True, "White")
+        if flag_project_screen:
+            screen.blit(screen_saver, (0,0))
+            screen.blit(project_company, (screen.get_width() // 2 - 150, screen.get_height() // 2))
+        else:
+            screen.blit(screen_saver, (0, 0))
+            label = pygame.font.Font('fonts/gwent_extrabold.ttf', 30)
+            Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Black")
+            screen.blit(Game_Name, (50, 50))
+            button_play_rect = button_play_up.get_rect(topleft=(60, 100))
+            if button_play_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                screen.blit(button_play_down, (60, 100))
+                entr = True
+            else:
+                screen.blit(button_play_up, (60, 100))
+            Game_start = label.render("Press any to start...", False, "Yellow")
+            screen.blit(Game_start, (250, 600))
+
         # -------------------------------------------------------------------------
 
         # ---экран выбора героя----------------------------------------------------
         if entr:
             screen.fill("Black")
+
+            screen.blit(pygame.image.load("images/CHOICE_screen2.png"),(0,0))
             Character_label = label.render("Choose your hero:", False, "Red")
-            screen.blit(Character_label, (250, 200))
+            screen.blit(Character_label, (400, 100))
             Character_label_Elf = label.render("Forest Elf", False, "Yellow")
-            screen.blit(Character_label_Elf, (250, 400))
+            screen.blit(Character_label_Elf, (250, 200))
             Character_label_Human = label.render("Human", False, "Yellow")
-            screen.blit(Character_label_Human, (250, 500))
+            screen.blit(Character_label_Human, (250, 400))
             Character_label_Hobbit = label.render("Hobbit", False, "Yellow")
             screen.blit(Character_label_Hobbit, (250, 600))
 
-            Character_label_Elf_rect = Character_label_Elf.get_rect(topleft=(250, 400))
-            Character_label_Human_rect = Character_label_Human.get_rect(topleft=(250, 500))
+            Character_label_Elf_rect = Character_label_Elf.get_rect(topleft=(250, 200))
+            Character_label_Human_rect = Character_label_Human.get_rect(topleft=(250, 400))
             Character_label_Hobbit_rect = Character_label_Hobbit.get_rect(topleft=(250, 600))
 
             mouse = pygame.mouse.get_pos()
@@ -661,13 +742,14 @@ while running:
         screen.blit(wave_villians_label, (20, 700))
 
         if player_character.ability == "has agility":
-            Arrow_label_how = Arrow_label.render("You have a " + str(Arrow_How) + " arrow's", False, "Brown")
-            Arrow_label_press = Arrow_label.render("Press R...", False, "Brown")
+            Arrow_label_how = Arrow_label.render("You have a " + str(Arrow_How) + " arrow's", True, "Black")
+            Arrow_label_press = Arrow_label.render("Press ", True, "Black")
             Character_label_Elf_ability = Arrow_label.render(
                 "You can" + (1 - flag_ability) * "'t" + " use " + "The ability: " +
                 str(player_character.ability), False, 'Brown')
             screen.blit(Arrow_label_how, (700, 30))
             screen.blit(Arrow_label_press, (700, 60))
+            screen.blit(button_R, (780, 60))
             screen.blit(Character_label_Elf_ability, (500, 750))
             if (1 - flag_ability) == 1:
                 screen.blit(Rings[0], (400, 710))
@@ -707,13 +789,15 @@ while running:
         if orc_list_in_the_game:
             orc_mechanicks_go()
 
-        if Boss_warg_list_in_the_game:
-            Boss_warg_mechanicks_go()
+        """if Boss_warg_list_in_the_game:
+            Boss_warg_mechanicks_go()"""
         # ---BOSSES--------------------------------------------------------------------------------
         if boss_list:
             for (i, elem) in enumerate(boss_list):
                 if elem.name == "The Alpha Warg":
                     Boss_warg_mechanicks_go()
+                if elem.name == "King of nazgul":
+                    Boss_nazgul_mechanicks()
                 if elem.name == "BossOrkConqueror":
                     label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 50)
                     name_label_boss = label_Boss.render('BOSSSSSS', True, 'Red')
@@ -723,6 +807,7 @@ while running:
                     hp_boss = label_Boss.render("HP BOSS: " + str(elem.hp), True, 'Red')
                     armor_boss = label_Boss.render("ARMOR BOSS: " + str(elem.armor), True, 'Red')
                     screen.blit(hp_boss, (screen.get_width() // 2 - 100, 100))
+
                     #screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
                     if elem.flag_go_to_center:
                         elem.coord_x -= 5
@@ -737,7 +822,10 @@ while running:
                         screen.blit(cry_label_boss, (elem.coord_x + 5 + randint(-1, 1), elem.coord_y - 5 + randint(-1, 1)))
 
                     elif elem.hp > 0:
-
+                        if portal_list:
+                            for port in portal_list:
+                                if port.flag_to_visual:
+                                    port.visual(screen, portal_png)
                         if elem.hp < 120:
 
                             #запускает щит и остаётся на месте
@@ -758,41 +846,83 @@ while running:
                                  player_character.hp = 0
                                  gameplay = False
 
-                        elif abs(elem.coord_x - player_x) > abs(elem.coord_y - player_y):
-                            if elem.coord_x > player_x:
-                                elem.coord_x -= 4
-                                elem.anim += 1
-                                if elem.flag_protective_dome_enable:
-                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                        if abs(elem.coord_x - player_x) > 140 and abs(elem.coord_y - player_y) > 140 and elem.can_portal:
+                            elem.can_portal = False
+                            portal_list.append(Portal(elem.coord_x + 20, elem.coord_y, screen))
+                            elem.portal1 = [elem.coord_x + 20, elem.coord_y]
+                            portal_list.append(Portal(player_x, player_y, screen))
+                            elem.portal2 = [player_x, player_y]
+                            elem.flag_go_to_portal = True
+
+                        if elem.flag_go_to_portal:
+                            if elem.portal1[0] == elem.coord_x and elem.portal1[1] == elem.coord_y:
+                                elem.flag_go_to_portal = False
+                                elem.coord_x = elem.portal2[0]
+                                elem.coord_y = elem.portal2[1]
                             else:
-                                elem.coord_x += 4
-                                elem.anim += 1
-                                if elem.flag_protective_dome_enable:
-                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                screen.blit(Orc_conqueror_right[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                if abs(elem.coord_x - elem.portal1[0]) > abs(elem.coord_y - elem.portal1[1]):
+                                    if elem.coord_x > elem.portal1[0]:
+                                        elem.coord_x -= 4
+                                        elem.anim += 1
+                                        if elem.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                        screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                    else:
+                                        elem.coord_x += 4
+                                        elem.anim += 1
+                                        if elem.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                        screen.blit(Orc_conqueror_right[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
-                        elif abs(elem.coord_x - player_x) <= abs(elem.coord_y - player_y):
-                            if elem.coord_y > player_y:
-                                elem.coord_y -= 4
-                                elem.anim += 1
-                                if elem.flag_protective_dome_enable:
-                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                elif abs(elem.coord_x - elem.portal1[0]) <= abs(elem.coord_y - elem.portal1[1]):
+                                    if elem.coord_y > elem.portal1[1]:
+                                        elem.coord_y -= 4
+                                        elem.anim += 1
+                                        if elem.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                        screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
-                            else:
-                                elem.coord_y += 4
-                                elem.anim += 1
-                                if elem.flag_protective_dome_enable:
-                                    screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                    else:
+                                        elem.coord_y += 4
+                                        elem.anim += 1
+                                        if elem.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                        screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
+                        else:
+                            if abs(elem.coord_x - player_x) > abs(elem.coord_y - player_y):
+                                if elem.coord_x > player_x:
+                                    elem.coord_x -= 4
+                                    elem.anim += 1
+                                    if elem.flag_protective_dome_enable:
+                                        screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                    screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                else:
+                                    elem.coord_x += 4
+                                    elem.anim += 1
+                                    if elem.flag_protective_dome_enable:
+                                      screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                    screen.blit(Orc_conqueror_right[elem.anim % 3], (elem.coord_x, elem.coord_y))
+
+                            elif abs(elem.coord_x - player_x) <= abs(elem.coord_y - player_y):
+                                if elem.coord_y > player_y:
+                                    elem.coord_y -= 4
+                                    elem.anim += 1
+                                    if elem.flag_protective_dome_enable:
+                                        screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                    screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
+
+                                else:
+                                    elem.coord_y += 4
+                                    elem.anim += 1
+                                    if elem.flag_protective_dome_enable:
+                                        screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
+                                    screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
 
         # ---перс при бездействии-------------------------------------------
         if flag_animation:
             player_heal_points = player_label.render("Hp: " + str(player_character.hp), False, "Red")
             if Type_anim == 0:
-                player_character.invicible(screen,player_x,player_y)
                 screen.blit(player_character.la[2][0], (player_x, player_y))
                 screen.blit(player_heal_points, (player_x + 20, player_y - 30))
             elif Type_anim == 1:
@@ -865,7 +995,17 @@ while running:
                 elif ar[1] == 1:
                     screen.blit(Arrow[1], (ar[0].x, ar[0].y))
                     ar[0].y += 20
+                if totem_list:
+                    for (j, elem) in enumerate(totem_list):
+                        if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
+                            elem.Protect(Attack_point)
+                            if elem.hp <= 0:
+                                totem_list.pop(j)
+                                print("Totem destroyed...")
 
+                            if Arrow_list:
+                                Arrow_list.pop(i)
+                                continue
                 if n_list_it_the_game:
                     for (j, elem) in enumerate(n_list_it_the_game):
                         if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
@@ -942,6 +1082,27 @@ while running:
                                 continue
                 if boss_list:
                     for (j, elem) in enumerate(boss_list):
+                        if elem.name == "King of nazgul" and elem.flag_go_to_center == False:
+                            if abs(ar[0].x - elem.x) < 200 and abs(ar[0].y - elem.y) < 200 and elem.flag_invicible==False:
+                                elem.y -= 50
+                                if elem.armor > 0:
+                                    elem.armor -= Attack_point
+                                    if elem.armor < 0:
+                                        elem.armor = 0
+                                else:
+                                    elem.hp -= Attack_point
+
+                                if elem.hp <= 0:
+                                    boss_list.pop(j)
+                                    print("the King of nazgul is murdered...")
+                                    num_mob -= 1
+                                    wave_flag = True
+                                    wave_how -= 1
+                                    flag_ability = 1
+
+                                if Arrow_list:
+                                    Arrow_list.pop(i)
+                                    continue
                         if elem.name == "BossOrkConqueror" and elem.flag_go_to_center == False and not elem.flag_protective_dome_enable:
                             if abs(ar[0].x - elem.coord_x) < 100 and abs(ar[0].y - elem.coord_y) < 100:
                                 elem.coord_y -= 50
@@ -961,6 +1122,10 @@ while running:
                                 if Arrow_list:
                                     Arrow_list.pop(i)
                                     continue
+                        elif elem.name == "BossOrkConqueror" and elem.flag_protective_dome_enable:
+                            if abs(ar[0].x - elem.coord_x) < 20 and abs(ar[0].y - elem.coord_y) < 20:
+                                if Arrow_list:
+                                    Arrow_list.pop(i)
 
                         if elem.name == 'The Alpha Warg':
 
@@ -1002,6 +1167,7 @@ while running:
         mouse = pygame.mouse.get_pos()
         if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
             player_y = 500
+            totem_list.clear()
             n_list_it_the_game.clear()
             warg_list_in_the_game.clear()
             orc_list_in_the_game.clear()
@@ -1011,6 +1177,11 @@ while running:
             player_character.hp = All_Hp
             flag_ability = 1
             Arrow_How = 0
+            n_timer = pygame.USEREVENT + 1
+            pygame.time.set_timer(n_timer, 10000)
+            attack_timer = pygame.USEREVENT + 1
+            pygame.time.set_timer(attack_timer, 1000)
+            attack_flag = True
             Start_game_flag = True
 
 
@@ -1020,6 +1191,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
+        if event.type == timer_for_screensaver and flag_project_screen:
+            flag_project_screen = False
 
         if wave_how > 0:
             if boss_list:
@@ -1045,7 +1218,16 @@ while running:
                             elem.flag_orc_cry = False
                             elem.flag_boss_to_heal = True
 
-
+                        if event.type == elem.time_reload_can_portal and not elem.can_portal:
+                            elem.can_portal = True
+                    if elem.name=="King of nazgul":
+                        if event.type==elem.time_heal:
+                            elem.flag_heal=True
+            if portal_list:
+                for (i, elem) in enumerate(portal_list):
+                    if event.type == elem.time_to_visual and elem.flag_to_visual:
+                        elem.flag_to_visual = False
+                        portal_list.pop(i)
 
             if how_villians > 0:
                 if event.type == n_timer:
@@ -1065,13 +1247,13 @@ while running:
             else:
                 if wave_flag:
                     print("зашёл в wave_flag")
-                    num_mob = randint(1, 3)
+                    num_mob = randint(1, 1)
                     how_villians = num_mob
                     wave_flag = False
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = randint(1,2)
+                    randomize_select = randint(3,3)
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
@@ -1080,6 +1262,8 @@ while running:
                     elif randomize_select == 2:
                         boss_list.append(Boss_warg(100, 100, 3))
                         print("create the boss")
+                    elif randomize_select==3:
+                        boss_list.append(Nazgul_boss(screen.get_width()//2 + 15, 300))
                     flag_create_the_boss = False
 
 
@@ -1094,8 +1278,16 @@ while running:
                     if elem.name == "The Alpha Warg":
                         elem.special_ability()
 
+        if event.type == attack_timer:
+            attack_flag = True
 
-        if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility":
+            attack_timer = pygame.USEREVENT + 1
+            pygame.time.set_timer(attack_timer, 1000)
+
+
+        if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility" and attack_flag:
+            attack_flag = False
+
             if Type_anim == 0:
                 side = 0
                 Arrow_list.append((Arrow[0].get_rect(topleft=(player_x + 25, player_y - 40)), side))
@@ -1118,10 +1310,18 @@ while running:
         if Start_game_flag and event.type == pygame.KEYDOWN:
             entr = True
 
-        if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f:
+        if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f and attack_flag:
+            attack_flag = False
             a = player_character.Attack()
             if Attack_point <= a:
                 Attack_point = a
+            if totem_list:
+                for (j,elem) in enumerate(totem_list):
+                    if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
+                        elem.Protect(Attack_point)
+                    if elem.hp<=0:
+                        totem_list.pop(j)
+                        print("Totem destoyed...")
             if n_list_it_the_game:
                 for (j, elem) in enumerate(n_list_it_the_game):
                     if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
