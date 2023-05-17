@@ -599,10 +599,11 @@ attack_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(attack_timer, 1000)
 attack_flag = True
 
-
+arrow_pop_flag = False
 
 
 #warg_list_in_the_game = []
+arrow_pop_set = set()
 
 Player_animation_count = 0
 bg_y = 0
@@ -646,6 +647,9 @@ flag_win_the_boss = False
 flag_project_screen = True
 timer_for_screensaver = pygame.USEREVENT + 1
 pygame.time.set_timer(timer_for_screensaver, 4000)
+button_play = Button([button_play_up, button_play_down], 60, 100)
+buttons = [button_play]
+
 while running:
     # ---Стартовый экран-------------------------------------------------------
     if Start_game_flag:
@@ -661,12 +665,21 @@ while running:
             label = pygame.font.Font('fonts/gwent_extrabold.ttf', 30)
             Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Black")
             screen.blit(Game_Name, (50, 50))
-            button_play_rect = button_play_up.get_rect(topleft=(60, 100))
-            if button_play_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
-                screen.blit(button_play_down, (60, 100))
-                entr = True
-            else:
-                screen.blit(button_play_up, (60, 100))
+            for (i, elem) in enumerate(buttons):
+                elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
+                if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                    elem.flag_to_pressed = True
+                    elem.try_to_click = True
+                    elem.visual(screen)
+
+                else:
+                    print("зашёд в else")
+                    if elem.try_to_click:
+                        elem.try_to_click = False
+                        pygame.time.set_timer(elem.timer_keyup, 10)
+                        elem.timer_keyup_DEFINITION = True
+                    elem.flag_to_pressed = False
+                    elem.visual(screen)
             Game_start = label.render("Press any to start...", False, "Yellow")
             screen.blit(Game_start, (250, 600))
 
@@ -692,7 +705,7 @@ while running:
 
             mouse = pygame.mouse.get_pos()
             # реализация этого выбора
-            if Character_label_Elf_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
+            if Character_label_Elf_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
                 gameplay = True
                 print("Your choose is Elf")
                 player_character = Elf()
@@ -704,7 +717,7 @@ while running:
                 wave_flag = True
 
 
-            elif Character_label_Human_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
+            elif Character_label_Human_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
                 gameplay = True
                 print("Your choose is Human")
                 player_character = Human()
@@ -715,7 +728,7 @@ while running:
                 wave_flag = True
 
 
-            elif Character_label_Hobbit_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
+            elif Character_label_Hobbit_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
                 gameplay = True
                 print("Your choose is Hobbit")
                 player_character = Hobbit()
@@ -1025,17 +1038,18 @@ while running:
                                 flag_ability = 1
 
                             if Arrow_list:
-                                Arrow_list.pop(i)
+                                arrow_pop_set.add(i)
 
-                        if Arrow_list:
+
+                        if Arrow_list and arrow_pop_flag == False:
                             if ar[0].y < -100:
-                                Arrow_list.pop(i)
+                                arrow_pop_set.add(i)
                             elif ar[0].y > 1100:
-                                Arrow_list.pop(i)
+                                arrow_pop_set.add(i)
                             elif ar[0].x < - 100:
-                                Arrow_list.pop(i)
+                                arrow_pop_set.add(i)
                             elif ar[0].x > 1000:
-                                Arrow_list.pop(i)
+                                arrow_pop_set.add(i)
                                 continue
 
                 if warg_list_in_the_game:
@@ -1056,8 +1070,8 @@ while running:
                                 num_mob -= 1
                                 flag_ability = 1
 
-                            if Arrow_list:
-                                Arrow_list.pop(i)
+                            if Arrow_list and arrow_pop_flag == False:
+                                arrow_pop_set.add(i)
                                 continue
 
                 if orc_list_in_the_game:
@@ -1077,8 +1091,8 @@ while running:
                                 num_mob -= 1
                                 flag_ability = 1
 
-                            if Arrow_list:
-                                Arrow_list.pop(i)
+                            if Arrow_list and arrow_pop_flag == False:
+                                arrow_pop_set.add(i)
                                 continue
                 if boss_list:
                     for (j, elem) in enumerate(boss_list):
@@ -1119,12 +1133,12 @@ while running:
                                     wave_flag = True
                                     wave_how -= 1
 
-                                if Arrow_list:
-                                    Arrow_list.pop(i)
+                                if Arrow_list and arrow_pop_flag == False:
+                                    arrow_pop_set.add(i)
                                     continue
                         elif elem.name == "BossOrkConqueror" and elem.flag_protective_dome_enable:
                             if abs(ar[0].x - elem.coord_x) < 20 and abs(ar[0].y - elem.coord_y) < 20:
-                                if Arrow_list:
+                                if Arrow_list and arrow_pop_flag == False:
                                     Arrow_list.pop(i)
 
                         if elem.name == 'The Alpha Warg':
@@ -1148,11 +1162,18 @@ while running:
                                     wave_how -= 1
                                     flag_ability = 1
 
-                                if Arrow_list:
-                                    Arrow_list.pop(i)
+                                if Arrow_list and arrow_pop_flag == False:
+                                    arrow_pop_set.add(i)
                                     continue
 
+        for num in arrow_pop_set:
+            Arrow_list.pop(num)
+
+        arrow_pop_set.clear()
+
         visual_health(player_character)
+
+
 
 
 
@@ -1193,6 +1214,14 @@ while running:
             pygame.quit()
         if event.type == timer_for_screensaver and flag_project_screen:
             flag_project_screen = False
+
+        if Start_game_flag:
+            for (i, elem) in enumerate(buttons):
+                if event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
+                    print("зашёл в проверку ентр")
+                    entr = True
+                    elem.timer_keyup_DEFINITION = False
+
 
         if wave_how > 0:
             if boss_list:
@@ -1253,7 +1282,9 @@ while running:
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = randint(3,3)
+
+                    randomize_select = randint(1,3)
+
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
@@ -1307,8 +1338,6 @@ while running:
             Arrow_How -= 1
             Attack_point = player_character.Attack()
 
-        if Start_game_flag and event.type == pygame.KEYDOWN:
-            entr = True
 
         if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f and attack_flag:
             attack_flag = False
@@ -1421,5 +1450,7 @@ while running:
 
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_c:
             player_character.Use_the_Ability()
+
+        arrow_pop_flag = False
 
     clock.tick(20)
