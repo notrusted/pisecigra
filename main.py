@@ -647,8 +647,10 @@ flag_win_the_boss = False
 flag_project_screen = True
 timer_for_screensaver = pygame.USEREVENT + 1
 pygame.time.set_timer(timer_for_screensaver, 4000)
-button_play = Button([button_play_up, button_play_down], 60, 100)
-buttons = [button_play]
+button_play = Button("play", [button_play_up, button_play_down], 60, 100)
+button_options = Button('options', [button_options_up, button_options_down], 60, 225)
+buttons = [button_play, button_options]
+
 
 while running:
     # ---Стартовый экран-------------------------------------------------------
@@ -673,7 +675,6 @@ while running:
                     elem.visual(screen)
 
                 else:
-                    print("зашёд в else")
                     if elem.try_to_click:
                         elem.try_to_click = False
                         pygame.time.set_timer(elem.timer_keyup, 10)
@@ -1237,7 +1238,7 @@ while running:
 
         if Start_game_flag:
             for (i, elem) in enumerate(buttons):
-                if event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
+                if elem.name == 'play' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
                     print("зашёл в проверку ентр")
                     entr = True
                     elem.timer_keyup_DEFINITION = False

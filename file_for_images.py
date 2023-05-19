@@ -84,6 +84,12 @@ protectiveDome = pygame.transform.scale(protectiveDome, (protectiveDome.get_widt
 button_play_up = pygame.image.load('images/buttons/play.png')
 button_play_down = pygame.image.load('images/buttons/play_pressed.png')
 
+button_options_up = pygame.image.load('images/buttons/options.png')
+button_options_down = pygame.image.load('images/buttons/options_pressed.png')
+
+button_quit_up = pygame.image.load('images/buttons/quit.png')
+button_quit_down = pygame.image.load('images/buttons/quit_pressed.png')
+
 button_R = pygame.image.load('images/buttons/R.png')
 
 Punch_list = [pygame.image.load("images/Punch_1.png"),pygame.image.load("images/Punch_2.png"),pygame.image.load("images/Punch_3.png")]
