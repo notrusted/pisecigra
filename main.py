@@ -600,7 +600,7 @@ pygame.time.set_timer(attack_timer, 1000)
 attack_flag = True
 
 arrow_pop_flag = False
-
+punch_anim = 0
 
 #warg_list_in_the_game = []
 arrow_pop_set = set()
@@ -1173,6 +1173,26 @@ while running:
 
         visual_health(player_character)
 
+        if punch_anim > 0:
+            while punch_anim < len(Punch_list):
+                if Type_anim == 0:
+                    punch_anim += 1
+                    screen.blit(Punch_list[punch_anim % 3], (player_x + 10, player_y - 20))
+
+                elif Type_anim == 1:
+                    punch_anim += 1
+                    screen.blit(Punch_list[punch_anim % 3], (player_x - 30, player_y + 20) )
+
+                elif Type_anim == 2:
+                    punch_anim += 1
+                    screen.blit(Punch_list[punch_anim % 3], (player_x + 60, player_y + 20) )
+                elif Type_anim == 3:
+                    punch_anim += 1
+                    screen.blit(Punch_list[punch_anim % 3], (player_x + 10, player_y + 100))
+
+            punch_anim = 0
+
+
 
 
 
@@ -1342,6 +1362,7 @@ while running:
         if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f and attack_flag:
             attack_flag = False
             a = player_character.Attack()
+            punch_anim += 1
             if Attack_point <= a:
                 Attack_point = a
             if totem_list:
