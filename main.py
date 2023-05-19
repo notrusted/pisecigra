@@ -1206,7 +1206,7 @@ while running:
         screen.blit(loose_label, (320, 500))
         screen.blit(restart_label, (320, 400))
         mouse = pygame.mouse.get_pos()
-        if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed():
+        if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1,0,0):
             player_y = 500
             totem_list.clear()
             n_list_it_the_game.clear()
@@ -1303,7 +1303,7 @@ while running:
 
                 if num_mob == 0 and flag_create_the_boss:
 
-                    randomize_select = randint(1,3)
+                    randomize_select = randint(3,3)
 
                     if randomize_select == 1:
                         boss_list.append(
