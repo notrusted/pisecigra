@@ -625,6 +625,9 @@ the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
 loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
 restart_label = the_end_label.render("Start again", False, "Black")
 restart_label_rect = restart_label.get_rect(topleft=(250, 400))
+#volume_label = player_label.render('',False,'White')
+volume_rect = button_Volume[0].get_rect(topleft=(900,720))
+volume_rect = button_Volume[1].get_rect(topleft=(900,720))
 Arrow_label = pygame.font.Font("fonts/Angkor-Regular.ttf", 20)
 # --------------------------------------------------------------------------
 
@@ -642,6 +645,7 @@ running = True
 pygame.mixer.music.load("Sounds/Main theme.mp3")
 pygame.mixer.music.play(-1)
 flag_music = True
+music_mute = False
 flag_create_the_boss = False
 flag_win_the_boss = False
 flag_project_screen = True
@@ -673,6 +677,19 @@ while running:
             label = pygame.font.Font('fonts/gwent_extrabold.ttf', 30)
             Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Black")
             screen.blit(Game_Name, (50, 50))
+            if music_mute == False:
+                screen.blit(button_Volume[0],(900,720))
+            else:
+                screen.blit(button_Volume[1], (900, 720))
+            mouse = pygame.mouse.get_pos()
+            if volume_rect.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (1, 0, 0):
+                music_mute = True
+                pygame.mixer.music.stop()
+
+            elif volume_rect.collidepoint(mouse) and music_mute and pygame.mouse.get_pressed() == (1, 0, 0):
+                music_mute = False
+                pygame.mixer.music.play(-1)
+
             for (i, elem) in enumerate(buttons_main_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
@@ -779,7 +796,11 @@ while running:
 
     # ---процесс геймплея(арена)-------------------------------------------------------------------
     if gameplay:
-        if flag_music:
+
+        if music_mute:
+            pygame.mixer.music.stop()
+
+        if flag_music and music_mute == False:
             pygame.mixer.music.stop()
             pygame.mixer.music.load("sounds/Alternative 2.mp3")
             pygame.mixer.music.play(-1)
@@ -1289,13 +1310,6 @@ while running:
                             screen.blit(Knife_list[2], (player_x + 8, player_y - 4))
 
                 punch_anim = 0
-
-
-
-
-
-
-
 
 
 

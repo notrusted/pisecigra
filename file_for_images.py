@@ -94,6 +94,7 @@ button_back_down = pygame.transform.scale(button_back_down, (button_back_up.get_
 
 button_quit_up = pygame.image.load('images/buttons/quit.png')
 button_quit_down = pygame.image.load('images/buttons/quit_pressed.png')
+button_Volume = [pygame.image.load('images/buttons/Volume_on.png'),pygame.image.load('images/buttons/Volume_off.png')]
 
 button_R = pygame.image.load('images/buttons/R.png')
 
