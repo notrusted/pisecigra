@@ -269,7 +269,8 @@ class Boss_warg(Boss):
 
 
 class Button:
-    def __init__(self, position: list, x, y):
+    def __init__(self, name, position: list, x, y):
+        self.name = name
         self.list_position = position
         self.flag_to_pressed = False
         self.try_to_click = False
