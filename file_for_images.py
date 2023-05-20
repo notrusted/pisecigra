@@ -98,6 +98,9 @@ button_Volume = [pygame.image.load('images/buttons/Volume_on.png'),pygame.image.
 
 button_R = pygame.image.load('images/buttons/R.png')
 
+
+zelya_heal = [pygame.image.load('images/zelya/heal1.png'), pygame.image.load('images/zelya/heal2.png'), pygame.image.load('images/zelya/heal3.png'), pygame.image.load('images/zelya/heal4.png')]
+
 Punch_list = [pygame.image.load("images/Punch_1.png"),pygame.image.load("images/Punch_2.png"),pygame.image.load("images/Punch_3.png")]
 Sword_list =[pygame.image.load("images/Sword_Human.png"),pygame.image.load("images/Sword_Human_2.png"),pygame.image.load("images/Sword_Human_3.png"),pygame.image.load("images/Sword_Human_4.png")]
 Knife_list = [pygame.image.load("images/Knife_1.png."),pygame.image.load("images/Knife_2.png."),pygame.image.load("images/Knife_3.png.")]

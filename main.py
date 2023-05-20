@@ -571,7 +571,7 @@ bg = pygame.transform.scale(bg, (1000, 800))
 
 wave_flag = False
 num_mob = 0
-wave_how = randint(1, 10)
+wave_how = 0
 wave_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
 how_villians = 0
 
@@ -637,6 +637,10 @@ Attack_point = 0
 
 boss_list = []
 portal_list = []
+zelya_list = []
+
+
+
 
 Start_game_flag = True
 entr = False  # флаг на переключение экранов стартовый->выбор игрока
@@ -772,6 +776,7 @@ while running:
                 wave_flag = True
 
 
+
             elif Character_label_Human_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
                 gameplay = True
                 print("Your choose is Human")
@@ -781,6 +786,7 @@ while running:
                 Start_game_flag = False
                 wave_how = randint(1, 10)
                 wave_flag = True
+
 
 
             elif Character_label_Hobbit_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
@@ -794,9 +800,10 @@ while running:
                 wave_flag = True
 
 
+
+
     # ---процесс геймплея(арена)-------------------------------------------------------------------
     if gameplay:
-
         if music_mute:
             pygame.mixer.music.stop()
 
@@ -813,7 +820,7 @@ while running:
             pygame.draw.rect(image, 'black', (0, 0, screen.get_width(), screen.get_height()))
             alpha_surface = pygame.Surface(image.get_size(), pygame.SRCALPHA)
             alpha_surface.fill((255, 255, 255, 90))
-            image.blit(alpha_surface, (0,0), special_flags= pygame.BLEND_RGBA_MULT)
+            image.blit(alpha_surface, (0,0), special_flags=pygame.BLEND_RGBA_MULT)
             for (i, elem) in enumerate(buttons_pause_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
@@ -884,6 +891,9 @@ while running:
 
             """if Boss_warg_list_in_the_game:
                 Boss_warg_mechanicks_go()"""
+            if zelya_list:
+                for (i, elem) in enumerate(zelya_list):
+                    elem.visual(screen)
             # ---BOSSES--------------------------------------------------------------------------------
             if boss_list:
                 for (i, elem) in enumerate(boss_list):
@@ -1339,7 +1349,6 @@ while running:
             attack_flag = True
             Start_game_flag = True
 
-
     pygame.display.update()
 
     for event in pygame.event.get():
@@ -1374,7 +1383,22 @@ while running:
 
 
 
+
+
+
         if wave_how > 0:
+            if player_character.hp < 100 and not (Zelya.timer_spawn_zelya_DEFINITION) and len(zelya_list) < 2:
+                pygame.time.set_timer(Zelya.timer_spawn_zelya, 20000, 1)
+                Zelya.timer_spawn_zelya_DEFINITION = True
+            if event.type == Zelya.timer_spawn_zelya and Zelya.timer_spawn_zelya_DEFINITION and len(zelya_list) < 2:
+                Zelya.timer_spawn_zelya_DEFINITION = False
+                zelya_list.append(Zelya('heal', randint(20, 50), zelya_heal, randint(0, screen.get_width()),
+                                        randint(0, screen.get_height())))
+                pygame.time.set_timer(zelya_list[len(zelya_list) - 1].timer_for_give, 10000)
+            if zelya_list:
+                for (i, elem) in enumerate(zelya_list):
+                    if event.type == elem.timer_for_give:
+                        zelya_list.pop(i)
             for (i, elem) in enumerate(buttons_gameplay):
                 if elem.name == 'pause' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
                     elem.timer_keyup_DEFINITION = False
@@ -1422,11 +1446,10 @@ while running:
                         n_list_it_the_game.append(Nazgul(0))
 
                     elif num == 2:
-                        warg_list_in_the_game.append(Warg(True,False,False,False))
+                        warg_list_in_the_game.append(Warg(True, False, False, False))
 
                     elif num == 3:
                         orc_list_in_the_game.append(Ork(3))
-
 
             else:
                 if wave_flag:
@@ -1453,9 +1476,9 @@ while running:
                     flag_create_the_boss = False
 
 
-        else:
+        """else:
             print("The end")
-            pygame.quit()
+            pygame.quit()"""
 
         if event.type == n_timer and Boss_warg_ability_flag:
 
