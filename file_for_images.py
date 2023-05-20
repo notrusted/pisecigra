@@ -86,6 +86,11 @@ button_play_down = pygame.image.load('images/buttons/play_pressed.png')
 
 button_options_up = pygame.image.load('images/buttons/options.png')
 button_options_down = pygame.image.load('images/buttons/options_pressed.png')
+back_for_options = pygame.image.load('images/for_options/big_back.png')
+
+button_back_up = pygame.image.load('images/buttons/back.png')
+button_back_down = pygame.image.load('images/buttons/back_pressed.png')
+button_back_down = pygame.transform.scale(button_back_down, (button_back_up.get_width(), button_back_up.get_height()))
 
 button_quit_up = pygame.image.load('images/buttons/quit.png')
 button_quit_down = pygame.image.load('images/buttons/quit_pressed.png')

@@ -649,9 +649,12 @@ timer_for_screensaver = pygame.USEREVENT + 1
 pygame.time.set_timer(timer_for_screensaver, 4000)
 button_play = Button("play", [button_play_up, button_play_down], 60, 100)
 button_options = Button('options', [button_options_up, button_options_down], 60, 225)
-buttons = [button_play, button_options]
-
-
+button_quit = Button('quit', [button_quit_up, button_quit_down], 60, 350)
+buttons_main_menu = [button_play, button_options, button_quit]
+button_back = Button('back', [button_back_up, button_back_down], 0, 0)
+buttons_options_menu = [button_back]
+buttons_choose_menu = [Button('back', [button_back_up, button_back_down], 0, 0)]
+flag_options_menu = False
 while running:
     # ---Стартовый экран-------------------------------------------------------
     if Start_game_flag:
@@ -660,14 +663,14 @@ while running:
         label = pygame.font.Font('fonts/gwent_extrabold.ttf', 60)
         project_company = label.render("JIN Project", True, "White")
         if flag_project_screen:
-            screen.blit(screen_saver, (0,0))
+            screen.blit(screen_saver, (0, 0))
             screen.blit(project_company, (screen.get_width() // 2 - 150, screen.get_height() // 2))
         else:
             screen.blit(screen_saver, (0, 0))
             label = pygame.font.Font('fonts/gwent_extrabold.ttf', 30)
             Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Black")
             screen.blit(Game_Name, (50, 50))
-            for (i, elem) in enumerate(buttons):
+            for (i, elem) in enumerate(buttons_main_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
                     elem.flag_to_pressed = True
@@ -681,8 +684,25 @@ while running:
                         elem.timer_keyup_DEFINITION = True
                     elem.flag_to_pressed = False
                     elem.visual(screen)
-            Game_start = label.render("Press any to start...", False, "Yellow")
-            screen.blit(Game_start, (250, 600))
+
+        if flag_options_menu:
+            screen.blit(screen_saver, (0, 0))
+            screen.blit(back_for_options, (225, 270))
+            for (i, elem) in enumerate(buttons_options_menu):
+                elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
+                if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                    elem.flag_to_pressed = True
+                    elem.try_to_click = True
+                    elem.visual(screen)
+                else:
+                    if elem.try_to_click:
+                        elem.try_to_click = False
+                        pygame.time.set_timer(elem.timer_keyup, 10)
+                        elem.timer_keyup_DEFINITION = True
+                    elem.flag_to_pressed = False
+                    elem.visual(screen)
+
+
 
         # -------------------------------------------------------------------------
 
@@ -705,6 +725,20 @@ while running:
             Character_label_Hobbit_rect = Character_label_Hobbit.get_rect(topleft=(250, 600))
 
             mouse = pygame.mouse.get_pos()
+            for (i, elem) in enumerate(buttons_choose_menu):
+                elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
+                if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                    elem.flag_to_pressed = True
+                    elem.try_to_click = True
+                    elem.visual(screen)
+                else:
+                    if elem.try_to_click:
+                        elem.try_to_click = False
+                        pygame.time.set_timer(elem.timer_keyup, 10)
+                        elem.timer_keyup_DEFINITION = True
+                    elem.flag_to_pressed = False
+                    elem.visual(screen)
+
             # реализация этого выбора
             if Character_label_Elf_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
                 gameplay = True
@@ -1237,11 +1271,28 @@ while running:
             flag_project_screen = False
 
         if Start_game_flag:
-            for (i, elem) in enumerate(buttons):
+            for (i, elem) in enumerate(buttons_main_menu):
                 if elem.name == 'play' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
                     print("зашёл в проверку ентр")
                     entr = True
                     elem.timer_keyup_DEFINITION = False
+                if elem.name == 'quit' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
+                    elem.timer_keyup_DEFINITION = False
+                    pygame.quit()
+                if elem.name == 'options' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
+                    elem.timer_keyup_DEFINITION = False
+                    flag_options_menu = True
+        if flag_options_menu:
+            for (i, elem) in enumerate(buttons_options_menu):
+                if elem.name == "back" and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
+                    flag_options_menu = False
+                    elem.timer_keyup_DEFINITION = False
+        if entr:
+            for (i, elem) in enumerate(buttons_choose_menu):
+                if elem.name == 'back' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
+                    entr = False
+                    elem.timer_keyup_DEFINITION = False
+
 
 
         if wave_how > 0:
