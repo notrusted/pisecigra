@@ -102,6 +102,7 @@ convert_list_of_images(Boss_warg_picture_list,1/4,1/4)
 convert_list_of_images(Rings_picture,6,6)
 convert_list_of_images(boss_nazgul_picture_list,1/3,1/3)
 convert_list_of_images(totem_picture,3,3)
+convert_list_of_images(Punch_list,1/2,1/2)
 #convert_list_of_images(invic_boss_nazgul,1/3,1/3)
 
 

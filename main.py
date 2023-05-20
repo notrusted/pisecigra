@@ -1367,14 +1367,14 @@ while running:
                 Attack_point = a
             if totem_list:
                 for (j,elem) in enumerate(totem_list):
-                    if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
+                    if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
                         elem.Protect(Attack_point)
                     if elem.hp<=0:
                         totem_list.pop(j)
                         print("Totem destoyed...")
             if n_list_it_the_game:
                 for (j, elem) in enumerate(n_list_it_the_game):
-                    if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
+                    if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
                         elem.y -= 100
 
                         if elem.armor > 0:
@@ -1393,8 +1393,19 @@ while running:
 
             if warg_list_in_the_game:
                 for (j1, elem1) in enumerate(warg_list_in_the_game):
-                    if abs(elem1.x - player_x) < 70 and abs(elem1.y - player_y) < 70:
-                        elem1.y -= 100
+                    if abs(elem1.x - player_x) < 140 and abs(elem1.y - player_y) < 140:
+
+                        if elem1.flag1:
+                           elem1.y -= 100
+
+                        if elem1.flag2:
+                            elem1.x -= 100
+
+                        if elem1.flag3:
+                            elem1.y += 100
+
+                        if elem1.flag4:
+                            elem1.x += 100
 
                         if elem1.armor > 0:
                             elem1.armor -= Attack_point
@@ -1412,7 +1423,7 @@ while running:
 
             if orc_list_in_the_game:
                 for (j, elem) in enumerate(orc_list_in_the_game):
-                    if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
+                    if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
                         elem.y -= 100
                         if elem.armor > 0:
                             elem.armor -= Attack_point
@@ -1430,7 +1441,7 @@ while running:
             if boss_list:
                 for (j, elem) in enumerate(boss_list):
                     if elem.name == "BossOrkConqueror":
-                        if abs(elem.coord_x - player_x) < 70 and abs(elem.coord_y - player_y) < 70:
+                        if abs(elem.coord_x - player_x) < 140 and abs(elem.coord_y - player_y) < 140:
                             elem.coord_y -= 100
                             if elem.armor > 0:
                                 elem.armor -= Attack_point
@@ -1447,9 +1458,20 @@ while running:
                                 wave_how -= 1
 
                     if elem.name == "The Alpha Warg":
-                        if abs(elem.x - player_x) < 70 and abs(elem.y - player_y) < 70:
+                        if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
                             if Boss_warg_Heal_flag == False:
-                                elem.y -= 100
+                                if Boss_warg_flag1:
+                                    elem.y -= 100
+
+                                if Boss_warg_flag2:
+                                    elem.x -= 100
+
+                                if Boss_warg_flag3:
+                                    elem.y += 100
+
+                                if Boss_warg_flag4:
+                                    elem.x += 100
+
 
                             if elem.armor > 0:
                                 elem.armor -= Attack_point
