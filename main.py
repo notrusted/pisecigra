@@ -1213,17 +1213,41 @@ while running:
                 if Type_anim == 0:
                     punch_anim += 1
                     screen.blit(Punch_list[punch_anim % 3], (player_x + 10, player_y - 20))
+                    if player_character.ability == "is a tracker":
+                       screen.blit(Sword_list[3], (player_x - 30, player_y - 10))
+
+                    else:
+                        screen.blit(Knife_list[2], (player_x + 12, player_y - 14))
+
 
                 elif Type_anim == 1:
                     punch_anim += 1
-                    screen.blit(Punch_list[punch_anim % 3], (player_x - 30, player_y + 20) )
+                    screen.blit(Punch_list[punch_anim % 3], (player_x - 40, player_y + 20) )
+                    if player_character.ability == "is a tracker":
+                       screen.blit(Sword_list[1], (player_x - 20, player_y + 10))
+
+                    else:
+                        screen.blit(Knife_list[1], (player_x - 5, player_y + 12))
+
 
                 elif Type_anim == 2:
                     punch_anim += 1
                     screen.blit(Punch_list[punch_anim % 3], (player_x + 60, player_y + 20) )
+                    if player_character.ability == "is a tracker":
+                       screen.blit(Sword_list[0], (player_x + 30, player_y + 2))
+
+                    else:
+                        screen.blit(Knife_list[0], (player_x + 14, player_y + 12 ))
+
+
                 elif Type_anim == 3:
                     punch_anim += 1
                     screen.blit(Punch_list[punch_anim % 3], (player_x + 10, player_y + 100))
+                    if player_character.ability == "is a tracker":
+                       screen.blit(Sword_list[2], (player_x + 20, player_y - 8))
+
+                    else:
+                        screen.blit(Knife_list[2], (player_x + 8, player_y - 4))
 
             punch_anim = 0
 
@@ -1415,8 +1439,10 @@ while running:
             attack_flag = False
             a = player_character.Attack()
             punch_anim += 1
+
             if Attack_point <= a:
                 Attack_point = a
+
             if totem_list:
                 for (j,elem) in enumerate(totem_list):
                     if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
