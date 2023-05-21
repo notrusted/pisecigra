@@ -86,9 +86,15 @@ button_play_down = pygame.image.load('images/buttons/play_pressed.png')
 
 button_options_up = pygame.image.load('images/buttons/options.png')
 button_options_down = pygame.image.load('images/buttons/options_pressed.png')
+back_for_options = pygame.image.load('images/for_options/big_back.png')
+
+button_back_up = pygame.image.load('images/buttons/back.png')
+button_back_down = pygame.image.load('images/buttons/back_pressed.png')
+button_back_down = pygame.transform.scale(button_back_down, (button_back_up.get_width(), button_back_up.get_height()))
 
 button_quit_up = pygame.image.load('images/buttons/quit.png')
 button_quit_down = pygame.image.load('images/buttons/quit_pressed.png')
+button_Volume = [pygame.image.load('images/buttons/Volume_on.png'),pygame.image.load('images/buttons/Volume_off.png')]
 
 button_R = pygame.image.load('images/buttons/R.png')
 
@@ -97,6 +103,9 @@ Punch_list = [pygame.image.load("images/Punch_1.png"),pygame.image.load("images/
 magic_boss_nazgul=[pygame.image.load("images/nazgul_boss/magic.png")]
 
 
+
+Sword_list =[pygame.image.load("images/Sword_Human.png"),pygame.image.load("images/Sword_Human_2.png"),pygame.image.load("images/Sword_Human_3.png"),pygame.image.load("images/Sword_Human_4.png")]
+Knife_list = [pygame.image.load("images/Knife_1.png."),pygame.image.load("images/Knife_2.png."),pygame.image.load("images/Knife_3.png.")]
 
 convert_list_of_images(Arrow,3,3)
 convert_list_of_images(health_model,2,2)
@@ -107,6 +116,9 @@ convert_list_of_images(Boss_warg_picture_list,1/4,1/4)
 convert_list_of_images(Rings_picture,6,6)
 convert_list_of_images(boss_nazgul_picture_list,1/3,1/3)
 convert_list_of_images(totem_picture,3,3)
+convert_list_of_images(Punch_list,1/2,1/2)
+convert_list_of_images(Sword_list,1/1.5,1/1.5)
+convert_list_of_images(Knife_list,1/1.5,1/1.5)
 convert_list_of_images(magic_boss_nazgul,1/3,1/3)
 #convert_list_of_images(invic_boss_nazgul,1/3,1/3)
 
