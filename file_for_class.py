@@ -1,4 +1,3 @@
-import pygame
 from random import randint
 from file_for_images import *
 class Weapon:
@@ -10,6 +9,24 @@ class Magic:
     def __init__(self, name, dmg):
         self.name = name
         self.damage = dmg
+class Magic_pict:
+    def __init__(self, name,spec_dmg, dmg,pict,x,y):
+        self.name = name
+        self.damage = dmg
+        self.pict = pict
+        self.x=x
+        self.y=y
+        self.sd=spec_dmg
+    def special_attack(self,surf,x,y):
+        if self.x-x>=7:
+            self.x-=5
+        else:
+            self.x+=5
+        if self.y-y>=7:
+            self.y-=5
+        else:
+            self.y+=5
+        surf.blit(*self.pict,(self.x,self.y))
 
 class Portal(Magic):
     def __init__(self, x, y, surface):
@@ -128,7 +145,7 @@ class Boss:
 class Nazgul_boss(Boss):
     count_animation=0
     def __init__(self,x,y):
-        Boss.__init__(self,100,50,5,Weapon("Morgul Blade",5),Magic("cry of the Nazgull",10))
+        Boss.__init__(self,100,50,5,Weapon("Morgul Blade",5),Magic(";a;a;",0))
         self.x=x
         self.y=y
         self.la=[boss_nazgul_left,boss_nazgul_right,boss_nazgul_up,boss_nazgul_down]
@@ -137,17 +154,24 @@ class Nazgul_boss(Boss):
         self.flag_heal=True
         self.flag_invicible=False
         self.flag_go_to_center=False
-        #self.time_invic = pygame.USEREVENT + 1
         self.time_heal = pygame.USEREVENT + 1
         self.check=False
         self.flag_for_proza=True
         self.n=0
         self.totem_spawn=True
-    def standart_attack(self,screen,x,y):
+        self.time_totem = pygame.USEREVENT +1
+        self.flag_totem=True
+        self.flag_magic=False
+        self.flag_create_magic=True
+    def get_magic(self):
+        return self.magic
+    def set_magic(self,x,y):
+        self.magic=Magic_pict("Cry of naxgul",10,10,magic_boss_nazgul,x,y)
+
+    def standart_attack(self):
             return int(self.dmg+self.weapon.damage)
-    def special_attack(self,speed):
-        speed-=5
-        return self.utility.damage
+    """def magical_attack(self,surf,x,y,flag,hp):
+        self.magic.special_attack(surf,x,y,flag,hp)"""
     def proza(self,surf):
         if self.n==255:
             self.flag_for_proza=False

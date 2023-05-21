@@ -94,11 +94,10 @@ button_R = pygame.image.load('images/buttons/R.png')
 
 Punch_list = [pygame.image.load("images/Punch_1.png"),pygame.image.load("images/Punch_2.png"),pygame.image.load("images/Punch_3.png")]
 
+magic_boss_nazgul=[pygame.image.load("images/nazgul_boss/magic.png")]
 
-"""for j in range(len(Arrow)):
-    Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
-for i in range(len(health_model)):
-    health_model[i] = pygame.transform.scale(health_model[i], (health_model[i].get_width() // 2, health_model[i].get_height() // 2))"""
+
+
 convert_list_of_images(Arrow,3,3)
 convert_list_of_images(health_model,2,2)
 convert_list_of_images(picture_list,3,3)
@@ -108,6 +107,7 @@ convert_list_of_images(Boss_warg_picture_list,1/4,1/4)
 convert_list_of_images(Rings_picture,6,6)
 convert_list_of_images(boss_nazgul_picture_list,1/3,1/3)
 convert_list_of_images(totem_picture,3,3)
+convert_list_of_images(magic_boss_nazgul,1/3,1/3)
 #convert_list_of_images(invic_boss_nazgul,1/3,1/3)
 
 

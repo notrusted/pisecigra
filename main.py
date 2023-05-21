@@ -324,11 +324,11 @@ def Boss_nazgul_mechanicks():
         if elem.flag_for_proza:
             elem.proza(screen)
         else:
-            if elem.hp>50 and elem.flag_invicible==False:
+            if (elem.hp>50 or elem.flag_magic) and elem.flag_invicible==False :
                 elem.go_to(screen,player_x,player_y)
                 if abs(player_x-elem.x)<25 and abs(player_y-elem.y)<25:
-                    player_character.hp-=(elem.standart_attack(screen,player_x,player_y))
-            if elem.hp<=50:
+                    player_character.hp-=elem.standart_attack()
+            elif elem.hp<=50:
                 elem.flag_go_to_center=True
             if elem.flag_go_to_center:
                 elem.go_to(screen,screen.get_width()//2,screen.get_height()//2)
@@ -337,23 +337,42 @@ def Boss_nazgul_mechanicks():
                     elem.check=False
                     elem.flag_go_to_center=False
             if elem.flag_invicible:
-                elem.invicible(screen)
-                if elem.totem_spawn:
-                    totem_list=[Totem(elem.x-200,elem.y-200),Totem(elem.x-200,elem.y+200),Totem(elem.x+200,elem.y-200),Totem(elem.x+200,elem.y+200)]
-                    elem.totem_spawn=False
-                for i in totem_list:
-                    i.spawn(screen)
-                    i.draw(screen)
-                if elem.hp<100 and len(totem_list)!=0:
-                    if elem.flag_heal:
-                        elem.hp+=5
-                        elem.flag_heal=False
-                        pygame.time.set_timer(elem.time_heal,1000)
+                if elem.flag_totem:
+                    elem.invicible(screen)
+                    if elem.totem_spawn:
+                        totem_list=[Totem(elem.x-200,elem.y-200),Totem(elem.x-200,elem.y+200),Totem(elem.x+200,elem.y-200),Totem(elem.x+200,elem.y+200)]
+                        elem.totem_spawn=False
+                    for i in totem_list:
+                        i.spawn(screen)
+                        i.draw(screen)
+                    if elem.hp<100 and len(totem_list)!=0:
+                        if elem.flag_heal:
+                            elem.hp+=5
+                            elem.flag_heal=False
+                            pygame.time.set_timer(elem.time_heal,1000)
+                    else:
+                        elem.flag_invicible=False
+                        totem_list.clear()
+                        elem.totem_spawn=True
+                        elem.flag_totem=False
+                        pygame.time.set_timer(elem.time_totem,100000)
                 else:
-                    elem.flag_invicible=False
-                    totem_list.clear()
-                    elem.totem_spawn=True
-            if player_character.hp <= 0:#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    if not elem.flag_magic:
+                        if elem.flag_create_magic:
+                            elem.set_magic(elem.x,elem.y)
+                            elem.flag_create_magic=False
+                        magic=elem.get_magic()
+                        magic.special_attack(screen,player_x,player_y)
+                        screen.blit(boss_nazgul_down[0],(elem.x,elem.y))
+                        if abs(magic.x-player_x)<=25 and abs(magic.y-player_y)<=25:
+                            elem.flag_magic=True
+                            player_character.hp-=magic.damage
+                            if player_character.strong>=0:
+                                player_character.strong-=magic.sd
+                                print("Damage reduced by 10 points :( ...")
+                            elem.flag_invicible=False
+                            elem.flag_magic=True
+            if player_character.hp <= 0:
                 player_character.hp = 0
                 gameplay = False
 
@@ -564,7 +583,6 @@ clock = pygame.time.Clock()
 
 pygame.init()
 screen = pygame.display.set_mode((1000,800))
-#print(screen.get_width()//2,screen.get_height()//2)
 pygame.display.set_caption("The Hobbit: Pyton's Adventure")
 bg = pygame.image.load("images/Back.png")
 bg = pygame.transform.scale(bg, (1000, 800))
@@ -1015,7 +1033,7 @@ while running:
                             elem.Protect(Attack_point)
                             if elem.hp <= 0:
                                 totem_list.pop(j)
-                                print("Totem destroyed...")
+                                print("Totem is destroyed...")
 
                             if Arrow_list:
                                 Arrow_list.pop(i)
@@ -1098,7 +1116,7 @@ while running:
                 if boss_list:
                     for (j, elem) in enumerate(boss_list):
                         if elem.name == "King of nazgul" and elem.flag_go_to_center == False:
-                            if abs(ar[0].x - elem.x) < 200 and abs(ar[0].y - elem.y) < 200 and elem.flag_invicible==False:
+                            if abs(ar[0].x - elem.x) < 200 and abs(ar[0].y - elem.y) < 200 and elem.flag_invicible==False and not elem.flag_for_proza :
                                 elem.y -= 50
                                 if elem.armor > 0:
                                     elem.armor -= Attack_point
@@ -1115,8 +1133,8 @@ while running:
                                     wave_how -= 1
                                     flag_ability = 1
 
-                                if Arrow_list:
-                                    Arrow_list.pop(i)
+                                if Arrow_list and arrow_pop_flag == False:
+                                    arrow_pop_set.add(i)
                                     continue
                         if elem.name == "BossOrkConqueror" and elem.flag_go_to_center == False and not elem.flag_protective_dome_enable:
                             if abs(ar[0].x - elem.coord_x) < 100 and abs(ar[0].y - elem.coord_y) < 100:
@@ -1273,6 +1291,8 @@ while running:
                     if elem.name=="King of nazgul":
                         if event.type==elem.time_heal:
                             elem.flag_heal=True
+                        if event.type==elem.time_totem:
+                             elem.flag_totem=True
             if portal_list:
                 for (i, elem) in enumerate(portal_list):
                     if event.type == elem.time_to_visual and elem.flag_to_visual:
