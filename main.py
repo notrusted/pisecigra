@@ -355,7 +355,7 @@ def Boss_nazgul_mechanicks():
                         totem_list.clear()
                         elem.totem_spawn=True
                         elem.flag_totem=False
-                        pygame.time.set_timer(elem.time_totem,100000)
+                        pygame.time.set_timer(elem.time_totem,10000)
                 else:
                     if not elem.flag_magic:
                         if elem.flag_create_magic:
@@ -1195,8 +1195,8 @@ while running:
                                 continue
                 if boss_list:
                     for (j, elem) in enumerate(boss_list):
-                        if elem.name == "King of nazgul" and elem.flag_go_to_center == False:
-                            if abs(ar[0].x - elem.x) < 200 and abs(ar[0].y - elem.y) < 200 and elem.flag_invicible==False and not elem.flag_for_proza :
+                        if elem.name == "King of nazgul" :
+                            if abs(ar[0].x - elem.x) < 200 and abs(ar[0].y - elem.y) < 200 and elem.flag_go_to_center == False and elem.flag_invicible==False and not elem.flag_for_proza:
                                 elem.y -= 50
                                 if elem.armor > 0:
                                     elem.armor -= Attack_point
@@ -1594,6 +1594,23 @@ while running:
                             flag_ability = 1
             if boss_list:
                 for (j, elem) in enumerate(boss_list):
+                    if elem.name == "King of nazgul" :
+                            if abs(player_x - elem.x) < 140 and abs(player_y - elem.y) < 140 and elem.flag_go_to_center == False and elem.flag_invicible==False and not elem.flag_for_proza:
+                                elem.y -= 50
+                                if elem.armor > 0:
+                                    elem.armor -= Attack_point
+                                    if elem.armor < 0:
+                                        elem.armor = 0
+                                else:
+                                    elem.hp -= Attack_point
+
+                                    if elem.hp <= 0:
+                                        boss_list.pop(j)
+                                        print("the King of nazgul is murdered...")
+                                        num_mob -= 1
+                                        wave_flag = True
+                                        wave_how -= 1
+                                        flag_ability = 1
                     if elem.name == "BossOrkConqueror":
                         if abs(elem.coord_x - player_x) < 140 and abs(elem.coord_y - player_y) < 140:
                             elem.coord_y -= 100
