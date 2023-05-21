@@ -324,11 +324,11 @@ def Boss_nazgul_mechanicks():
         if elem.flag_for_proza:
             elem.proza(screen)
         else:
-            if elem.hp>50 and elem.flag_invicible==False:
+            if (elem.hp>50 or elem.flag_magic) and elem.flag_invicible==False :
                 elem.go_to(screen,player_x,player_y)
                 if abs(player_x-elem.x)<25 and abs(player_y-elem.y)<25:
-                    player_character.hp-=(elem.standart_attack(screen,player_x,player_y))
-            if elem.hp<=50:
+                    player_character.hp-=elem.standart_attack()
+            elif elem.hp<=50:
                 elem.flag_go_to_center=True
             if elem.flag_go_to_center:
                 elem.go_to(screen,screen.get_width()//2,screen.get_height()//2)
@@ -337,23 +337,42 @@ def Boss_nazgul_mechanicks():
                     elem.check=False
                     elem.flag_go_to_center=False
             if elem.flag_invicible:
-                elem.invicible(screen)
-                if elem.totem_spawn:
-                    totem_list=[Totem(elem.x-200,elem.y-200),Totem(elem.x-200,elem.y+200),Totem(elem.x+200,elem.y-200),Totem(elem.x+200,elem.y+200)]
-                    elem.totem_spawn=False
-                for i in totem_list:
-                    i.spawn(screen)
-                    i.draw(screen)
-                if elem.hp<100 and len(totem_list)!=0:
-                    if elem.flag_heal:
-                        elem.hp+=5
-                        elem.flag_heal=False
-                        pygame.time.set_timer(elem.time_heal,1000)
+                if elem.flag_totem:
+                    elem.invicible(screen)
+                    if elem.totem_spawn:
+                        totem_list=[Totem(elem.x-200,elem.y-200),Totem(elem.x-200,elem.y+200),Totem(elem.x+200,elem.y-200),Totem(elem.x+200,elem.y+200)]
+                        elem.totem_spawn=False
+                    for i in totem_list:
+                        i.spawn(screen)
+                        i.draw(screen)
+                    if elem.hp<100 and len(totem_list)!=0:
+                        if elem.flag_heal:
+                            elem.hp+=5
+                            elem.flag_heal=False
+                            pygame.time.set_timer(elem.time_heal,1000)
+                    else:
+                        elem.flag_invicible=False
+                        totem_list.clear()
+                        elem.totem_spawn=True
+                        elem.flag_totem=False
+                        pygame.time.set_timer(elem.time_totem,10000)
                 else:
-                    elem.flag_invicible=False
-                    totem_list.clear()
-                    elem.totem_spawn=True
-            if player_character.hp <= 0:#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    if not elem.flag_magic:
+                        if elem.flag_create_magic:
+                            elem.set_magic(elem.x,elem.y)
+                            elem.flag_create_magic=False
+                        magic=elem.get_magic()
+                        magic.special_attack(screen,player_x,player_y)
+                        screen.blit(boss_nazgul_down[0],(elem.x,elem.y))
+                        if abs(magic.x-player_x)<=25 and abs(magic.y-player_y)<=25:
+                            elem.flag_magic=True
+                            player_character.hp-=magic.damage
+                            if player_character.strong>=0:
+                                player_character.strong-=magic.sd
+                                print("Damage reduced by 10 points :( ...")
+                            elem.flag_invicible=False
+                            elem.flag_magic=True
+            if player_character.hp <= 0:
                 player_character.hp = 0
                 gameplay = False
 
@@ -564,7 +583,6 @@ clock = pygame.time.Clock()
 
 pygame.init()
 screen = pygame.display.set_mode((1000,800))
-#print(screen.get_width()//2,screen.get_height()//2)
 pygame.display.set_caption("The Hobbit: Pyton's Adventure")
 bg = pygame.image.load("images/Back.png")
 bg = pygame.transform.scale(bg, (1000, 800))
@@ -625,7 +643,13 @@ the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
 loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
 restart_label = the_end_label.render("Start again", False, "Black")
 restart_label_rect = restart_label.get_rect(topleft=(250, 400))
-#volume_label = player_label.render('',False,'White')
+Volume_level_label = player_label.render("volume",False,"Black")
+Volume_1_flag = True
+Volume_0_5_flag = False
+Volume_0_2_flag = False
+volume_level1 = light_button[1].get_rect(topleft=(690,330))
+volume_level2 = light_button[1].get_rect(topleft=(650,330))
+volume_level3 = light_button[1].get_rect(topleft=(610,330))
 volume_rect = button_Volume[0].get_rect(topleft=(900,720))
 volume_rect = button_Volume[1].get_rect(topleft=(900,720))
 Arrow_label = pygame.font.Font("fonts/Angkor-Regular.ttf", 20)
@@ -688,10 +712,14 @@ while running:
             mouse = pygame.mouse.get_pos()
             if volume_rect.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (1, 0, 0):
                 music_mute = True
+                Volume_1_flag = False
+                Volume_0_5_flag = False
+                Volume_0_2_flag = False
                 pygame.mixer.music.stop()
 
             elif volume_rect.collidepoint(mouse) and music_mute and pygame.mouse.get_pressed() == (1, 0, 0):
                 music_mute = False
+                Volume_1_flag = True
                 pygame.mixer.music.play(-1)
 
             for (i, elem) in enumerate(buttons_main_menu):
@@ -712,6 +740,48 @@ while running:
         if flag_options_menu:
             screen.blit(screen_saver, (0, 0))
             screen.blit(back_for_options, (225, 270))
+            screen.blit(Volume_level_label,(620,290))
+
+            if volume_level1.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (
+            1, 0, 0) and Volume_1_flag == False:
+                pygame.mixer_music.set_volume(1)
+                Volume_1_flag = True
+                Volume_0_5_flag = False
+                Volume_0_2_flag = False
+
+
+            elif volume_level2.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (
+                    1, 0, 0) and Volume_0_5_flag == False:
+                pygame.mixer_music.set_volume(0.5)
+                Volume_0_5_flag = True
+                Volume_1_flag = False
+                Volume_0_2_flag = False
+
+            elif volume_level3.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (
+                    1, 0, 0) and Volume_0_2_flag == False:
+                pygame.mixer_music.set_volume(0.2)
+                Volume_0_2_flag = True
+                Volume_1_flag = False
+                Volume_0_5_flag = True
+
+            if Volume_0_5_flag:
+                screen.blit(light_button[0],(650,330))
+            else:
+                screen.blit(light_button[1], (650, 330))
+
+            if Volume_1_flag:
+                screen.blit(light_button[0],(690,330))
+            else:
+                screen.blit(light_button[1], (690, 330))
+
+            if Volume_0_2_flag:
+                screen.blit(light_button[0],(610,330))
+            else:
+                screen.blit(light_button[1], (610, 330))
+
+
+
+
             for (i, elem) in enumerate(buttons_options_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
@@ -1182,21 +1252,20 @@ while running:
                                     num_mob -= 1
                                     flag_ability = 1
 
-                                if Arrow_list and arrow_pop_flag == False:
-                                    arrow_pop_set.add(i)
-                                    continue
-                    if boss_list:
-                        for (j, elem) in enumerate(boss_list):
-                            if elem.name == "King of nazgul" and elem.flag_go_to_center == False:
-                                if abs(ar[0].x - elem.x) < 200 and abs(
-                                        ar[0].y - elem.y) < 200 and elem.flag_invicible == False:
-                                    elem.y -= 50
-                                    if elem.armor > 0:
-                                        elem.armor -= Attack_point
-                                        if elem.armor < 0:
-                                            elem.armor = 0
-                                    else:
-                                        elem.hp -= Attack_point
+                            if Arrow_list and arrow_pop_flag == False:
+                                arrow_pop_set.add(i)
+                                continue
+                if boss_list:
+                    for (j, elem) in enumerate(boss_list):
+                        if elem.name == "King of nazgul" :
+                            if abs(ar[0].x - elem.x) < 200 and abs(ar[0].y - elem.y) < 200 and elem.flag_go_to_center == False and elem.flag_invicible==False and not elem.flag_for_proza:
+                                elem.y -= 50
+                                if elem.armor > 0:
+                                    elem.armor -= Attack_point
+                                    if elem.armor < 0:
+                                        elem.armor = 0
+                                else:
+                                    elem.hp -= Attack_point
 
                                     if elem.hp <= 0:
                                         boss_list.pop(j)
@@ -1431,6 +1500,8 @@ while running:
                     if elem.name=="King of nazgul":
                         if event.type==elem.time_heal:
                             elem.flag_heal=True
+                        if event.type==elem.time_totem:
+                             elem.flag_totem=True
             if portal_list:
                 for (i, elem) in enumerate(portal_list):
                     if event.type == elem.time_to_visual and elem.flag_to_visual:
@@ -1521,10 +1592,8 @@ while running:
             attack_flag = False
             a = player_character.Attack()
             punch_anim += 1
-
             if Attack_point <= a:
                 Attack_point = a
-
             if totem_list:
                 for (j,elem) in enumerate(totem_list):
                     if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
@@ -1600,6 +1669,23 @@ while running:
                             flag_ability = 1
             if boss_list:
                 for (j, elem) in enumerate(boss_list):
+                    if elem.name == "King of nazgul" :
+                            if abs(player_x - elem.x) < 140 and abs(player_y - elem.y) < 140 and elem.flag_go_to_center == False and elem.flag_invicible==False and not elem.flag_for_proza:
+                                elem.y -= 50
+                                if elem.armor > 0:
+                                    elem.armor -= Attack_point
+                                    if elem.armor < 0:
+                                        elem.armor = 0
+                                else:
+                                    elem.hp -= Attack_point
+
+                                    if elem.hp <= 0:
+                                        boss_list.pop(j)
+                                        print("the King of nazgul is murdered...")
+                                        num_mob -= 1
+                                        wave_flag = True
+                                        wave_how -= 1
+                                        flag_ability = 1
                     if elem.name == "BossOrkConqueror":
                         if abs(elem.coord_x - player_x) < 140 and abs(elem.coord_y - player_y) < 140:
                             elem.coord_y -= 100

@@ -96,18 +96,22 @@ button_quit_up = pygame.image.load('images/buttons/quit.png')
 button_quit_down = pygame.image.load('images/buttons/quit_pressed.png')
 button_Volume = [pygame.image.load('images/buttons/Volume_on.png'),pygame.image.load('images/buttons/Volume_off.png')]
 
+light_button = [pygame.image.load("images/buttons/Light_button.png"),pygame.image.load("images/buttons/Off_light_button.png")]
+
 button_R = pygame.image.load('images/buttons/R.png')
 
 
 zelya_heal = [pygame.image.load('images/zelya/heal1.png'), pygame.image.load('images/zelya/heal2.png'), pygame.image.load('images/zelya/heal3.png'), pygame.image.load('images/zelya/heal4.png')]
 
 Punch_list = [pygame.image.load("images/Punch_1.png"),pygame.image.load("images/Punch_2.png"),pygame.image.load("images/Punch_3.png")]
+
+magic_boss_nazgul=[pygame.image.load("images/nazgul_boss/magic.png")]
+
+
+
 Sword_list =[pygame.image.load("images/Sword_Human.png"),pygame.image.load("images/Sword_Human_2.png"),pygame.image.load("images/Sword_Human_3.png"),pygame.image.load("images/Sword_Human_4.png")]
 Knife_list = [pygame.image.load("images/Knife_1.png."),pygame.image.load("images/Knife_2.png."),pygame.image.load("images/Knife_3.png.")]
-"""for j in range(len(Arrow)):
-    Arrow[j] = pygame.transform.scale(Arrow[j], (Arrow[j].get_width() // 3, Arrow[j].get_height() // 3))
-for i in range(len(health_model)):
-    health_model[i] = pygame.transform.scale(health_model[i], (health_model[i].get_width() // 2, health_model[i].get_height() // 2))"""
+
 convert_list_of_images(Arrow,3,3)
 convert_list_of_images(health_model,2,2)
 convert_list_of_images(picture_list,3,3)
@@ -120,6 +124,8 @@ convert_list_of_images(totem_picture,3,3)
 convert_list_of_images(Punch_list,1/2,1/2)
 convert_list_of_images(Sword_list,1/1.5,1/1.5)
 convert_list_of_images(Knife_list,1/1.5,1/1.5)
+convert_list_of_images(magic_boss_nazgul,1/3,1/3)
+convert_list_of_images(light_button,1/3,1/3)
 #convert_list_of_images(invic_boss_nazgul,1/3,1/3)
 
 
