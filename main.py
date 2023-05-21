@@ -19,6 +19,9 @@ flag_ability = 1
 # ---КЛАССЫ--------------------------------------------------------------------------------------------
 class Character():
     count_animation = 0
+    attack_flag = True
+    attack_timer = pygame.USEREVENT + 1
+    attack_timer_DEFINITION = False
 
     def __init__(self, Hp, Strong, Ability, Weapon, list_animation: list):
         self.strong = Strong
@@ -613,9 +616,8 @@ Boss_warg_Heal_flag = False
 heal_anim = 0
 Boss_warg_ability_flag = False
 
-attack_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(attack_timer, 1000)
-attack_flag = True
+
+
 
 arrow_pop_flag = False
 punch_anim = 0
@@ -661,7 +663,7 @@ Attack_point = 0
 
 boss_list = []
 portal_list = []
-zelya_list = []
+
 
 
 
@@ -833,6 +835,7 @@ while running:
                     elem.flag_to_pressed = False
                     elem.visual(screen)
 
+
             # реализация этого выбора
             if Character_label_Elf_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
                 gameplay = True
@@ -844,6 +847,7 @@ while running:
                 Start_game_flag = False
                 wave_how = randint(1, 10)
                 wave_flag = True
+
 
 
 
@@ -872,8 +876,10 @@ while running:
 
 
 
+
     # ---процесс геймплея(арена)-------------------------------------------------------------------
     if gameplay:
+
         if music_mute:
             pygame.mixer.music.stop()
 
@@ -959,11 +965,13 @@ while running:
             if orc_list_in_the_game:
                 orc_mechanicks_go()
 
-            """if Boss_warg_list_in_the_game:
-                Boss_warg_mechanicks_go()"""
-            if zelya_list:
-                for (i, elem) in enumerate(zelya_list):
+            if Zelya.zelya_list:
+                for (i, elem) in enumerate(Zelya.zelya_list):
                     elem.visual(screen)
+                    if abs(player_x - (elem.x - 5)) <= 20 and abs(player_y - (elem.y - 5)) <= 20:
+                        player_character.hp += elem.points
+                        Zelya.zelya_list.pop(i)
+
             # ---BOSSES--------------------------------------------------------------------------------
             if boss_list:
                 for (i, elem) in enumerate(boss_list):
@@ -1170,6 +1178,7 @@ while running:
                     elif ar[1] == 1:
                         screen.blit(Arrow[1], (ar[0].x, ar[0].y))
                         ar[0].y += 20
+
                     if totem_list:
                         for (j, elem) in enumerate(totem_list):
                             if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
@@ -1252,9 +1261,10 @@ while running:
                                     num_mob -= 1
                                     flag_ability = 1
 
-                            if Arrow_list and arrow_pop_flag == False:
-                                arrow_pop_set.add(i)
-                                continue
+                                if Arrow_list and arrow_pop_flag == False:
+                                    print("заш1л в arrow_pop_set")
+                                    arrow_pop_set.add(i)
+                                    continue
                 if boss_list:
                     for (j, elem) in enumerate(boss_list):
                         if elem.name == "King of nazgul" :
@@ -1411,10 +1421,10 @@ while running:
             player_character.hp = All_Hp
             flag_ability = 1
             Arrow_How = 0
+            Zelya.zelya_list.clear()
             n_timer = pygame.USEREVENT + 1
             pygame.time.set_timer(n_timer, 10000)
-            attack_timer = pygame.USEREVENT + 1
-            pygame.time.set_timer(attack_timer, 1000)
+            Character.attack_timer_DEFINITION = True
             attack_flag = True
             Start_game_flag = True
 
@@ -1456,18 +1466,20 @@ while running:
 
 
         if wave_how > 0:
-            if player_character.hp < 100 and not (Zelya.timer_spawn_zelya_DEFINITION) and len(zelya_list) < 2:
-                pygame.time.set_timer(Zelya.timer_spawn_zelya, 20000, 1)
+            if player_character.hp <= 100 and not Zelya.timer_spawn_zelya_DEFINITION and len(Zelya.zelya_list) < 2:
+                pygame.time.set_timer(Zelya.timer_spawn_zelya, 10000, 1)
                 Zelya.timer_spawn_zelya_DEFINITION = True
-            if event.type == Zelya.timer_spawn_zelya and Zelya.timer_spawn_zelya_DEFINITION and len(zelya_list) < 2:
+
+            if event.type == Zelya.timer_spawn_zelya and Zelya.timer_spawn_zelya_DEFINITION == True and len(Zelya.zelya_list) < 2 and player_character.hp <= 100:
+                Zelya.zelya_list.append(Zelya('heal', randint(20, 50), zelya_heal, randint(50, screen.get_width() - 100), randint(50, screen.get_height()) - 100))
+                print("spawn zelya")
                 Zelya.timer_spawn_zelya_DEFINITION = False
-                zelya_list.append(Zelya('heal', randint(20, 50), zelya_heal, randint(0, screen.get_width()),
-                                        randint(0, screen.get_height())))
-                pygame.time.set_timer(zelya_list[len(zelya_list) - 1].timer_for_give, 10000)
-            if zelya_list:
-                for (i, elem) in enumerate(zelya_list):
+
+            if Zelya.zelya_list:
+                for (i, elem) in enumerate(Zelya.zelya_list):
                     if event.type == elem.timer_for_give:
-                        zelya_list.pop(i)
+                        print("пора удалять зелье")
+
             for (i, elem) in enumerate(buttons_gameplay):
                 if elem.name == 'pause' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
                     elem.timer_keyup_DEFINITION = False
@@ -1558,16 +1570,17 @@ while running:
                     if elem.name == "The Alpha Warg":
                         elem.special_ability()
 
-        if event.type == attack_timer:
-            attack_flag = True
-
-            attack_timer = pygame.USEREVENT + 1
-            pygame.time.set_timer(attack_timer, 1000)
+        if event.type == Character.attack_timer and not Character.attack_flag and Character.attack_timer_DEFINITION:
+            Character.attack_flag = True
+            Character.attack_timer_DEFINITION = False
 
 
-        if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility" and attack_flag:
-            attack_flag = False
 
+
+        if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_r and Arrow_How > 0 and player_character.ability == "has agility" and Character.attack_flag:
+            Character.attack_flag = False
+            Character.attack_timer_DEFINITION = True
+            pygame.time.set_timer(Character.attack_timer, 500, 1)
             if Type_anim == 0:
                 side = 0
                 Arrow_list.append((Arrow[0].get_rect(topleft=(player_x + 25, player_y - 40)), side))
@@ -1588,8 +1601,10 @@ while running:
             Attack_point = player_character.Attack()
 
 
-        if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f and attack_flag:
-            attack_flag = False
+        if gameplay and (player_character.ability == "is a tracker" or player_character.ability == "can a hide") and event.type == pygame.KEYDOWN and event.key == pygame.K_f and Character.attack_flag:
+            Character.attack_flag = False
+            Character.attack_timer_DEFINITION = True
+            pygame.time.set_timer(Character.attack_timer, 500, 1)
             a = player_character.Attack()
             punch_anim += 1
             if Attack_point <= a:

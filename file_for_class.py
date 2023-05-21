@@ -312,6 +312,7 @@ class Button:
 class Zelya:
     timer_spawn_zelya = pygame.USEREVENT + 1
     timer_spawn_zelya_DEFINITION = False
+    zelya_list = []
     def __init__(self, name, points, anim: list, x, y):
         self.name = name
         self.points = points
@@ -320,6 +321,8 @@ class Zelya:
         self.x = x
         self.y = y
         self.timer_for_give = pygame.USEREVENT + 1
+        pygame.time.set_timer(self.timer_for_give, 4000, 1)
+        self.timer_for_give_DEFINITION = False
 
     def visual(self, surface):
         self.anim_count %= len(self.anim)
