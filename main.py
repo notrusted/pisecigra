@@ -643,7 +643,13 @@ the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
 loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
 restart_label = the_end_label.render("Start again", False, "Black")
 restart_label_rect = restart_label.get_rect(topleft=(250, 400))
-#volume_label = player_label.render('',False,'White')
+Volume_level_label = player_label.render("volume",False,"Black")
+Volume_1_flag = True
+Volume_0_5_flag = False
+Volume_0_2_flag = False
+volume_level1 = light_button[1].get_rect(topleft=(690,330))
+volume_level2 = light_button[1].get_rect(topleft=(650,330))
+volume_level3 = light_button[1].get_rect(topleft=(610,330))
 volume_rect = button_Volume[0].get_rect(topleft=(900,720))
 volume_rect = button_Volume[1].get_rect(topleft=(900,720))
 Arrow_label = pygame.font.Font("fonts/Angkor-Regular.ttf", 20)
@@ -702,10 +708,14 @@ while running:
             mouse = pygame.mouse.get_pos()
             if volume_rect.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (1, 0, 0):
                 music_mute = True
+                Volume_1_flag = False
+                Volume_0_5_flag = False
+                Volume_0_2_flag = False
                 pygame.mixer.music.stop()
 
             elif volume_rect.collidepoint(mouse) and music_mute and pygame.mouse.get_pressed() == (1, 0, 0):
                 music_mute = False
+                Volume_1_flag = True
                 pygame.mixer.music.play(-1)
 
             for (i, elem) in enumerate(buttons_main_menu):
@@ -726,6 +736,48 @@ while running:
         if flag_options_menu:
             screen.blit(screen_saver, (0, 0))
             screen.blit(back_for_options, (225, 270))
+            screen.blit(Volume_level_label,(620,290))
+
+            if volume_level1.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (
+            1, 0, 0) and Volume_1_flag == False:
+                pygame.mixer_music.set_volume(1)
+                Volume_1_flag = True
+                Volume_0_5_flag = False
+                Volume_0_2_flag = False
+
+
+            elif volume_level2.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (
+                    1, 0, 0) and Volume_0_5_flag == False:
+                pygame.mixer_music.set_volume(0.5)
+                Volume_0_5_flag = True
+                Volume_1_flag = False
+                Volume_0_2_flag = False
+
+            elif volume_level3.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (
+                    1, 0, 0) and Volume_0_2_flag == False:
+                pygame.mixer_music.set_volume(0.2)
+                Volume_0_2_flag = True
+                Volume_1_flag = False
+                Volume_0_5_flag = True
+
+            if Volume_0_5_flag:
+                screen.blit(light_button[0],(650,330))
+            else:
+                screen.blit(light_button[1], (650, 330))
+
+            if Volume_1_flag:
+                screen.blit(light_button[0],(690,330))
+            else:
+                screen.blit(light_button[1], (690, 330))
+
+            if Volume_0_2_flag:
+                screen.blit(light_button[0],(610,330))
+            else:
+                screen.blit(light_button[1], (610, 330))
+
+
+
+
             for (i, elem) in enumerate(buttons_options_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
