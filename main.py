@@ -1431,7 +1431,7 @@ while running:
 
     elif Start_game_flag == False and The_Win_flag :
         screen.blit(pygame.image.load("images/THE_END_WIN.png"), (0, 0))
-        screen.blit(loose_label, (400, 500))
+        screen.blit(Win_label, (400, 500))
         screen.blit(restart_label, (400, 400))
         mouse = pygame.mouse.get_pos()
         if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
@@ -1563,14 +1563,14 @@ while running:
             else:
                 if wave_flag:
                     print("зашёл в wave_flag")
-                    num_mob = randint(1, 1)
+                    num_mob = randint(1, 3)
                     how_villians = num_mob
                     wave_flag = False
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
 
-                    randomize_select = randint(1,1)
+                    randomize_select = randint(1,3)
 
                     if randomize_select == 1:
                         boss_list.append(
