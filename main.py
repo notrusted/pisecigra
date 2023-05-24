@@ -358,7 +358,7 @@ def Boss_nazgul_mechanicks():
                         totem_list.clear()
                         elem.totem_spawn=True
                         elem.flag_totem=False
-                        pygame.time.set_timer(elem.time_totem,10000)
+                        pygame.time.set_timer(elem.time_totem,20000)
                 else:
                     if not elem.flag_magic:
                         if elem.flag_create_magic:
@@ -523,12 +523,6 @@ def Boss_warg_mechanicks_go():
                 screen.blit(Boss_warg_armor, (elem.x + 10, elem.y - 60))
                 screen.blit(Boss_warg_name, (400, 20))
                 Boss_warg_ability_flag = True
-
-
-
-
-
-
 # ---функция отображения хп игрока-------------------------------------------------------------------------
 def visual_health(player):
     global health_model, Fullhp, screen
@@ -1269,8 +1263,7 @@ while running:
                     if boss_list:
                         for (j, elem) in enumerate(boss_list):
                             if elem.name == "King of nazgul":
-                                if abs(ar[0].x - elem.x) < 200 and abs(ar[
-                                                                           0].y - elem.y) < 200 and elem.flag_go_to_center == False and elem.flag_invicible == False and not elem.flag_for_proza:
+                                if abs(ar[0].x - elem.x) < 200 and abs(ar[0].y - elem.y) < 200 and elem.flag_go_to_center == False and elem.flag_invicible == False and not elem.flag_for_proza:
                                     elem.y -= 50
                                     if elem.armor > 0:
                                         elem.armor -= Attack_point
@@ -1279,17 +1272,17 @@ while running:
                                     else:
                                         elem.hp -= Attack_point
 
-                                        if elem.hp <= 0:
-                                            boss_list.pop(j)
-                                            print("the King of nazgul is murdered...")
-                                            num_mob -= 1
-                                            wave_flag = True
-                                            wave_how -= 1
-                                            flag_ability = 1
+                                    if elem.hp <= 0:
+                                          boss_list.pop(j)
+                                          print("the King of nazgul is murdered...")
+                                          num_mob -= 1
+                                          wave_flag = True
+                                          wave_how -= 1
+                                          flag_ability = 1
 
-                                        if Arrow_list:
-                                            Arrow_list.pop(i)
-                                            continue
+                                    if Arrow_list:
+                                        Arrow_list.pop(i)
+                                        continue
                             if elem.name == "BossOrkConqueror" and elem.flag_go_to_center == False and not elem.flag_protective_dome_enable:
                                 if abs(ar[0].x - elem.coord_x) < 100 and abs(ar[0].y - elem.coord_y) < 100:
                                     elem.coord_y -= 50
