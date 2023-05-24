@@ -887,11 +887,7 @@ while running:
         screen.blit(bg, (0, bg_y - 800))
 
         if game_pause:
-            image = pygame.Surface((screen.get_width(), screen.get_height()), pygame.SRCALPHA)
-            pygame.draw.rect(image, 'black', (0, 0, screen.get_width(), screen.get_height()))
-            alpha_surface = pygame.Surface(image.get_size(), pygame.SRCALPHA)
-            alpha_surface.fill((255, 255, 255, 90))
-            image.blit(alpha_surface, (0,0), special_flags=pygame.BLEND_RGBA_MULT)
+            screen.blit(screen_saver, (0,0))
             for (i, elem) in enumerate(buttons_pause_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
@@ -1504,6 +1500,11 @@ while running:
                 if elem.name == 'pause' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
                     elem.timer_keyup_DEFINITION = False
                     game_pause = True
+            if game_pause:
+                for (i, elem) in enumerate(buttons_pause_menu):
+                    if elem.name == 'back' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
+                        elem.timer_keyup_DEFINITION = False
+                        game_pause = False
             if boss_list:
                 for (i, elem) in enumerate(boss_list):
                     if elem.name == "BossOrkConqueror":
