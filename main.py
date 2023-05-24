@@ -1266,29 +1266,30 @@ while running:
                                     print("заш1л в arrow_pop_set")
                                     arrow_pop_set.add(i)
                                     continue
-                if boss_list:
-                    for (j, elem) in enumerate(boss_list):
-                        if elem.name == "King of nazgul" :
-                            if abs(ar[0].x - elem.x) < 200 and abs(ar[0].y - elem.y) < 200 and elem.flag_go_to_center == False and elem.flag_invicible==False and not elem.flag_for_proza:
-                                elem.y -= 50
-                                if elem.armor > 0:
-                                    elem.armor -= Attack_point
-                                    if elem.armor < 0:
-                                        elem.armor = 0
-                                else:
-                                    elem.hp -= Attack_point
+                    if boss_list:
+                        for (j, elem) in enumerate(boss_list):
+                            if elem.name == "King of nazgul":
+                                if abs(ar[0].x - elem.x) < 200 and abs(ar[
+                                                                           0].y - elem.y) < 200 and elem.flag_go_to_center == False and elem.flag_invicible == False and not elem.flag_for_proza:
+                                    elem.y -= 50
+                                    if elem.armor > 0:
+                                        elem.armor -= Attack_point
+                                        if elem.armor < 0:
+                                            elem.armor = 0
+                                    else:
+                                        elem.hp -= Attack_point
 
-                                    if elem.hp <= 0:
-                                        boss_list.pop(j)
-                                        print("the King of nazgul is murdered...")
-                                        num_mob -= 1
-                                        wave_flag = True
-                                        wave_how -= 1
-                                        flag_ability = 1
+                                        if elem.hp <= 0:
+                                            boss_list.pop(j)
+                                            print("the King of nazgul is murdered...")
+                                            num_mob -= 1
+                                            wave_flag = True
+                                            wave_how -= 1
+                                            flag_ability = 1
 
-                                    if Arrow_list:
-                                        Arrow_list.pop(i)
-                                        continue
+                                        if Arrow_list:
+                                            Arrow_list.pop(i)
+                                            continue
                             if elem.name == "BossOrkConqueror" and elem.flag_go_to_center == False and not elem.flag_protective_dome_enable:
                                 if abs(ar[0].x - elem.coord_x) < 100 and abs(ar[0].y - elem.coord_y) < 100:
                                     elem.coord_y -= 50
@@ -1308,10 +1309,10 @@ while running:
                                     if Arrow_list and arrow_pop_flag == False:
                                         arrow_pop_set.add(i)
                                         continue
-                            elif elem.name == "BossOrkConqueror" and elem.flag_protective_dome_enable:
-                                if abs(ar[0].x - elem.coord_x) < 20 and abs(ar[0].y - elem.coord_y) < 20:
-                                    if Arrow_list and arrow_pop_flag == False:
-                                        Arrow_list.pop(i)
+                                elif elem.name == "BossOrkConqueror" and elem.flag_protective_dome_enable:
+                                    if abs(ar[0].x - elem.coord_x) < 20 and abs(ar[0].y - elem.coord_y) < 20:
+                                        if Arrow_list and arrow_pop_flag == False:
+                                            Arrow_list.pop(i)
 
                             if elem.name == 'The Alpha Warg':
 
@@ -1570,7 +1571,7 @@ while running:
 
                 if num_mob == 0 and flag_create_the_boss:
 
-                    randomize_select = randint(1,3)
+                    randomize_select = randint(1, 3)
 
                     if randomize_select == 1:
                         boss_list.append(
@@ -1585,7 +1586,7 @@ while running:
                     flag_create_the_boss = False
 
 
-        elif wave_how <= 0 and gameplay == True:
+        if wave_how <= 0 and gameplay == True:
             print("The end")
             The_Win_flag = True
             gameplay = False
