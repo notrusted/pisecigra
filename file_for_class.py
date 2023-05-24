@@ -46,7 +46,7 @@ class Portal(Magic):
 
 
 class Monster:
-    def __init__(self, Hp, Armor, X, Y, Damage, Weapon, anim):  # надо найти текстуры как для персонажа (list_animation)
+    def __init__(self, Hp, Armor, X, Y, Damage, Weapon, anim):
         self.anim = anim
         self.hp = Hp
         self.armor = Armor
@@ -54,7 +54,6 @@ class Monster:
         self.weapon = Weapon
         self.x = X
         self.y = Y
-        # self.la=list_animation
 
     def Attack(self):
         return self.damage + self.weapon.damage
@@ -62,7 +61,24 @@ class Monster:
     def Protect(self, dmg):
         a = randint(0, 1)
         self.hp = self.hp - dmg + dmg * a * a
-
+class Duck(Monster):
+    def __init(self):
+        Monster.__init__(self,10000,10000,0,0,10000,Weapon("Cry of Crya",1000),duck_list)
+        self.char=randint(0,1)
+        self.resize=1/randint(1,5)
+        self.flag_duck=True
+    def spawn(self):
+        if self.char=="0":
+            self.x=0
+        if self.char=="1":
+            self.x=1000
+        self.y=randint(100,700)
+    def duck_go(self,surf):
+        if self.char=="0":#вправо
+            self.x+=5
+        if self.char=="1":
+            self.x-=5
+        surf.blit(convert_list_of_images(self.anim,self.resize,self.resize),(self.x,self.y))
 class Totem():
     def __init__(self,x,y):
         self.hp=100

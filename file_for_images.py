@@ -62,6 +62,9 @@ Rings_active = [pygame.image.load("images/Ring_active.png"),pygame.image.load("i
 health_model = [pygame.image.load('images/health/full.png'), pygame.image.load('images/health/half.png'), pygame.image.load('images/health/empty.png')]
 Arrow = [pygame.image.load("images/Arrow_Up.png"),pygame.image.load('images/Arrow_Down.png'), pygame.image.load('images/Arrow_Left.png'),pygame.image.load('images/Arrow_Right.png')]
 
+duck_stand=[pygame.image.load("images/duck/duck_stand_1.png"),pygame.image.load("images/duck/duck_stand_2.png")]
+duck_right_go=[pygame.image.load("images/duck/duck_right_1.png"),pygame.image.load("images/duck/duck_right_2.png"),pygame.image.load("images/duck/duck_right_3.png"),pygame.image.load("images/duck/duck_right_4.png"),pygame.image.load("images/duck/duck_right_5.png"),pygame.image.load("images/duck/duck_right_6.png")]
+duck_list=[duck_stand,duck_right_go]
 totem_picture=[pygame.image.load('images/totem.png')]
 
 portal_png = [pygame.image.load('images/portal/portal1.png'), pygame.image.load('images/portal/portal2.png'), pygame.image.load('images/portal/portal3.png'), pygame.image.load('images/portal/portal4.png')]
