@@ -616,7 +616,7 @@ Boss_warg_Heal_flag = False
 heal_anim = 0
 Boss_warg_ability_flag = False
 
-
+The_Win_flag = False
 
 
 arrow_pop_flag = False
@@ -643,6 +643,7 @@ gameplay = True
 player_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
 the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
 loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
+Win_label = the_end_label.render("YOU WIN!!!",False,"Yellow")
 restart_label = the_end_label.render("Start again", False, "Black")
 restart_label_rect = restart_label.get_rect(topleft=(250, 400))
 Volume_level_label = player_label.render("volume",False,"Black")
@@ -805,7 +806,7 @@ while running:
         # ---экран выбора героя----------------------------------------------------
         if entr:
             screen.fill("Black")
-
+            The_Win_flag = False
             screen.blit(pygame.image.load("images/CHOICE_screen2.png"),(0,0))
             Character_label = label.render("Choose your hero:", False, "Red")
             screen.blit(Character_label, (400, 100))
@@ -845,7 +846,7 @@ while running:
                 Fullhp = All_Hp
                 Arrow_How = 100
                 Start_game_flag = False
-                wave_how = randint(1, 10)
+                wave_how = randint(1, 1)
                 wave_flag = True
 
 
@@ -858,7 +859,7 @@ while running:
                 All_Hp = player_character.hp
                 Fullhp = All_Hp
                 Start_game_flag = False
-                wave_how = randint(1, 10)
+                wave_how = randint(1, 1)
                 wave_flag = True
 
 
@@ -870,7 +871,7 @@ while running:
                 All_Hp = player_character.hp
                 Fullhp = All_Hp
                 Start_game_flag = False
-                wave_how = randint(1, 10)
+                wave_how = randint(1, 1)
                 wave_flag = True
 
 
@@ -1403,7 +1404,7 @@ while running:
 
 
 
-    elif Start_game_flag == False:
+    elif Start_game_flag == False and The_Win_flag == False:
         screen.fill("White")
         screen.blit(pygame.image.load("images/THE_END.png"),(0,0))
         screen.blit(loose_label, (320, 500))
@@ -1427,6 +1428,31 @@ while running:
             Character.attack_timer_DEFINITION = True
             attack_flag = True
             Start_game_flag = True
+
+    elif Start_game_flag == False and The_Win_flag :
+        screen.blit(pygame.image.load("images/THE_END_WIN.png"), (0, 0))
+        screen.blit(loose_label, (400, 500))
+        screen.blit(restart_label, (400, 400))
+        mouse = pygame.mouse.get_pos()
+        if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
+            player_y = 500
+            totem_list.clear()
+            n_list_it_the_game.clear()
+            warg_list_in_the_game.clear()
+            orc_list_in_the_game.clear()
+            Arrow_list.clear()
+            boss_list.clear()
+            Boss_warg_list_in_the_game.clear()
+            player_character.hp = All_Hp
+            flag_ability = 1
+            Arrow_How = 0
+            Zelya.zelya_list.clear()
+            n_timer = pygame.USEREVENT + 1
+            pygame.time.set_timer(n_timer, 10000)
+            Character.attack_timer_DEFINITION = True
+            attack_flag = True
+            Start_game_flag = True
+
 
     pygame.display.update()
 
@@ -1544,7 +1570,7 @@ while running:
 
                 if num_mob == 0 and flag_create_the_boss:
 
-                    randomize_select = randint(3,3)
+                    randomize_select = randint(1,1)
 
                     if randomize_select == 1:
                         boss_list.append(
@@ -1559,9 +1585,10 @@ while running:
                     flag_create_the_boss = False
 
 
-        """else:
+        elif wave_how <= 0 and gameplay == True:
             print("The end")
-            pygame.quit()"""
+            The_Win_flag = True
+            gameplay = False
 
         if event.type == n_timer and Boss_warg_ability_flag:
 
