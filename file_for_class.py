@@ -1,5 +1,25 @@
 from random import randint
 from file_for_images import *
+
+def rand_spawn():
+    rand_select = randint(1, 4)
+    if rand_select == 1:
+        x = randint(0, 1000)
+        y = randint(-10, -2)
+        return (x, y)
+    elif rand_select == 2:
+        x = randint(1000, 1010)
+        y = randint(0, 800)
+        return (x, y)
+    elif rand_select == 3:
+        x = randint(0, 1000)
+        y = randint(1000, 1050)
+        return (x, y)
+    elif rand_select == 4:
+        x = randint(-10, -2)
+        y = randint(-10, 1000)
+        return (x,y)
+
 class Weapon:
     def __init__(self, Name, Damage):
         self.name = Name
@@ -99,7 +119,8 @@ class Nazgul(Monster):
     count = 0
     def __init__(self, anim):
         self.anim = anim
-        Monster.__init__(self, randint(200, 240), randint(5, 20), 250, -100, randint(40, 45),
+        coord_rand = rand_spawn()
+        Monster.__init__(self, randint(200, 240), randint(5, 20), coord_rand[0], coord_rand[1], randint(40, 45),
                          Weapon("Morgul's knife", randint(5, 10)), 0)
         Nazgul.count += 1
 
@@ -138,9 +159,11 @@ class Warg(Monster):
 
 class Ork(Monster):
     count = 0
+
     def __init__(self, anim):
         self.anim = anim
-        Monster.__init__(self, randint(150, 200), randint(1, 20), 0, 0, randint(20, 40),
+        coord = rand_spawn()
+        Monster.__init__(self, randint(150, 200), randint(1, 20), coord[0], coord[1], randint(20, 40),
                          Weapon("Pushka", randint(5, 10)), 0)
         Ork.count += 1
 
