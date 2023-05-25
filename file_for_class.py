@@ -96,10 +96,12 @@ class Totem():
         b = dmg
         self.hp = self.hp - dmg
 class Nazgul(Monster):
+    count = 0
     def __init__(self, anim):
         self.anim = anim
         Monster.__init__(self, randint(200, 240), randint(5, 20), 250, -100, randint(40, 45),
                          Weapon("Morgul's knife", randint(5, 10)), 0)
+        Nazgul.count += 1
 
     def Attack(self):
         print('Nazgul attack with damage', self.damage + self.weapon.damage)
@@ -112,6 +114,7 @@ class Nazgul(Monster):
 
 
 class Warg(Monster):
+    count = 0
     def __init__(self,flag1,flag2,flag3,flag4):
         self.flag1 = flag1
         self.flag2 = flag2
@@ -119,6 +122,7 @@ class Warg(Monster):
         self.flag4 = flag4
         Monster.__init__(self, randint(130, 190), randint(0, 20), randint(100,700), -100, randint(30, 35),
                          Weapon('claws', randint(10, 15)), 0)
+        Warg.count += 1
 
     def Attack(self):
         print('The Warg Attack with damage', self.damage + self.weapon.damage)
@@ -133,10 +137,12 @@ class Warg(Monster):
 
 
 class Ork(Monster):
+    count = 0
     def __init__(self, anim):
         self.anim = anim
         Monster.__init__(self, randint(150, 200), randint(1, 20), 0, 0, randint(20, 40),
                          Weapon("Pushka", randint(5, 10)), 0)
+        Ork.count += 1
 
     def Attack(self):
         print('Ork attack with damage', self.damage + self.weapon.damage)
@@ -159,6 +165,7 @@ class Boss:
     def base_attack(self):
         return self.dmg
 class Nazgul_boss(Boss):
+    count = 0
     count_animation=0
     def __init__(self,x,y):
         Boss.__init__(self,100,50,5,Weapon("Morgul Blade",5),Magic(";a;a;",0))
@@ -179,6 +186,7 @@ class Nazgul_boss(Boss):
         self.flag_totem=True
         self.flag_magic=False
         self.flag_create_magic=True
+        Nazgul_boss.count += 1
     def get_magic(self):
         return self.magic
     def set_magic(self,x,y):
@@ -239,6 +247,7 @@ class Nazgul_boss(Boss):
 
 
 class BossOrkConqueror(Boss):
+    count = 0
     def __init__(self, hp, armor, dmg, weapon, magic, cry, coord_x, coord_y, heal_boss):
         Boss.__init__(self, hp, armor, dmg, weapon, magic)
         self.hp = hp
@@ -265,6 +274,7 @@ class BossOrkConqueror(Boss):
         self.time_reload_can_portal = pygame.USEREVENT + 1
         self.portal1 = []
         self.portal2 = []
+        BossOrkConqueror.count += 1
 
     def healing(self):
         if self.heal > 0:
@@ -280,6 +290,7 @@ class BossOrkConqueror(Boss):
 
 
 class Boss_warg(Boss):
+    count = 0
     def __init__(self,x,y,anim):
         self.name = "The Alpha Warg"
         self.anim = anim
@@ -287,6 +298,7 @@ class Boss_warg(Boss):
         self.x = x
         self.y = y
         Boss.__init__(self,350,200,30,Weapon("Bloody claws",50),Magic('Growl',5))
+        Boss_warg.count += 1
 
     def base_attack(self):
         print('The Alpha Warg attack with damage', self.dmg + self.weapon.damage)

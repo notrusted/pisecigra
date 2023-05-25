@@ -640,6 +640,7 @@ gameplay = True
 # ---Подключение шрифтов----------------------------------------------------
 player_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
 the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
+Count_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 20)
 loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
 Win_label = the_end_label.render("YOU WIN!!!",False,"Yellow")
 restart_label = the_end_label.render("Start again", False, "Black")
@@ -1406,6 +1407,12 @@ while running:
         mouse = pygame.mouse.get_pos()
         if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1,0,0):
             player_y = 500
+            Nazgul.count = 0
+            Warg.count = 0
+            Ork.count = 0
+            Nazgul_boss.count = 0
+            BossOrkConqueror.count = 0
+            Boss_warg.count = 0
             totem_list.clear()
             n_list_it_the_game.clear()
             warg_list_in_the_game.clear()
@@ -1425,11 +1432,29 @@ while running:
 
     elif Start_game_flag == False and The_Win_flag :
         screen.blit(pygame.image.load("images/THE_END_WIN.png"), (0, 0))
+        count_nazguls = Count_label.render(f"You kill a {Nazgul.count} nazgul's", False, "Yellow")
+        count_wargs = Count_label.render(f"You kill a {Warg.count} warg's", False, "Yellow")
+        count_orks = Count_label.render(f"You kill a {Ork.count} ork's", False, "Yellow")
+        count_BOrk = Count_label.render(f"You kill a {BossOrkConqueror.count} Ork Bosse's", False, "Yellow")
+        count_BWarg = Count_label.render(f"You kill a {Boss_warg.count} Warg Bosse's", False, "Yellow")
+        count_BNazgul = Count_label.render(f"You kill a {Nazgul_boss.count} Nazgul Bosse's", False, "Yellow")
+        screen.blit(count_nazguls,(550,50))
+        screen.blit(count_wargs, (550, 100))
+        screen.blit(count_orks, (550, 150))
+        screen.blit(count_BOrk, (550, 200))
+        screen.blit(count_BWarg, (550, 250))
+        screen.blit(count_BNazgul, (550, 300))
         screen.blit(Win_label, (400, 500))
         screen.blit(restart_label, (400, 400))
         mouse = pygame.mouse.get_pos()
         if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
             player_y = 500
+            Nazgul.count = 0
+            Warg.count = 0
+            Ork.count = 0
+            Nazgul_boss.count = 0
+            BossOrkConqueror.count = 0
+            Boss_warg.count = 0
             totem_list.clear()
             n_list_it_the_game.clear()
             warg_list_in_the_game.clear()
@@ -1569,7 +1594,7 @@ while running:
 
                 if num_mob == 0 and flag_create_the_boss:
 
-                    randomize_select = randint(2, 2)
+                    randomize_select = randint(3, 3)
 
                     if randomize_select == 1:
                         boss_list.append(
