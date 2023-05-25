@@ -87,6 +87,8 @@ class Duck(Monster):
         self.char=randint(0,1)
         self.resize=1/randint(1,5)
         self.flag_duck=True
+        self.animation_count=0
+        self.anim=convert_list_of_images(duck_list,self.resize,self.resize)
     def spawn(self):
         if self.char=="0":
             self.x=0
@@ -94,11 +96,12 @@ class Duck(Monster):
             self.x=1000
         self.y=randint(100,700)
     def duck_go(self,surf):
+        self.animation_count+=1
         if self.char=="0":#вправо
             self.x+=5
         if self.char=="1":
             self.x-=5
-        surf.blit(convert_list_of_images(self.anim,self.resize,self.resize),(self.x,self.y))
+        surf.blit(self.animation_count[self.animation_count%6],(self.x,self.y))
 class Totem():
     def __init__(self,x,y):
         self.hp=100
