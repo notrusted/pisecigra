@@ -1696,7 +1696,6 @@ while running:
 
 
                         if elem.time_definition and event.type == elem.time:
-                            print("зашел в чек клика")
                             elem.time_definition = False
                             elem.flag_orc_cry = False
                             elem.flag_boss_to_heal = True
@@ -1744,7 +1743,7 @@ while running:
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
-                                             'AAARRRRGHHH', screen.get_width() + 75, screen.get_height() // 2, 3))
+                                             'УЧИ МАТАНАЛИЗ', screen.get_width() + 75, screen.get_height() // 2, 3))
                         print("create the boss")
                     elif randomize_select == 2:
                         boss_list.append(Boss_warg(100, 100, 3))
