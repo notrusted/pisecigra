@@ -1598,7 +1598,7 @@ while running:
 
                 if num_mob == 0 and flag_create_the_boss:
 
-                    randomize_select = randint(3, 3)
+                    randomize_select = randint(1, 3)
 
                     if randomize_select == 1:
                         boss_list.append(
