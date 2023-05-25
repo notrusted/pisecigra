@@ -688,7 +688,8 @@ buttons_main_menu = [button_play, button_options, button_quit]
 button_back = Button('back', [button_back_up, button_back_down], 0, 0)
 buttons_options_menu = [button_back]
 buttons_choose_menu = [Button('back', [button_back_up, button_back_down], 0, 0)]
-buttons_pause_menu = [Button('back', [button_back_up, button_back_down], 0, 0)]
+buttons_pause_menu = [Button('back', [button_back_up, button_back_down], 0, 0), Button('quit', [button_quit_up, button_quit_down], 385, 350),
+                      Button('options', [button_options_up, button_options_down], 385, 200)]
 buttons_gameplay = [Button('pause', [button_back_up, button_back_down], 0, 0)]
 flag_options_menu = False
 game_pause = False
@@ -893,6 +894,9 @@ while running:
 
         if game_pause:
             screen.blit(screen_saver, (0,0))
+            pause_label = pygame.font.Font('fonts/Hardpixel.OTF', 50)
+            pause_view_label = pause_label.render('PAUSE', False, 'white')
+            screen.blit(pause_view_label, (425, 100))
             for (i, elem) in enumerate(buttons_pause_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
