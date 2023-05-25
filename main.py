@@ -687,9 +687,9 @@ Volume_level_label = volume_label.render("volume", False, "Black")
 Volume_1_flag = True
 Volume_0_5_flag = False
 Volume_0_2_flag = False
-volume_level1 = light_button[1].get_rect(topleft=(690,330))
-volume_level2 = light_button[1].get_rect(topleft=(650,330))
-volume_level3 = light_button[1].get_rect(topleft=(610,330))
+volume_level1 = light_button[1].get_rect(topleft=(530,330))
+volume_level2 = light_button[1].get_rect(topleft=(500,330))
+volume_level3 = light_button[1].get_rect(topleft=(470,330))
 volume_rect = button_Volume[0].get_rect(topleft=(900,720))
 volume_rect = button_Volume[1].get_rect(topleft=(900,720))
 Arrow_label = pygame.font.Font("fonts/Angkor-Regular.ttf", 20)
@@ -809,19 +809,19 @@ while running:
                 Volume_0_5_flag = True
 
             if Volume_0_5_flag:
-                screen.blit(light_button[0],(470,330))
-            else:
-                screen.blit(light_button[1], (470, 330))
-
-            if Volume_1_flag:
-                screen.blit(light_button[0],(500 ,330))
+                screen.blit(light_button[0],(500,330))
             else:
                 screen.blit(light_button[1], (500, 330))
 
-            if Volume_0_2_flag:
-                screen.blit(light_button[0],(530,330))
+            if Volume_1_flag:
+                screen.blit(light_button[0],(530 ,330))
             else:
                 screen.blit(light_button[1], (530, 330))
+
+            if Volume_0_2_flag:
+                screen.blit(light_button[0],(470,330))
+            else:
+                screen.blit(light_button[1], (470, 330))
 
 
 
