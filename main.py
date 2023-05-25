@@ -1224,7 +1224,7 @@ while running:
             flag_animation = True
             # ---анимация персонажа-------------------------------------------
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_d] and player_x < 800:
+            if keys[pygame.K_d] and player_x < 920:
                 player_character.animation(screen, "r", player_x, player_y)
                 player_x += player_speed
                 flag_animation = False
