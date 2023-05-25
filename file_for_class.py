@@ -82,7 +82,7 @@ class Monster:
         a = randint(0, 1)
         self.hp = self.hp - dmg + dmg * a * a
 class Duck(Monster):
-    def __init(self):
+    def __init__(self):
         Monster.__init__(self,10000,10000,0,0,10000,Weapon("Cry of Crya",1000),duck_list)
         self.char=randint(0,1)
         self.resize=1/randint(1,5)
@@ -90,18 +90,19 @@ class Duck(Monster):
         self.animation_count=0
         self.anim=convert_list_of_images(duck_list,self.resize,self.resize)
     def spawn(self):
-        if self.char=="0":
+        if self.char==0:
             self.x=0
-        if self.char=="1":
+        if self.char==1:
             self.x=1000
         self.y=randint(100,700)
     def duck_go(self,surf):
         self.animation_count+=1
-        if self.char=="0":#вправо
+        if self.char==0:#вправо
             self.x+=5
-        if self.char=="1":
+            surf.blit(self.anim[self.animation_count%6],(self.x,self.y))
+        if self.char==1:
             self.x-=5
-        surf.blit(self.animation_count[self.animation_count%6],(self.x,self.y))
+            surf.blit(self.anim[(6-self.animation_count)%6],(self.x,self.y))
 class Totem():
     def __init__(self,x,y):
         self.hp=100
@@ -220,8 +221,6 @@ class Nazgul_boss(Boss):
 
     def standart_attack(self):
             return int(self.dmg+self.weapon.damage)
-    """def magical_attack(self,surf,x,y,flag,hp):
-        self.magic.special_attack(surf,x,y,flag,hp)"""
     def proza(self,surf):
         if self.n==255:
             self.flag_for_proza=False
@@ -233,10 +232,9 @@ class Nazgul_boss(Boss):
         self.hp+=5
 
     def invicible(self,surface):
-        #self.armor=1000
         surface.blit(boss_nazgul_down[0],(self.x,self.y))
         invic_boss_nazgul[0].set_alpha(120)
-        surface.blit(invic_boss_nazgul[0],(self.x-130,self.y-100))#self.y-100
+        surface.blit(invic_boss_nazgul[0],(self.x-130,self.y-100))
     def go_to(self,sur:pygame.surface.Surface, x,y):
         if abs(self.x-x)<=11 and abs(self.y-y)<=11:
             self.check=True

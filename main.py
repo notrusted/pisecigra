@@ -355,7 +355,8 @@ def Boss_nazgul_mechanicks():
     Boss_nazgul_armor = Boss_nazgul_label.render("Armor: " + str(elem.armor), False, "green")
 
     #screen.blit(boss_nazgul_down[0],(screen.get_width()//2,200))
-
+    if duck.x!=1000 or duck.x!=0:
+        duck.duck_go(screen)
     if elem.hp>0:
         screen.blit(Boss_nazgul_heal_points, (elem.x + 10, elem.y - 30))
         screen.blit(Boss_nazgul_armor, (elem.x + 10, elem.y - 60))
@@ -388,7 +389,7 @@ def Boss_nazgul_mechanicks():
                         if elem.flag_heal:
                             elem.hp+=5
                             elem.flag_heal=False
-                            pygame.time.set_timer(elem.time_heal,1000)
+                            pygame.time.set_timer(elem.time_heal,2000)
                     else:
                         elem.flag_invicible=False
                         totem_list.clear()
@@ -899,7 +900,7 @@ while running:
                 Fullhp = All_Hp
                 Arrow_How = 100
                 Start_game_flag = False
-                wave_how = randint(1, 1)
+                wave_how = randint(2,2)
                 wave_flag = True
 
 
@@ -924,7 +925,7 @@ while running:
                 All_Hp = player_character.hp
                 Fullhp = All_Hp
                 Start_game_flag = False
-                wave_how = randint(1, 1)
+                wave_how = randint(1,1)
                 wave_flag = True
 
 
@@ -1765,8 +1766,7 @@ while running:
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-
-                    randomize_select = randint(1,1)
+                    randomize_select = randint(3,3)
 
 
                     if randomize_select == 1:
@@ -1781,6 +1781,10 @@ while running:
                         print("create the boss")
                     elif randomize_select==3:
                         boss_list.append(Nazgul_boss(screen.get_width()//2 + 15, 300))
+                        duck=Duck()
+                        duck.spawn()
+
+                        print("откуда тут утка?")
                     flag_create_the_boss = False
 
 
