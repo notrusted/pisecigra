@@ -1759,14 +1759,14 @@ while running:
 
             else:
                 if wave_flag:
-                    num_mob = randint(5, 9)
+                    num_mob = randint(1,1)
                     how_villians = num_mob
                     wave_flag = False
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
 
-                    randomize_select = randint(1, 3)
+                    randomize_select = randint(1,1)
 
 
                     if randomize_select == 1:
