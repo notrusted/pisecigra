@@ -806,7 +806,7 @@ while running:
                 pygame.mixer_music.set_volume(0.2)
                 Volume_0_2_flag = True
                 Volume_1_flag = False
-                Volume_0_5_flag = True
+                Volume_0_5_flag = False
 
             if Volume_0_5_flag:
                 screen.blit(light_button[0],(500,330))
