@@ -18,6 +18,7 @@ flag_ability = 1
 
 # ---КЛАССЫ--------------------------------------------------------------------------------------------
 class Character():
+    pred_rsp_hero = [0, 0]
     count_animation = 0
     attack_flag = True
     attack_timer = pygame.USEREVENT + 1
@@ -56,6 +57,8 @@ class Character():
         surf.blit(self.la[ch][Character.count_animation], (x, y))
 
     def Player_coordinate(self):
+        Character.pred_rsp_hero[0] = player_x
+        Character.pred_rsp_hero[1] = player_y
         return (player_x, player_y)
 
 class Elf(Character):
@@ -126,8 +129,9 @@ class Hobbit(Character):
         flag_ability = 0
 #--- функции механики перемещения мобов ----------------------------------------------------------------
 def orc_mechanicks_go():
-    global player_x, player_y, orc_list_in_the_game, orc_flag, gameplay
+    global player_x, player_y, orc_list_in_the_game, orc_flag, gameplay, player_character
     if orc_list_in_the_game:
+
         for (i, elem) in enumerate(orc_list_in_the_game):
             orc_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
             orc_heal_points = orc_label.render("Hp: " + str(elem.hp), False, "green")
@@ -139,6 +143,37 @@ def orc_mechanicks_go():
                 if player_character.hp <= 0:
                     player_character.hp = 0
                     gameplay = False
+
+            elif Character.pred_rsp_hero[0] == player_x and player_y == Character.pred_rsp_hero[1] :
+                if abs(elem.x - player_x) > 5:
+                    orc_flag += 1
+                    if elem.x > player_x:
+                        elem.x -= 4
+                        elem.anim += 1
+                        screen.blit(Orc_left[elem.anim % 3], (elem.x, elem.y))
+                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                    else:
+                        elem.x += 4
+                        elem.anim += 1
+                        screen.blit(Orc_right[elem.anim % 3], (elem.x, elem.y))
+                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                else:
+                    orc_flag = 0
+                    if elem.y > player_y:
+                        elem.y -= 4
+                        elem.anim += 1
+                        screen.blit(Orc_up[elem.anim % 3], (elem.x, elem.y))
+                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                    else:
+                        elem.y += 4
+                        elem.anim += 1
+                        screen.blit(Orc_down[elem.anim % 3], (elem.x, elem.y))
+                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+
 
             elif abs(elem.x - player_x) > abs(elem.y - player_y):
                 orc_flag += 1
@@ -168,6 +203,7 @@ def orc_mechanicks_go():
                     screen.blit(Orc_down[elem.anim % 3], (elem.x, elem.y))
                     screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
                     screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+    x = player_character.Player_coordinate()
 
 
 def nazgul_mechanicks_go():
@@ -640,12 +676,13 @@ gameplay = True
 # ---Подключение шрифтов----------------------------------------------------
 player_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
 the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
-Count_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 20)
 loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
 Win_label = the_end_label.render("YOU WIN!!!",False,"Yellow")
 restart_label = the_end_label.render("Start again", False, "Black")
 restart_label_rect = restart_label.get_rect(topleft=(250, 400))
-Volume_level_label = player_label.render("volume",False,"Black")
+volume_label = pygame.font.Font('fonts/Hardpixel.OTF', 30)
+
+Volume_level_label = volume_label.render("volume", False, "Black")
 Volume_1_flag = True
 Volume_0_5_flag = False
 Volume_0_2_flag = False
@@ -666,7 +703,7 @@ portal_list = []
 
 
 
-
+flag_options_menu_in_pause = False
 
 Start_game_flag = True
 entr = False  # флаг на переключение экранов стартовый->выбор игрока
@@ -743,9 +780,12 @@ while running:
         if flag_options_menu:
             screen.blit(screen_saver, (0, 0))
             screen.blit(back_for_options, (225, 270))
-            screen.blit(Volume_level_label,(620,290))
+            label_options = pygame.font.Font('fonts/Hardpixel.OTF', 50)
+            label_options_view = label_options.render('OPTIONS', False, 'white')
+            screen.blit(label_options_view, (425, 100))
+            screen.blit(Volume_level_label,(465, 290))
 
-            if volume_level1.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (
+            if volume_level1.collidepoint(pygame.mouse.get_pos()) and music_mute == False and pygame.mouse.get_pressed() == (
             1, 0, 0) and Volume_1_flag == False:
                 pygame.mixer_music.set_volume(1)
                 Volume_1_flag = True
@@ -768,19 +808,19 @@ while running:
                 Volume_0_5_flag = True
 
             if Volume_0_5_flag:
-                screen.blit(light_button[0],(650,330))
+                screen.blit(light_button[0],(470,330))
             else:
-                screen.blit(light_button[1], (650, 330))
+                screen.blit(light_button[1], (470, 330))
 
             if Volume_1_flag:
-                screen.blit(light_button[0],(690,330))
+                screen.blit(light_button[0],(500 ,330))
             else:
-                screen.blit(light_button[1], (690, 330))
+                screen.blit(light_button[1], (500, 330))
 
             if Volume_0_2_flag:
-                screen.blit(light_button[0],(610,330))
+                screen.blit(light_button[0],(530,330))
             else:
-                screen.blit(light_button[1], (610, 330))
+                screen.blit(light_button[1], (530, 330))
 
 
 
@@ -881,6 +921,7 @@ while running:
     # ---процесс геймплея(арена)-------------------------------------------------------------------
     if gameplay:
 
+
         if music_mute:
             pygame.mixer.music.stop()
 
@@ -897,19 +938,80 @@ while running:
             pause_label = pygame.font.Font('fonts/Hardpixel.OTF', 50)
             pause_view_label = pause_label.render('PAUSE', False, 'white')
             screen.blit(pause_view_label, (425, 100))
-            for (i, elem) in enumerate(buttons_pause_menu):
-                elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
-                if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
-                    elem.flag_to_pressed = True
-                    elem.try_to_click = True
-                    elem.visual(screen)
+            if not flag_options_menu_in_pause:
+                for (i, elem) in enumerate(buttons_pause_menu):
+                    elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
+                    if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                        elem.flag_to_pressed = True
+                        elem.try_to_click = True
+                        elem.visual(screen)
+                    else:
+                        if elem.try_to_click:
+                            elem.try_to_click = False
+                            pygame.time.set_timer(elem.timer_keyup, 10)
+                            elem.timer_keyup_DEFINITION = True
+                        elem.flag_to_pressed = False
+                        elem.visual(screen)
+
+            if flag_options_menu_in_pause:
+                screen.blit(screen_saver, (0, 0))
+                screen.blit(back_for_options, (225, 270))
+                label_options = pygame.font.Font('fonts/Hardpixel.OTF', 50)
+                label_options_view = label_options.render('OPTIONS', False, 'white')
+                screen.blit(label_options_view, (425, 100))
+                screen.blit(Volume_level_label, (465, 290))
+
+                if volume_level1.collidepoint(
+                        pygame.mouse.get_pos()) and music_mute == False and pygame.mouse.get_pressed() == (
+                        1, 0, 0) and Volume_1_flag == False:
+                    pygame.mixer_music.set_volume(1)
+                    Volume_1_flag = True
+                    Volume_0_5_flag = False
+                    Volume_0_2_flag = False
+
+
+                elif volume_level2.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (
+                        1, 0, 0) and Volume_0_5_flag == False:
+                    pygame.mixer_music.set_volume(0.5)
+                    Volume_0_5_flag = True
+                    Volume_1_flag = False
+                    Volume_0_2_flag = False
+
+                elif volume_level3.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (
+                        1, 0, 0) and Volume_0_2_flag == False:
+                    pygame.mixer_music.set_volume(0.2)
+                    Volume_0_2_flag = True
+                    Volume_1_flag = False
+                    Volume_0_5_flag = True
+
+                if Volume_0_5_flag:
+                    screen.blit(light_button[0], (470, 330))
                 else:
-                    if elem.try_to_click:
-                        elem.try_to_click = False
-                        pygame.time.set_timer(elem.timer_keyup, 10)
-                        elem.timer_keyup_DEFINITION = True
-                    elem.flag_to_pressed = False
-                    elem.visual(screen)
+                    screen.blit(light_button[1], (470, 330))
+
+                if Volume_1_flag:
+                    screen.blit(light_button[0], (500, 330))
+                else:
+                    screen.blit(light_button[1], (500, 330))
+
+                if Volume_0_2_flag:
+                    screen.blit(light_button[0], (530, 330))
+                else:
+                    screen.blit(light_button[1], (530, 330))
+
+                for (i, elem) in enumerate(buttons_options_menu):
+                    elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
+                    if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                        elem.flag_to_pressed = True
+                        elem.try_to_click = True
+                        elem.visual(screen)
+                    else:
+                        if elem.try_to_click:
+                            elem.try_to_click = False
+                            pygame.time.set_timer(elem.timer_keyup, 10)
+                            elem.timer_keyup_DEFINITION = True
+                        elem.flag_to_pressed = False
+                        elem.visual(screen)
 
         else:
             wave_view_label = wave_label.render("You have a " + str(wave_how) + " Wave's", False, "Brown")
@@ -1403,6 +1505,7 @@ while running:
 
 
 
+
     elif Start_game_flag == False and The_Win_flag == False:
         screen.fill("White")
         screen.blit(pygame.image.load("images/THE_END.png"),(0,0))
@@ -1411,12 +1514,6 @@ while running:
         mouse = pygame.mouse.get_pos()
         if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1,0,0):
             player_y = 500
-            Nazgul.count = 0
-            Warg.count = 0
-            Ork.count = 0
-            Nazgul_boss.count = 0
-            BossOrkConqueror.count = 0
-            Boss_warg.count = 0
             totem_list.clear()
             n_list_it_the_game.clear()
             warg_list_in_the_game.clear()
@@ -1436,29 +1533,11 @@ while running:
 
     elif Start_game_flag == False and The_Win_flag :
         screen.blit(pygame.image.load("images/THE_END_WIN.png"), (0, 0))
-        count_nazguls = Count_label.render(f"You kill a {Nazgul.count} nazgul's", False, "Yellow")
-        count_wargs = Count_label.render(f"You kill a {Warg.count} warg's", False, "Yellow")
-        count_orks = Count_label.render(f"You kill a {Ork.count} ork's", False, "Yellow")
-        count_BOrk = Count_label.render(f"You kill a {BossOrkConqueror.count} Ork Bosse's", False, "Yellow")
-        count_BWarg = Count_label.render(f"You kill a {Boss_warg.count} Warg Bosse's", False, "Yellow")
-        count_BNazgul = Count_label.render(f"You kill a {Nazgul_boss.count} Nazgul Bosse's", False, "Yellow")
-        screen.blit(count_nazguls,(550,50))
-        screen.blit(count_wargs, (550, 100))
-        screen.blit(count_orks, (550, 150))
-        screen.blit(count_BOrk, (550, 200))
-        screen.blit(count_BWarg, (550, 250))
-        screen.blit(count_BNazgul, (550, 300))
         screen.blit(Win_label, (400, 500))
         screen.blit(restart_label, (400, 400))
         mouse = pygame.mouse.get_pos()
         if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
             player_y = 500
-            Nazgul.count = 0
-            Warg.count = 0
-            Ork.count = 0
-            Nazgul_boss.count = 0
-            BossOrkConqueror.count = 0
-            Boss_warg.count = 0
             totem_list.clear()
             n_list_it_the_game.clear()
             warg_list_in_the_game.clear()
@@ -1538,6 +1617,40 @@ while running:
                     if elem.name == 'back' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
                         elem.timer_keyup_DEFINITION = False
                         game_pause = False
+
+                    if elem.name == 'quit' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
+                        elem.timer_keyup_DEFINITION = False
+                        game_pause = False
+                        gameplay = False
+                        Start_game_flag = True
+                        player_y = 500
+                        totem_list.clear()
+                        n_list_it_the_game.clear()
+                        warg_list_in_the_game.clear()
+                        orc_list_in_the_game.clear()
+                        Arrow_list.clear()
+                        boss_list.clear()
+                        Boss_warg_list_in_the_game.clear()
+                        player_character.hp = All_Hp
+                        flag_ability = 1
+                        Arrow_How = 0
+                        Zelya.zelya_list.clear()
+                        n_timer = pygame.USEREVENT + 1
+                        pygame.time.set_timer(n_timer, 10000)
+                        Character.attack_timer_DEFINITION = True
+                        attack_flag = True
+                        entr = False
+
+                    if elem.name == 'options' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
+                        elem.timer_keyup_DEFINITION = False
+                        flag_options_menu_in_pause = True
+
+                if flag_options_menu_in_pause:
+                    for (i, elem) in enumerate(buttons_options_menu):
+                        if elem.name == "back" and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
+                            flag_options_menu_in_pause = False
+                            elem.timer_keyup_DEFINITION = False
+
             if boss_list:
                 for (i, elem) in enumerate(boss_list):
                     if elem.name == "BossOrkConqueror":
@@ -1598,7 +1711,7 @@ while running:
 
                 if num_mob == 0 and flag_create_the_boss:
 
-                    randomize_select = randint(3, 3)
+                    randomize_select = randint(2, 2)
 
                     if randomize_select == 1:
                         boss_list.append(
