@@ -406,6 +406,7 @@ def Boss_warg_mechanicks_go():
 
             if elem.hp <= 100:
                 Boss_warg_Heal_flag = True
+                pygame.time.set_timer(elem.timer,100000000)
                 elem.armor += 500
                 elem.x = -100
                 elem.y = 200
@@ -428,6 +429,7 @@ def Boss_warg_mechanicks_go():
 
             if elem.hp <= 100:
                 Boss_warg_Heal_flag = True
+                pygame.time.set_timer(elem.timer, 100000000)
                 elem.armor += 500
                 elem.x = -100
                 elem.y = 200
@@ -450,6 +452,7 @@ def Boss_warg_mechanicks_go():
 
             if elem.hp <= 100:
                 Boss_warg_Heal_flag = True
+                pygame.time.set_timer(elem.timer, 100000000)
                 elem.armor += 500
                 elem.x = -100
                 elem.y = 200
@@ -472,6 +475,7 @@ def Boss_warg_mechanicks_go():
 
             if elem.hp <= 100:
                 Boss_warg_Heal_flag = True
+                pygame.time.set_timer(elem.timer, 100000000)
                 elem.armor += 500
                 elem.x = -100
                 elem.y = 200
@@ -1565,7 +1569,7 @@ while running:
 
                 if num_mob == 0 and flag_create_the_boss:
 
-                    randomize_select = randint(1, 3)
+                    randomize_select = randint(2, 2)
 
                     if randomize_select == 1:
                         boss_list.append(
@@ -1585,12 +1589,12 @@ while running:
             The_Win_flag = True
             gameplay = False
 
-        if event.type == n_timer and Boss_warg_ability_flag:
-
-            if boss_list:
-                for (i, elem) in enumerate(boss_list):
-                    if elem.name == "The Alpha Warg":
+        if boss_list:
+            for(i,elem) in enumerate(boss_list):
+                if elem.name == "The Alpha Warg":
+                    if event.type == elem.timer and Boss_warg_ability_flag:
                         elem.special_ability()
+
 
         if event.type == Character.attack_timer and not Character.attack_flag and Character.attack_timer_DEFINITION:
             Character.attack_flag = True

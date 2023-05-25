@@ -283,6 +283,7 @@ class Boss_warg(Boss):
     def __init__(self,x,y,anim):
         self.name = "The Alpha Warg"
         self.anim = anim
+        self.timer = pygame.USEREVENT + 1
         self.x = x
         self.y = y
         Boss.__init__(self,350,200,30,Weapon("Bloody claws",50),Magic('Growl',5))
@@ -293,10 +294,10 @@ class Boss_warg(Boss):
 
     def special_ability(self):
         print('The Alpha Warg try to heal...')
-        a = randint(1, 3)
+        a = 1
         for i in range(a):
             warg_list_in_the_game.append(Warg(True, False, False, False))
-        self.hp += 15
+        self.hp += 2
 
 
 
