@@ -715,6 +715,7 @@ arrow_sound = pygame.mixer.Sound('Sounds/arrow.wav')
 wolf_howl_sound = pygame.mixer.Sound('Sounds/wolf_howl_sound.wav')
 portal_sound = pygame.mixer.Sound('Sounds/portal.wav')
 uron = pygame.mixer.Sound('Sounds/fallbig.wav')
+click_sound = pygame.mixer.Sound('Sounds/click.wav')
 pygame.mixer.music.play(-1)
 flag_music = True
 music_mute = False
@@ -770,6 +771,7 @@ while running:
             for (i, elem) in enumerate(buttons_main_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                    click_sound.play()
                     elem.flag_to_pressed = True
                     elem.try_to_click = True
                     elem.visual(screen)
@@ -835,6 +837,7 @@ while running:
             for (i, elem) in enumerate(buttons_options_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                    click_sound.play()
                     elem.flag_to_pressed = True
                     elem.try_to_click = True
                     elem.visual(screen)
@@ -872,11 +875,13 @@ while running:
             for (i, elem) in enumerate(buttons_choose_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                    click_sound.play()
                     elem.flag_to_pressed = True
                     elem.try_to_click = True
                     elem.visual(screen)
                 else:
                     if elem.try_to_click:
+
                         elem.try_to_click = False
                         pygame.time.set_timer(elem.timer_keyup, 10)
                         elem.timer_keyup_DEFINITION = True
@@ -949,12 +954,14 @@ while running:
                 for (i, elem) in enumerate(buttons_pause_menu):
                     elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                     if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                        click_sound.play()
                         elem.flag_to_pressed = True
                         elem.try_to_click = True
                         elem.visual(screen)
                     else:
                         if elem.try_to_click:
                             elem.try_to_click = False
+
                             pygame.time.set_timer(elem.timer_keyup, 10)
                             elem.timer_keyup_DEFINITION = True
                         elem.flag_to_pressed = False
@@ -1011,11 +1018,13 @@ while running:
                 for (i, elem) in enumerate(buttons_options_menu):
                     elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                     if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                        click_sound.play()
                         elem.flag_to_pressed = True
                         elem.try_to_click = True
                         elem.visual(screen)
                     else:
                         if elem.try_to_click:
+
                             elem.try_to_click = False
                             pygame.time.set_timer(elem.timer_keyup, 10)
                             elem.timer_keyup_DEFINITION = True
@@ -1464,6 +1473,7 @@ while running:
             for (j, elem) in enumerate(buttons_gameplay):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
+                    click_sound.play()
                     elem.flag_to_pressed = True
                     elem.try_to_click = True
                     elem.visual(screen)
