@@ -716,6 +716,7 @@ wolf_howl_sound = pygame.mixer.Sound('Sounds/wolf_howl_sound.wav')
 portal_sound = pygame.mixer.Sound('Sounds/portal.wav')
 uron = pygame.mixer.Sound('Sounds/fallbig.wav')
 click_sound = pygame.mixer.Sound('Sounds/click.wav')
+boss_ork_sound = pygame.mixer.Sound('Sounds/thunder2.mp3')
 pygame.mixer.music.play(-1)
 flag_music = True
 music_mute = False
@@ -1758,20 +1759,21 @@ while running:
 
             else:
                 if wave_flag:
-                    num_mob = randint(1, 3)
+                    num_mob = randint(5, 9)
                     how_villians = num_mob
                     wave_flag = False
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
 
-                    randomize_select = randint(1, 1)
+                    randomize_select = randint(1, 3)
 
 
                     if randomize_select == 1:
                         boss_list.append(
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
                                              'УЧИ МАТАНАЛИЗ', screen.get_width() + 75, screen.get_height() // 2, 3))
+                        boss_ork_sound.play()
                         print("create the boss")
                     elif randomize_select == 2:
                         boss_list.append(Boss_warg(100, 100, 3))
