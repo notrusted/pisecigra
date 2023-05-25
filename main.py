@@ -728,7 +728,7 @@ buttons_options_menu = [button_back]
 buttons_choose_menu = [Button('back', [button_back_up, button_back_down], 0, 0)]
 buttons_pause_menu = [Button('back', [button_back_up, button_back_down], 0, 0), Button('quit', [button_quit_up, button_quit_down], 385, 350),
                       Button('options', [button_options_up, button_options_down], 385, 200)]
-buttons_gameplay = [Button('pause', [button_back_up, button_back_down], 0, 0)]
+buttons_gameplay = [Button('pause', [button_pause_up, button_pause_down], 0, 0)]
 flag_options_menu = False
 game_pause = False
 while running:
@@ -1622,6 +1622,7 @@ while running:
             if player_character.hp <= 100 and not Zelya.timer_spawn_zelya_DEFINITION and len(Zelya.zelya_list) < 2:
                 pygame.time.set_timer(Zelya.timer_spawn_zelya, 10000, 1)
                 Zelya.timer_spawn_zelya_DEFINITION = True
+                print("завёл таймер на спавн")
 
             if event.type == Zelya.timer_spawn_zelya and Zelya.timer_spawn_zelya_DEFINITION == True and len(Zelya.zelya_list) < 2 and player_character.hp <= 100:
                 Zelya.zelya_list.append(Zelya('heal', randint(20, 50), zelya_heal, randint(50, screen.get_width() - 100), randint(50, screen.get_height()) - 100))
@@ -1631,7 +1632,8 @@ while running:
             if Zelya.zelya_list:
                 for (i, elem) in enumerate(Zelya.zelya_list):
                     if event.type == elem.timer_for_give:
-                        print("пора удалять зелье")
+                        Zelya.zelya_list.pop(i)
+                        print("зелье удалено")
 
             for (i, elem) in enumerate(buttons_gameplay):
                 if elem.name == 'pause' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:

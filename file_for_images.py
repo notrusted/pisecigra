@@ -99,6 +99,9 @@ button_quit_up = pygame.image.load('images/buttons/quit.png')
 button_quit_down = pygame.image.load('images/buttons/quit_pressed.png')
 button_Volume = [pygame.image.load('images/buttons/Volume_on.png'),pygame.image.load('images/buttons/Volume_off.png')]
 
+button_pause_up = pygame.transform.scale(button_back_up, (button_back_up.get_width() // 2, button_back_up.get_height()//2))
+button_pause_down = pygame.transform.scale(button_back_down, (button_back_down.get_width() // 2, button_back_down.get_height()//2))
+
 light_button = [pygame.image.load("images/buttons/Light_button.png"),pygame.image.load("images/buttons/Off_light_button.png")]
 
 button_R = pygame.image.load('images/buttons/R.png')

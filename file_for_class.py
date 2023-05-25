@@ -349,7 +349,7 @@ class Zelya:
         self.anim_count = 0
         self.x = x
         self.y = y
-        self.timer_for_give = pygame.USEREVENT + 1
+        self.timer_for_give = pygame.USEREVENT
         pygame.time.set_timer(self.timer_for_give, 4000, 1)
         self.timer_for_give_DEFINITION = False
 
