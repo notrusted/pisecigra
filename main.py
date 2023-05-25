@@ -619,7 +619,7 @@ def visual_health(player):
 clock = pygame.time.Clock()
 
 pygame.init()
-screen = pygame.display.set_mode((1000,800))
+screen = pygame.display.set_mode((1000, 800))
 pygame.display.set_caption("The Hobbit: Pyton's Adventure")
 bg = pygame.image.load("images/Back.png")
 bg = pygame.transform.scale(bg, (1000, 800))
@@ -627,7 +627,7 @@ bg = pygame.transform.scale(bg, (1000, 800))
 wave_flag = False
 num_mob = 0
 wave_how = 0
-wave_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
+wave_label = pygame.font.Font("fonts/Hardpixel.OTF", 30)
 how_villians = 0
 
 n_flag = True
@@ -711,6 +711,10 @@ entr = False  # флаг на переключение экранов старт
 Fullhp = 1
 running = True
 pygame.mixer.music.load("Sounds/Main theme.mp3")
+arrow_sound = pygame.mixer.Sound('Sounds/arrow.wav')
+wolf_howl_sound = pygame.mixer.Sound('Sounds/wolf_howl_sound.wav')
+portal_sound = pygame.mixer.Sound('Sounds/portal.wav')
+uron = pygame.mixer.Sound('Sounds/fallbig.wav')
 pygame.mixer.music.play(-1)
 flag_music = True
 music_mute = False
@@ -924,7 +928,7 @@ while running:
     # ---процесс геймплея(арена)-------------------------------------------------------------------
     if gameplay:
 
-
+        print(player_x, player_y)
         if music_mute:
             pygame.mixer.music.stop()
 
@@ -1019,8 +1023,8 @@ while running:
                         elem.visual(screen)
 
         else:
-            wave_view_label = wave_label.render("You have a " + str(wave_how) + " Wave's", False, "Brown")
-            wave_villians_label = wave_label.render("Villian's: " + str(num_mob), False, "Brown")
+            wave_view_label = wave_label.render("You have a " + str(wave_how) + " Wave's", False, "black")
+            wave_villians_label = wave_label.render("Villian's: " + str(num_mob), False, "black")
             screen.blit(wave_view_label, (20, 660))
             screen.blit(wave_villians_label, (20, 700))
 
@@ -1142,6 +1146,7 @@ while running:
                                 portal_list.append(Portal(player_x, player_y, screen))
                                 elem.portal2 = [player_x, player_y]
                                 elem.flag_go_to_portal = True
+                                portal_sound.play(-1)
 
                             if elem.flag_go_to_portal:
                                 if elem.portal1[0] == elem.coord_x and elem.portal1[1] == elem.coord_y:
@@ -1289,6 +1294,7 @@ while running:
                     if totem_list:
                         for (j, elem) in enumerate(totem_list):
                             if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
+                                uron.play()
                                 elem.Protect(Attack_point)
                                 if elem.hp <= 0:
                                     totem_list.pop(j)
@@ -1301,7 +1307,7 @@ while running:
                         for (j, elem) in enumerate(n_list_it_the_game):
                             if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
                                 elem.y -= 50
-
+                                uron.play()
                                 if elem.armor > 0:
                                     elem.armor -= Attack_point
                                     if elem.armor < 0:
@@ -1333,6 +1339,7 @@ while running:
                         for (j1, elem1) in enumerate(warg_list_in_the_game):
                             if abs(ar[0].x - elem1.x) < 100 and abs(ar[0].y - elem1.y) < 100:
                                 elem1.y -= 50
+                                uron.play()
 
                                 if elem1.armor > 0:
                                     elem1.armor -= Attack_point
@@ -1354,6 +1361,7 @@ while running:
                     if orc_list_in_the_game:
                         for (j, elem) in enumerate(orc_list_in_the_game):
                             if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
+                                uron.play()
                                 elem.y -= 50
                                 if elem.armor > 0:
                                     elem.armor -= Attack_point
@@ -1377,6 +1385,7 @@ while running:
                             if elem.name == "King of nazgul":
                                 if abs(ar[0].x - elem.x) < 200 and abs(ar[0].y - elem.y) < 200 and elem.flag_go_to_center == False and elem.flag_invicible == False and not elem.flag_for_proza:
                                     elem.y -= 50
+                                    uron.play()
                                     if elem.armor > 0:
                                         elem.armor -= Attack_point
                                         if elem.armor < 0:
@@ -1398,6 +1407,7 @@ while running:
                             if elem.name == "BossOrkConqueror" and elem.flag_go_to_center == False and not elem.flag_protective_dome_enable:
                                 if abs(ar[0].x - elem.coord_x) < 100 and abs(ar[0].y - elem.coord_y) < 100:
                                     elem.coord_y -= 50
+                                    uron.play()
                                     if elem.armor > 0:
                                         elem.armor -= Attack_point
                                         if elem.armor < 0:
@@ -1422,6 +1432,7 @@ while running:
                             if elem.name == 'The Alpha Warg':
 
                                 if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
+                                    uron.play()
                                     if Boss_warg_Heal_flag == False:
                                         elem.y -= 50
 
@@ -1513,6 +1524,7 @@ while running:
 
     elif Start_game_flag == False and The_Win_flag == False:
         screen.fill("White")
+        portal_sound.stop()
         screen.blit(pygame.image.load("images/THE_END.png"),(0,0))
         screen.blit(loose_label, (320, 500))
         screen.blit(restart_label, (320, 400))
@@ -1559,6 +1571,7 @@ while running:
         screen.blit(Win_label, (400, 500))
         screen.blit(restart_label, (400, 400))
         mouse = pygame.mouse.get_pos()
+        portal_sound.stop()
         if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
             player_y = 500
             Nazgul.count = 0
@@ -1716,6 +1729,8 @@ while running:
                     if event.type == elem.time_to_visual and elem.flag_to_visual:
                         elem.flag_to_visual = False
                         portal_list.pop(i)
+                if len(portal_list) == 0:
+                    portal_sound.stop()
 
             if how_villians > 0:
                 if event.type == n_timer:
@@ -1733,7 +1748,6 @@ while running:
 
             else:
                 if wave_flag:
-                    print("зашёл в wave_flag")
                     num_mob = randint(1, 3)
                     how_villians = num_mob
                     wave_flag = False
@@ -1741,7 +1755,7 @@ while running:
 
                 if num_mob == 0 and flag_create_the_boss:
 
-                    randomize_select = randint(1, 3)
+                    randomize_select = randint(1, 1)
 
 
                     if randomize_select == 1:
@@ -1751,6 +1765,7 @@ while running:
                         print("create the boss")
                     elif randomize_select == 2:
                         boss_list.append(Boss_warg(100, 100, 3))
+                        wolf_howl_sound.play()
                         print("create the boss")
                     elif randomize_select==3:
                         boss_list.append(Nazgul_boss(screen.get_width()//2 + 15, 300))
@@ -1780,6 +1795,7 @@ while running:
             Character.attack_flag = False
             Character.attack_timer_DEFINITION = True
             pygame.time.set_timer(Character.attack_timer, 500, 1)
+            arrow_sound.play()
             if Type_anim == 0:
                 side = 0
                 Arrow_list.append((Arrow[0].get_rect(topleft=(player_x + 25, player_y - 40)), side))
@@ -1811,6 +1827,7 @@ while running:
             if totem_list:
                 for (j,elem) in enumerate(totem_list):
                     if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
+                        uron.play()
                         elem.Protect(Attack_point)
                     if elem.hp<=0:
                         totem_list.pop(j)
@@ -1818,6 +1835,7 @@ while running:
             if n_list_it_the_game:
                 for (j, elem) in enumerate(n_list_it_the_game):
                     if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
+                        uron.play()
                         elem.y -= 100
 
                         if elem.armor > 0:
@@ -1837,7 +1855,7 @@ while running:
             if warg_list_in_the_game:
                 for (j1, elem1) in enumerate(warg_list_in_the_game):
                     if abs(elem1.x - player_x) < 140 and abs(elem1.y - player_y) < 140:
-
+                        uron.play()
                         if elem1.flag1:
                            elem1.y -= 100
 
@@ -1867,6 +1885,7 @@ while running:
             if orc_list_in_the_game:
                 for (j, elem) in enumerate(orc_list_in_the_game):
                     if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
+                        uron.play()
                         elem.y -= 100
                         if elem.armor > 0:
                             elem.armor -= Attack_point
@@ -1886,6 +1905,7 @@ while running:
                     if elem.name == "King of nazgul" :
                             if abs(player_x - elem.x) < 140 and abs(player_y - elem.y) < 140 and elem.flag_go_to_center == False and elem.flag_invicible==False and not elem.flag_for_proza:
                                 elem.y -= 50
+                                uron.play()
                                 if elem.armor > 0:
                                     elem.armor -= Attack_point
                                     if elem.armor < 0:
@@ -1903,6 +1923,7 @@ while running:
                     if elem.name == "BossOrkConqueror":
                         if abs(elem.coord_x - player_x) < 140 and abs(elem.coord_y - player_y) < 140:
                             elem.coord_y -= 100
+                            uron.play()
                             if elem.armor > 0:
                                 elem.armor -= Attack_point
                                 if elem.armor < 0:
@@ -1919,6 +1940,7 @@ while running:
 
                     if elem.name == "The Alpha Warg":
                         if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
+                            uron.play()
                             if Boss_warg_Heal_flag == False:
                                 if Boss_warg_flag1:
                                     elem.y -= 100
