@@ -228,7 +228,7 @@ def nazgul_mechanicks_go():
         else:
             n_flag = True
 
-        if elem.x - player_x<=4:
+        if elem.x - player_x<=5:
             elem.x += 2
             if n_flag:
                 elem.anim += 1
@@ -236,7 +236,7 @@ def nazgul_mechanicks_go():
                 screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
                 screen.blit(n_armor, (elem.x + 10, elem.y - 60))
 
-        if elem.x - player_x>=4:
+        if elem.x - player_x>=5:
             elem.x -= 2
             if n_flag:
                 elem.anim += 1
@@ -244,10 +244,10 @@ def nazgul_mechanicks_go():
                 screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
                 screen.blit(n_armor, (elem.x + 10, elem.y - 60))
 
-        if elem.y - player_y<=4:
+        if elem.y - player_y<=5:
             elem.y += 2
 
-        if elem.y - player_y>=4:
+        if elem.y - player_y>=5:
             elem.y -= 2
 
         if abs(elem.x - player_x) < 50 and abs(elem.y - player_y) < 50:
@@ -900,7 +900,7 @@ while running:
                 Fullhp = All_Hp
                 Arrow_How = 100
                 Start_game_flag = False
-                wave_how = randint(2,2)
+                wave_how = randint(3,5)
                 wave_flag = True
 
 
@@ -935,7 +935,7 @@ while running:
     # ---процесс геймплея(арена)-------------------------------------------------------------------
     if gameplay:
 
-        print(player_x, player_y)
+        #print(player_x, player_y)
         if music_mute:
             pygame.mixer.music.stop()
 
@@ -1134,7 +1134,7 @@ while running:
 
                                 # запускает щит и остаётся на месте
                                 if elem.can_protectiveDome and elem.heal > 0:
-                                    print("elem.heal", elem.heal)
+                                    #print("elem.heal", elem.heal)
                                     elem.can_protectiveDome = False
                                     elem.flag_protective_dome_enable = True
                                     elem.flag_protective_dome_unable = False
@@ -1388,7 +1388,7 @@ while running:
                                     flag_ability = 1
 
                                 if Arrow_list and arrow_pop_flag == False:
-                                    print("заш1л в arrow_pop_set")
+                                    #print("заш1л в arrow_pop_set")
                                     arrow_pop_set.add(i)
                                     continue
                     if boss_list:
@@ -1622,7 +1622,7 @@ while running:
         if Start_game_flag:
             for (i, elem) in enumerate(buttons_main_menu):
                 if elem.name == 'play' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
-                    print("зашёл в проверку ентр")
+                    #print("зашёл в проверку ентр")
                     entr = True
                     elem.timer_keyup_DEFINITION = False
                 if elem.name == 'quit' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
@@ -1651,18 +1651,18 @@ while running:
             if player_character.hp <= 100 and not Zelya.timer_spawn_zelya_DEFINITION and len(Zelya.zelya_list) < 2:
                 pygame.time.set_timer(Zelya.timer_spawn_zelya, 10000, 1)
                 Zelya.timer_spawn_zelya_DEFINITION = True
-                print("завёл таймер на спавн")
+                #print("завёл таймер на спавн")
 
             if event.type == Zelya.timer_spawn_zelya and Zelya.timer_spawn_zelya_DEFINITION == True and len(Zelya.zelya_list) < 2 and player_character.hp <= 100:
                 Zelya.zelya_list.append(Zelya('heal', randint(20, 50), zelya_heal, randint(50, screen.get_width() - 100), randint(50, screen.get_height()) - 100))
-                print("spawn zelya")
+                #print("spawn zelya")
                 Zelya.timer_spawn_zelya_DEFINITION = False
 
             if Zelya.zelya_list:
                 for (i, elem) in enumerate(Zelya.zelya_list):
                     if event.type == elem.timer_for_give:
                         Zelya.zelya_list.pop(i)
-                        print("зелье удалено")
+                        #print("зелье удалено")
 
             for (i, elem) in enumerate(buttons_gameplay):
                 if elem.name == 'pause' and event.type == elem.timer_keyup and elem.timer_keyup_DEFINITION and not elem.flag_to_pressed:
@@ -1711,7 +1711,7 @@ while running:
                 for (i, elem) in enumerate(boss_list):
                     if elem.name == "BossOrkConqueror":
                         if event.type == elem.time_to_protective_enable and elem.time_to_protective_enable_DEFINITION:
-                            print("внутри флага включающего щит")
+                            #print("внутри флага включающего щит")
                             elem.time_to_protective_enable_DEFINITION = False
                             elem.flag_protective_dome_unable = True
                             elem.flag_protective_dome_enable = False
@@ -1719,7 +1719,7 @@ while running:
                             elem.time_to_protective_unable_DEFINITION = True
 
                         if event.type == elem.time_to_protective_unable and elem.time_to_protective_unable_DEFINITION:
-                            print("elem.time_to_protective_Unable")
+                            #print("elem.time_to_protective_Unable")
                             elem.time_to_protective_unable_DEFINITION = False
                             elem.can_protectiveDome = True
 
@@ -1760,13 +1760,13 @@ while running:
 
             else:
                 if wave_flag:
-                    num_mob = randint(1,1)
+                    num_mob = randint(2,5)
                     how_villians = num_mob
                     wave_flag = False
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = randint(3,3)
+                    randomize_select = randint(1,3)
 
 
                     if randomize_select == 1:
@@ -1774,17 +1774,16 @@ while running:
                             BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
                                              'УЧИ МАТАНАЛИЗ', screen.get_width() + 75, screen.get_height() // 2, 3))
                         boss_ork_sound.play()
-                        print("create the boss")
+                        #print("create the boss")
                     elif randomize_select == 2:
                         boss_list.append(Boss_warg(100, 100, 3))
                         wolf_howl_sound.play()
-                        print("create the boss")
+                        #print("create the boss")
                     elif randomize_select==3:
                         boss_list.append(Nazgul_boss(screen.get_width()//2 + 15, 300))
                         duck=Duck()
                         duck.spawn()
-
-                        print("откуда тут утка?")
+                        print("Откуда тут утка?")
                     flag_create_the_boss = False
 
 
