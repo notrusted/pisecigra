@@ -228,7 +228,7 @@ def nazgul_mechanicks_go():
         else:
             n_flag = True
 
-        if elem.x < player_x:
+        if elem.x - player_x<=4:
             elem.x += 2
             if n_flag:
                 elem.anim += 1
@@ -236,7 +236,7 @@ def nazgul_mechanicks_go():
                 screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
                 screen.blit(n_armor, (elem.x + 10, elem.y - 60))
 
-        if elem.x > player_x:
+        if elem.x - player_x>=4:
             elem.x -= 2
             if n_flag:
                 elem.anim += 1
@@ -244,10 +244,10 @@ def nazgul_mechanicks_go():
                 screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
                 screen.blit(n_armor, (elem.x + 10, elem.y - 60))
 
-        if elem.y < player_y:
+        if elem.y - player_y<=4:
             elem.y += 2
 
-        if elem.y > player_y:
+        if elem.y - player_y>=4:
             elem.y -= 2
 
         if abs(elem.x - player_x) < 50 and abs(elem.y - player_y) < 50:
