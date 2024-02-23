@@ -97,12 +97,12 @@ button_back_down = pygame.transform.scale(button_back_down, (button_back_up.get_
 
 button_quit_up = pygame.image.load('images/buttons/quit.png')
 button_quit_down = pygame.image.load('images/buttons/quit_pressed.png')
-button_Volume = [pygame.image.load('images/buttons/Volume_on.png'),pygame.image.load('images/buttons/Volume_off.png')]
+#button_Volume = [pygame.image.load('images/buttons/Volume_on.png'),pygame.image.load('images/buttons/Volume_off.png')]
 
 button_pause_up = pygame.transform.scale(button_back_up, (button_back_up.get_width() // 2, button_back_up.get_height()//2))
 button_pause_down = pygame.transform.scale(button_back_down, (button_back_down.get_width() // 2, button_back_down.get_height()//2))
 
-light_button = [pygame.image.load("images/buttons/Light_button.png"),pygame.image.load("images/buttons/Off_light_button.png")]
+#light_button = [pygame.image.load("images/buttons/Light_button.png"),pygame.image.load("images/buttons/Off_light_button.png")]
 
 button_R = pygame.image.load('images/buttons/R.png')
 
@@ -131,7 +131,7 @@ convert_list_of_images(Punch_list,1/2,1/2)
 convert_list_of_images(Sword_list,1/1.5,1/1.5)
 convert_list_of_images(Knife_list,1/1.5,1/1.5)
 convert_list_of_images(magic_boss_nazgul,1/3,1/3)
-convert_list_of_images(light_button,1/3,1/3)
+#convert_list_of_images([pygame.image.load("images/buttons/Light_button.png"),pygame.image.load("images/buttons/Off_light_button.png")],1/3,1/3)
 #convert_list_of_images(invic_boss_nazgul,1/3,1/3)
 
 

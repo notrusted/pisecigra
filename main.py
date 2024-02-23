@@ -15,7 +15,6 @@ from file_for_class import *
 bonus_attack = 0
 flag_ability = 1
 
-
 # ---КЛАССЫ--------------------------------------------------------------------------------------------
 class Character():
     pred_rsp_hero = [0, 0]
@@ -688,11 +687,13 @@ Volume_level_label = volume_label.render("volume", False, "Black")
 Volume_1_flag = True
 Volume_0_5_flag = False
 Volume_0_2_flag = False
-volume_level1 = light_button[1].get_rect(topleft=(530,330))
-volume_level2 = light_button[1].get_rect(topleft=(500,330))
-volume_level3 = light_button[1].get_rect(topleft=(470,330))
-volume_rect = button_Volume[0].get_rect(topleft=(900,720))
-volume_rect = button_Volume[1].get_rect(topleft=(900,720))
+#volume_level1 = light_button[1].get_rect(topleft=(530,330))
+#volume_level2 = light_button[1].get_rect(topleft=(500,330))
+#volume_level3 = light_button[1].get_rect(topleft=(470,330))
+#volume_rect = button_Volume[0].get_rect(topleft=(900,720))
+#volume_rect = button_Volume[1].get_rect(topleft=(900,720))
+volume_button = Volume_button()
+light_button = light_button()
 Arrow_label = pygame.font.Font("fonts/Angkor-Regular.ttf", 20)
 # --------------------------------------------------------------------------
 
@@ -720,7 +721,7 @@ click_sound = pygame.mixer.Sound('Sounds/click.wav')
 boss_ork_sound = pygame.mixer.Sound('Sounds/thunder2.mp3')
 pygame.mixer.music.play(-1)
 flag_music = True
-music_mute = False
+#music_mute = False
 flag_create_the_boss = False
 flag_win_the_boss = False
 flag_project_screen = True
@@ -753,22 +754,9 @@ while running:
             label = pygame.font.Font('fonts/gwent_extrabold.ttf', 30)
             Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Black")
             screen.blit(Game_Name, (50, 50))
-            if music_mute == False:
-                screen.blit(button_Volume[0],(900,720))
-            else:
-                screen.blit(button_Volume[1], (900, 720))
+            volume_button.music_config(screen)
             mouse = pygame.mouse.get_pos()
-            if volume_rect.collidepoint(mouse) and music_mute == False and pygame.mouse.get_pressed() == (1, 0, 0):
-                music_mute = True
-                Volume_1_flag = False
-                Volume_0_5_flag = False
-                Volume_0_2_flag = False
-                pygame.mixer.music.stop()
-
-            elif volume_rect.collidepoint(mouse) and music_mute and pygame.mouse.get_pressed() == (1, 0, 0):
-                music_mute = False
-                Volume_1_flag = True
-                pygame.mixer.music.play(-1)
+            volume_button.music_disabled(mouse,light_button)
 
             for (i, elem) in enumerate(buttons_main_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
@@ -794,47 +782,8 @@ while running:
             screen.blit(label_options_view, (425, 100))
             screen.blit(Volume_level_label,(465, 290))
 
-            if volume_level1.collidepoint(pygame.mouse.get_pos()) and music_mute == False and pygame.mouse.get_pressed() == (
-            1, 0, 0) and Volume_1_flag == False:
-                pygame.mixer_music.set_volume(1)
-                Volume_1_flag = True
-                Volume_0_5_flag = False
-                Volume_0_2_flag = False
-
-
-            elif volume_level2.collidepoint(pygame.mouse.get_pos()) and music_mute == False and pygame.mouse.get_pressed() == (
-                    1, 0, 0) and Volume_0_5_flag == False:
-                pygame.mixer_music.set_volume(0.5)
-                Volume_0_5_flag = True
-                Volume_1_flag = False
-                Volume_0_2_flag = False
-
-            elif volume_level3.collidepoint(pygame.mouse.get_pos()) and music_mute == False and pygame.mouse.get_pressed() == (
-                    1, 0, 0) and Volume_0_2_flag == False:
-                pygame.mixer_music.set_volume(0.2)
-                Volume_0_2_flag = True
-                Volume_1_flag = False
-                Volume_0_5_flag = False
-
-            if Volume_0_2_flag:
-                screen.blit(light_button[0],(470,330))
-            else:
-                screen.blit(light_button[1], (470, 330))
-
-            if Volume_0_5_flag:
-                screen.blit(light_button[0],(500,330))
-            else:
-                screen.blit(light_button[1], (500, 330))
-
-            if Volume_1_flag:
-                screen.blit(light_button[0],(530 ,330))
-            else:
-                screen.blit(light_button[1], (530, 330))
-
-
-
-
-
+            light_button.choice_of_level(volume_button)
+            light_button.level_config(screen)
 
             for (i, elem) in enumerate(buttons_options_menu):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
@@ -927,9 +876,6 @@ while running:
                 Start_game_flag = False
                 wave_how = randint(1,1)
                 wave_flag = True
-
-
-
 
 
     # ---процесс геймплея(арена)-------------------------------------------------------------------
