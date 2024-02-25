@@ -126,7 +126,7 @@ def orc_mechanicks_go():
     global player_x, player_y, orc_list_in_the_game, orc_flag, gameplay
     if orc_list_in_the_game:
         for (i, elem) in enumerate(orc_list_in_the_game):
-            orc_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+            orc_label = pygame.font.Font("fonts/Fonts/RobotoMono-VariableFont_wght.ttf", 25)
             orc_heal_points = orc_label.render("Hp: " + str(elem.hp), False, "green")
             orc_armor = orc_label.render("Armor: " + str(elem.armor), False, "green")
 
@@ -170,7 +170,7 @@ def orc_mechanicks_go():
 def nazgul_mechanicks_go():
     global player_x, player_y, n_list_it_the_game, n_flag, gameplay
     for (i, elem) in enumerate(n_list_it_the_game):
-        n_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+        n_label = pygame.font.Font("fonts/Fonts/RobotoMono-VariableFont_wght.ttf", 25)
         n_heal_points = n_label.render("Hp: " + str(elem.hp), False, "green")
         n_armor = n_label.render("Armor: " + str(elem.armor), False, "green")
 
@@ -223,7 +223,7 @@ def warg_mechanicks_go():
     global warg_list_in_the_game, player_y, player_x, player_character, warg_flag1
     global warg_flag2, warg_flag3, warg_flag4, warg_armor, gameplay
     for (i, elem1) in enumerate(warg_list_in_the_game):
-        warg_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+        warg_label = pygame.font.Font("fonts/Fonts/RobotoMono-VariableFont_wght.ttf", 25)
         warg_heal_points = warg_label.render("Hp: " + str(elem1.hp), False, "green")
         warg_armor = warg_label.render("Armor: " + str(elem1.armor), False, "green")
 
@@ -310,7 +310,7 @@ def warg_mechanicks_go():
 
 def Boss_nazgul_mechanicks():
     global totem_list,gameplay
-    Boss_nazgul_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+    Boss_nazgul_label = pygame.font.Font("fonts/Fonts/RobotoMono-VariableFont_wght.ttf", 25)
     Boss_nazgul_name = Boss_nazgul_label.render("King of nazguls", False, "blue")
     Boss_nazgul_heal_points = Boss_nazgul_label.render("Hp: " + str(elem.hp), False, "green")
     Boss_nazgul_armor = Boss_nazgul_label.render("Armor: " + str(elem.armor), False, "green")
@@ -360,7 +360,7 @@ def Boss_nazgul_mechanicks():
 def Boss_warg_mechanicks_go():
     global Boss_warg_list_in_the_game, player_y, player_x, player_character, heal_anim, n_timer, Boss_warg_ability_flag, \
         gameplay, Boss_warg_flag3, Boss_warg_flag1, Boss_warg_flag2, Boss_warg_flag4, Boss_warg_Heal_flag
-    Boss_warg_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+    Boss_warg_label = pygame.font.Font("fonts/Fonts/RobotoMono-VariableFont_wght.ttf", 25)
     Boss_warg_name = Boss_warg_label.render("The Alpha Warg", False, "green")
     Boss_warg_heal_points = Boss_warg_label.render("Hp: " + str(elem.hp), False, "green")
     Boss_warg_armor = Boss_warg_label.render("Armor: " + str(elem.armor), False, "green")
@@ -572,7 +572,7 @@ bg = pygame.transform.scale(bg, (1000, 800))
 wave_flag = False
 num_mob = 0
 wave_how = randint(1, 10)
-wave_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
+wave_label = pygame.font.Font("fonts/Fonts/RobotoMono-VariableFont_wght.ttf", 30)
 how_villians = 0
 
 n_flag = True
@@ -619,12 +619,12 @@ Type_anim = 0
 gameplay = True
 
 # ---Подключение шрифтов----------------------------------------------------
-player_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
-the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
+player_label = pygame.font.Font("fonts/Fonts/RobotoMono-VariableFont_wght.ttf", 30)
+the_end_label = pygame.font.Font("fonts/Fonts/RobotoMono-VariableFont_wght.ttf", 50)
 loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
 restart_label = the_end_label.render("Start again", False, "Black")
 restart_label_rect = restart_label.get_rect(topleft=(250, 400))
-Arrow_label = pygame.font.Font("fonts/Angkor-Regular.ttf", 20)
+Arrow_label = pygame.font.Font("fonts/Fonts/Angkor-Regular.ttf", 20)
 # --------------------------------------------------------------------------
 
 Arrow_list = []
@@ -651,14 +651,14 @@ while running:
     if Start_game_flag:
         gameplay = False
         screen.fill("Black")
-        label = pygame.font.Font('fonts/gwent_extrabold.ttf', 60)
+        label = pygame.font.Font('fonts/Fonts/gwent_extrabold.ttf', 60)
         project_company = label.render("JIN Project", True, "White")
         if flag_project_screen:
             screen.blit(screen_saver, (0,0))
             screen.blit(project_company, (screen.get_width() // 2 - 150, screen.get_height() // 2))
         else:
             screen.blit(screen_saver, (0, 0))
-            label = pygame.font.Font('fonts/gwent_extrabold.ttf', 30)
+            label = pygame.font.Font('fonts/Fonts/gwent_extrabold.ttf', 30)
             Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Black")
             screen.blit(Game_Name, (50, 50))
             button_play_rect = button_play_up.get_rect(topleft=(60, 100))
@@ -799,10 +799,10 @@ while running:
                 if elem.name == "King of nazgul":
                     Boss_nazgul_mechanicks()
                 if elem.name == "BossOrkConqueror":
-                    label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 50)
+                    label_Boss = pygame.font.Font('fonts/Fonts/RobotoMono-VariableFont_wght.ttf', 50)
                     name_label_boss = label_Boss.render('BOSSSSSS', True, 'Red')
                     screen.blit(name_label_boss, (screen.get_width() // 2 - 100, 50))
-                    label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 10)
+                    label_Boss = pygame.font.Font('fonts/Fonts/RobotoMono-VariableFont_wght.ttf', 10)
                     cry_label_boss = label_Boss.render(elem.cry, False, 'White')
                     hp_boss = label_Boss.render("HP BOSS: " + str(elem.hp), True, 'Red')
                     armor_boss = label_Boss.render("ARMOR BOSS: " + str(elem.armor), True, 'Red')

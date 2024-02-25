@@ -210,7 +210,7 @@ class Totem():
     def spawn(self,surf):
         surf.blit(*self.anim,(self.x,self.y))
     def draw(self,surf):
-        label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+        label = pygame.font.Font("fonts/Fonts/RobotoMono-VariableFont_wght.ttf", 25)
         heal_point = label.render("Hp: " + str(self.hp), False, "green")
         surf.blit(heal_point,(self.x,self.y-30))
     def Protect(self, dmg):
