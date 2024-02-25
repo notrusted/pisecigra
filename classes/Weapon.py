@@ -5,3 +5,5 @@ class Weapon:
         self.name = Name
         self.damage = Damage
 
+        a = 5
+
