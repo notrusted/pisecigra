@@ -2,10 +2,6 @@ import pygame
 from random import randint
 from file_for_images import *
 from file_for_class import *
-#пуш для Некита
-#---------------------------------------------------
-#---------------------------------------------------
-#--------------------
 bonus_attack = 0
 flag_ability = 1
 
