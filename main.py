@@ -876,10 +876,10 @@ while running:
     if gameplay:
 
         #print(player_x, player_y)
-        if music_mute:
+        if volume_button.music_mute:
             pygame.mixer.music.stop()
 
-        if flag_music and music_mute == False:
+        if flag_music and volume_button.music_mute == False:
             pygame.mixer.music.stop()
             pygame.mixer.music.load("sounds/Alternative 2.mp3")
             pygame.mixer.music.play(-1)
@@ -917,45 +917,8 @@ while running:
                 screen.blit(label_options_view, (425, 100))
                 screen.blit(Volume_level_label, (465, 290))
 
-                if volume_level1.collidepoint(
-                        pygame.mouse.get_pos()) and music_mute == False and pygame.mouse.get_pressed() == (
-                        1, 0, 0) and Volume_1_flag == False:
-                    pygame.mixer_music.set_volume(1)
-                    Volume_1_flag = True
-                    Volume_0_5_flag = False
-                    Volume_0_2_flag = False
-
-
-                elif volume_level2.collidepoint(
-                        pygame.mouse.get_pos()) and music_mute == False and pygame.mouse.get_pressed() == (
-                        1, 0, 0) and Volume_0_5_flag == False:
-                    pygame.mixer_music.set_volume(0.5)
-                    Volume_0_5_flag = True
-                    Volume_1_flag = False
-                    Volume_0_2_flag = False
-
-                elif volume_level3.collidepoint(
-                        pygame.mouse.get_pos()) and music_mute == False and pygame.mouse.get_pressed() == (
-                        1, 0, 0) and Volume_0_2_flag == False:
-                    pygame.mixer_music.set_volume(0.2)
-                    Volume_0_2_flag = True
-                    Volume_1_flag = False
-                    Volume_0_5_flag = False
-
-                if Volume_0_2_flag:
-                    screen.blit(light_button[0], (470, 330))
-                else:
-                    screen.blit(light_button[1], (470, 330))
-
-                if Volume_0_5_flag:
-                    screen.blit(light_button[0], (500, 330))
-                else:
-                    screen.blit(light_button[1], (500, 330))
-
-                if Volume_1_flag:
-                    screen.blit(light_button[0], (530, 330))
-                else:
-                    screen.blit(light_button[1], (530, 330))
+                light_button.choice_of_level(volume_button)
+                light_button.level_config(screen)
 
                 for (i, elem) in enumerate(buttons_options_menu):
                     elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
