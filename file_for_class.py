@@ -360,8 +360,143 @@ class Mechanics_of_Mobs():
                         self.screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
         x = self.player.Player_coordinate()
 
+    def nazgul_mechanicks_go(self,n_list_it_the_game, n_flag,player_x, player_y):
+        for (i, elem) in enumerate(n_list_it_the_game):
+            n_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+            n_heal_points = n_label.render("Hp: " + str(elem.hp), False, "green")
+            n_armor = n_label.render("Armor: " + str(elem.armor), False, "green")
+
+            if (abs(elem.x - player_x) <= 200) and (abs(elem.y - player_y) <= 200):
+
+                if elem.x >= player_x:
+                    self.screen.blit(Nazgul_attack[0], (elem.x, elem.y))
+                    self.screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
+                    self.screen.blit(n_armor, (elem.x + 10, elem.y - 60))
+                if elem.x < player_x:
+                    self.screen.blit(Nazgul_attack[1], (elem.x, elem.y))
+                    self.screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
+                    self.screen.blit(n_armor, (elem.x + 10, elem.y - 60))
+                n_flag = False
+
+            else:
+                n_flag = True
+
+            if elem.x - player_x <= 5:
+                elem.x += 2
+                if n_flag:
+                    elem.anim += 1
+                    self.screen.blit(Nazgul_right[elem.anim % 2], (elem.x, elem.y))
+                    self.screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
+                    self.screen.blit(n_armor, (elem.x + 10, elem.y - 60))
+
+            if elem.x - player_x >= 5:
+                elem.x -= 2
+                if n_flag:
+                    elem.anim += 1
+                    self.screen.blit(Nazgul_left[elem.anim % 2], (elem.x, elem.y))
+                    self.screen.blit(n_heal_points, (elem.x + 10, elem.y - 30))
+                    self.screen.blit(n_armor, (elem.x + 10, elem.y - 60))
+
+            if elem.y - player_y <= 5:
+                elem.y += 2
+
+            if elem.y - player_y >= 5:
+                elem.y -= 2
+
+            if abs(elem.x - player_x) < 50 and abs(elem.y - player_y) < 50:
+                self.player.hp -= elem.Attack()
+                player_y += 150
+                if self.player.hp <= 0:
+                    self.player.hp = 0
+                    self.gameplay = False
+
+    def warg_mechanicks_go(self,warg_list_in_the_game,player_x, player_y):
+
+        for (i, elem1) in enumerate(warg_list_in_the_game):
+            warg_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+            warg_heal_points = warg_label.render("Hp: " + str(elem1.hp), False, "green")
+            warg_armor = warg_label.render("Armor: " + str(elem1.armor), False, "green")
+
+            if elem1.flag1 and elem1.y <= 1100:
+                elem1.y += 15
+
+                elem1.anim += 1
+                self.screen.blit(Warg_Down[elem1.anim % 3], (elem1.x, elem1.y))
+                self.screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
+                self.screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
+
+            if elem1.y > 1100 and elem1.flag1:
+                a = self.player.Player_coordinate()
+                elem1.x = -100
+                elem1.y = a[1]
+                elem1.flag1 = False
+                elem1.flag2 = True
+
+            if elem1.flag2 and elem1.x <= 900:
+                elem1.x += 15
+
+                elem1.anim += 1
+                self.screen.blit(Warg_Right[elem1.anim % 2], (elem1.x, elem1.y))
+                self.screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
+                self.screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
+
+            if elem1.x > 900 and elem1.flag2:
+                a = self.player.Player_coordinate()
+                elem1.x = a[0]
+                elem1.y = 1100
+                elem1.flag2 = False
+                elem1.flag3 = True
+
+            if elem1.flag3 and elem1.y >= -100:
+                elem1.y -= 15
+
+                elem1.anim += 1
+                self.screen.blit(Warg_Up[elem1.anim % 2], (elem1.x, elem1.y))
+                self.screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
+                self.screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
+
+            if elem1.y < -100 and elem1.flag3:
+                a = self.player.Player_coordinate()
+                elem1.x = 900
+                elem1.y = a[1]
+                elem1.flag3 = False
+                elem1.flag4 = True
+
+            if elem1.flag4 and elem1.x >= -100:
+                elem1.x -= 15
+
+                elem1.anim += 1
+                self.screen.blit(Warg_Left[elem1.anim % 2], (elem1.x, elem1.y))
+                self.screen.blit(warg_heal_points, (elem1.x + 10, elem1.y - 30))
+                self.screen.blit(warg_armor, (elem1.x + 10, elem1.y - 60))
+
+            if elem1.x < -100 and elem1.flag4:
+                a = self.player.Player_coordinate()
+                elem1.x = a[0]
+                elem1.y = -100
+                elem1.flag4 = False
+                elem1.flag1 = True
+
+            if abs(elem1.x - player_x) < 50 and abs(elem1.y - player_y) < 50:
+                self.player.hp -= elem1.Attack()
+
+                if player_x > elem1.x:
+                    player_x -= 50
 
 
+
+                elif player_x < elem1.x:
+                    player_x += 50
+
+                if player_y < elem1.y:
+                    player_y += 50
+
+                elif player_y > elem1.y:
+                    player_y -= 50
+
+                if self.player.hp <= 0:
+                    self.player.hp = 0
+                    self.gameplay = False
 
 #----------------------------------------------------------------------------------------------------
 
