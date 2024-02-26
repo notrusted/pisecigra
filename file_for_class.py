@@ -277,6 +277,94 @@ class Ork(Monster):
         b = dmg
         self.hp = self.hp - dmg + (b * randint(0, 1) * randint(0, 1))
 
+#------Механики мобов -------------------------------------------------------------------------------
+class Mechanics_of_Mobs():
+    def __init__(self,gameplay,player,screen):
+        self.gameplay = gameplay
+        self.player = player
+        self.screen = screen
+
+    def orc_mechanicks_go(self,orc_list_in_the_game,orc_flag,Character,player_x, player_y):
+        if orc_list_in_the_game:
+
+            for (i, elem) in enumerate(orc_list_in_the_game):
+                orc_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+                orc_heal_points = orc_label.render("Hp: " + str(elem.hp), False, "green")
+                orc_armor = orc_label.render("Armor: " + str(elem.armor), False, "green")
+
+                if abs(elem.x - player_x) <= 60 and abs(elem.y - player_y) <= 60:
+                    self.player.hp -= elem.Attack()
+                    player_y += 150
+                    if self.player.hp <= 0:
+                        self.player.hp = 0
+                        self.gameplay = False
+
+                elif Character.pred_rsp_hero[0] == player_x and player_y == Character.pred_rsp_hero[1]:
+                    if abs(elem.x - player_x) > 5:
+                        orc_flag += 1
+                        if elem.x > player_x:
+                            elem.x -= 4
+                            elem.anim += 1
+                            self.screen.blit(Orc_left[elem.anim % 3], (elem.x, elem.y))
+                            self.screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                            self.screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                        else:
+                            elem.x += 4
+                            elem.anim += 1
+                            self.screen.blit(Orc_right[elem.anim % 3], (elem.x, elem.y))
+                            self.screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                            self.screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                    else:
+                        orc_flag = 0
+                        if elem.y > player_y:
+                            elem.y -= 4
+                            elem.anim += 1
+                            self.screen.blit(Orc_up[elem.anim % 3], (elem.x, elem.y))
+                            self.screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                            self.screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                        else:
+                            elem.y += 4
+                            elem.anim += 1
+                            self.screen.blit(Orc_down[elem.anim % 3], (elem.x, elem.y))
+                            self.screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                            self.screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+
+
+                elif abs(elem.x - player_x) > abs(elem.y - player_y):
+                    orc_flag += 1
+                    if elem.x > player_x:
+                        elem.x -= 4
+                        elem.anim += 1
+                        self.screen.blit(Orc_left[elem.anim % 3], (elem.x, elem.y))
+                        self.screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        self.screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                    else:
+                        elem.x += 4
+                        elem.anim += 1
+                        self.screen.blit(Orc_right[elem.anim % 3], (elem.x, elem.y))
+                        self.screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        self.screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                elif abs(elem.x - player_x) <= abs(elem.y - player_y):
+                    orc_flag = 0
+                    if elem.y > player_y:
+                        elem.y -= 4
+                        elem.anim += 1
+                        self.screen.blit(Orc_up[elem.anim % 3], (elem.x, elem.y))
+                        self.screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        self.screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+                    else:
+                        elem.y += 4
+                        elem.anim += 1
+                        self.screen.blit(Orc_down[elem.anim % 3], (elem.x, elem.y))
+                        self.screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
+                        self.screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
+        x = self.player.Player_coordinate()
+
+
+
+
+#----------------------------------------------------------------------------------------------------
+
 
 class Boss:
     def __init__(self, hp, armor, dmg, weapon, utility):

@@ -121,82 +121,7 @@ class Hobbit(Character):
             self.hp += 15
         flag_ability = 0
 #--- функции механики перемещения мобов ----------------------------------------------------------------
-def orc_mechanicks_go():
-    global player_x, player_y, orc_list_in_the_game, orc_flag, gameplay, player_character
-    if orc_list_in_the_game:
 
-        for (i, elem) in enumerate(orc_list_in_the_game):
-            orc_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
-            orc_heal_points = orc_label.render("Hp: " + str(elem.hp), False, "green")
-            orc_armor = orc_label.render("Armor: " + str(elem.armor), False, "green")
-
-            if abs(elem.x - player_x) <= 60 and abs(elem.y - player_y) <= 60:
-                player_character.hp -= elem.Attack()
-                player_y += 150
-                if player_character.hp <= 0:
-                    player_character.hp = 0
-                    gameplay = False
-
-            elif Character.pred_rsp_hero[0] == player_x and player_y == Character.pred_rsp_hero[1] :
-                if abs(elem.x - player_x) > 5:
-                    orc_flag += 1
-                    if elem.x > player_x:
-                        elem.x -= 4
-                        elem.anim += 1
-                        screen.blit(Orc_left[elem.anim % 3], (elem.x, elem.y))
-                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
-                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
-                    else:
-                        elem.x += 4
-                        elem.anim += 1
-                        screen.blit(Orc_right[elem.anim % 3], (elem.x, elem.y))
-                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
-                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
-                else:
-                    orc_flag = 0
-                    if elem.y > player_y:
-                        elem.y -= 4
-                        elem.anim += 1
-                        screen.blit(Orc_up[elem.anim % 3], (elem.x, elem.y))
-                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
-                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
-                    else:
-                        elem.y += 4
-                        elem.anim += 1
-                        screen.blit(Orc_down[elem.anim % 3], (elem.x, elem.y))
-                        screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
-                        screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
-
-
-            elif abs(elem.x - player_x) > abs(elem.y - player_y):
-                orc_flag += 1
-                if elem.x > player_x:
-                    elem.x -= 4
-                    elem.anim += 1
-                    screen.blit(Orc_left[elem.anim % 3], (elem.x, elem.y))
-                    screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
-                    screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
-                else:
-                    elem.x += 4
-                    elem.anim += 1
-                    screen.blit(Orc_right[elem.anim % 3], (elem.x, elem.y))
-                    screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
-                    screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
-            elif abs(elem.x - player_x) <= abs(elem.y - player_y):
-                orc_flag = 0
-                if elem.y > player_y:
-                    elem.y -= 4
-                    elem.anim += 1
-                    screen.blit(Orc_up[elem.anim % 3], (elem.x, elem.y))
-                    screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
-                    screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
-                else:
-                    elem.y += 4
-                    elem.anim += 1
-                    screen.blit(Orc_down[elem.anim % 3], (elem.x, elem.y))
-                    screen.blit(orc_heal_points, (elem.x + 10, elem.y - 30))
-                    screen.blit(orc_armor, (elem.x + 10, elem.y - 60))
-    x = player_character.Player_coordinate()
 
 
 def nazgul_mechanicks_go():
@@ -665,8 +590,8 @@ player_y = 250
 flag_animation = True
 Type_anim = 0
 
-gameplay = True
 
+gameplay = True
 # ---Подключение шрифтов----------------------------------------------------
 player_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
 the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
@@ -845,6 +770,7 @@ while running:
                 Start_game_flag = False
                 wave_how = randint(3,5)
                 wave_flag = True
+                mechanics = Mechanics_of_Mobs(gameplay, player_character, screen)
 
 
 
@@ -858,6 +784,7 @@ while running:
                 Start_game_flag = False
                 wave_how = randint(1, 1)
                 wave_flag = True
+                mechanics = Mechanics_of_Mobs(gameplay, player_character, screen)
 
 
 
@@ -870,6 +797,9 @@ while running:
                 Start_game_flag = False
                 wave_how = randint(1,1)
                 wave_flag = True
+                mechanics = Mechanics_of_Mobs(gameplay, player_character, screen)
+
+
 
 
     # ---процесс геймплея(арена)-------------------------------------------------------------------
@@ -988,7 +918,7 @@ while running:
                 nazgul_mechanicks_go()
 
             if orc_list_in_the_game:
-                orc_mechanicks_go()
+                mechanics.orc_mechanicks_go(orc_list_in_the_game,orc_flag,Character,player_x, player_y)
 
             if Zelya.zelya_list:
                 for (i, elem) in enumerate(Zelya.zelya_list):
@@ -1649,7 +1579,7 @@ while running:
 
             if how_villians > 0:
                 if event.type == n_timer:
-                    num = randint(1, 3)
+                    num = randint(1,3)
                     how_villians -= 1
 
                     if num == 1:
