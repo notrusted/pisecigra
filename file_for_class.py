@@ -498,6 +498,53 @@ class Mechanics_of_Mobs():
                     self.player.hp = 0
                     self.gameplay = False
 
+    def visual_health(self,health_model, Fullhp):
+
+        health = self.player.hp
+        section = Fullhp // 9
+        level_hp = health // section
+        if level_hp == 9:
+            self.screen.blit(health_model[0], (100, 50))
+            self.screen.blit(health_model[0], (150, 50))
+            self.screen.blit(health_model[0], (200, 50))
+        elif level_hp == 8:
+            self.screen.blit(health_model[0], (100, 50))
+            self.screen.blit(health_model[0], (150, 50))
+            self.screen.blit(health_model[1], (200, 50))
+        elif level_hp == 7:
+            self.screen.blit(health_model[0], (100, 50))
+            self.screen.blit(health_model[0], (150, 50))
+            self.screen.blit(health_model[2], (200, 50))
+        elif level_hp == 6:
+            self.screen.blit(health_model[0], (100, 50))
+            self.screen.blit(health_model[0], (150, 50))
+            self.screen.blit(health_model[2], (200, 50))
+
+        elif level_hp == 5:
+            self.screen.blit(health_model[0], (100, 50))
+            self.screen.blit(health_model[1], (150, 50))
+            self.screen.blit(health_model[2], (200, 50))
+
+        elif level_hp == 4:
+            self.screen.blit(health_model[0], (100, 50))
+            self.screen.blit(health_model[2], (150, 50))
+            self.screen.blit(health_model[2], (200, 50))
+
+        elif level_hp == 3:
+            self.screen.blit(health_model[0], (100, 50))
+            self.screen.blit(health_model[2], (150, 50))
+            self.screen.blit(health_model[2], (200, 50))
+
+        elif level_hp == 2:
+            self.screen.blit(health_model[1], (100, 50))
+            self.screen.blit(health_model[2], (150, 50))
+            self.screen.blit(health_model[2], (200, 50))
+
+        elif level_hp == 1 or health > 0:
+            self.screen.blit(health_model[2], (100, 50))
+            self.screen.blit(health_model[2], (150, 50))
+            self.screen.blit(health_model[2], (200, 50))
+
 #----------------------------------------------------------------------------------------------------
 
 

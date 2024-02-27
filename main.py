@@ -340,54 +340,6 @@ def Boss_warg_mechanicks_go():
                 screen.blit(Boss_warg_name, (400, 20))
                 Boss_warg_ability_flag = True
 # ---функция отображения хп игрока-------------------------------------------------------------------------
-def visual_health(player):
-    global health_model, Fullhp, screen
-    health = player.hp
-    section = Fullhp // 9
-    level_hp = health // section
-    if level_hp == 9:
-        screen.blit(health_model[0], (100, 50))
-        screen.blit(health_model[0], (150, 50))
-        screen.blit(health_model[0], (200, 50))
-    elif level_hp == 8:
-        screen.blit(health_model[0], (100, 50))
-        screen.blit(health_model[0], (150, 50))
-        screen.blit(health_model[1], (200, 50))
-    elif level_hp == 7:
-        screen.blit(health_model[0], (100, 50))
-        screen.blit(health_model[0], (150, 50))
-        screen.blit(health_model[2], (200, 50))
-    elif level_hp == 6:
-        screen.blit(health_model[0], (100, 50))
-        screen.blit(health_model[0], (150, 50))
-        screen.blit(health_model[2], (200, 50))
-
-    elif level_hp == 5:
-        screen.blit(health_model[0], (100, 50))
-        screen.blit(health_model[1], (150, 50))
-        screen.blit(health_model[2], (200, 50))
-
-    elif level_hp == 4:
-        screen.blit(health_model[0], (100, 50))
-        screen.blit(health_model[2], (150, 50))
-        screen.blit(health_model[2], (200, 50))
-
-    elif level_hp == 3:
-        screen.blit(health_model[0], (100, 50))
-        screen.blit(health_model[2], (150, 50))
-        screen.blit(health_model[2], (200, 50))
-
-    elif level_hp == 2:
-        screen.blit(health_model[1], (100, 50))
-        screen.blit(health_model[2], (150, 50))
-        screen.blit(health_model[2], (200, 50))
-
-    elif level_hp == 1 or health > 0:
-        screen.blit(health_model[2], (100, 50))
-        screen.blit(health_model[2], (150, 50))
-        screen.blit(health_model[2], (200, 50))
-
-
 
 # -------------------------------------------------------------------------------------------------------
 
@@ -1164,7 +1116,7 @@ while running:
 
             arrow_pop_set.clear()
 
-            visual_health(player_character)
+            mechanics.visual_health(health_model, Fullhp)
             for (j, elem) in enumerate(buttons_gameplay):
                 elem_rect = elem.list_position[0].get_rect(topleft=(elem.x, elem.y))
                 if elem_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (1, 0, 0):
