@@ -121,76 +121,6 @@ class Hobbit(Character):
             self.hp += 15
         flag_ability = 0
 #--- функции механики перемещения мобов ----------------------------------------------------------------
-
-def Boss_nazgul_mechanicks():
-    global totem_list,gameplay
-    Boss_nazgul_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
-    Boss_nazgul_name = Boss_nazgul_label.render("King of nazguls", False, "blue")
-    Boss_nazgul_heal_points = Boss_nazgul_label.render("Hp: " + str(elem.hp), False, "green")
-    Boss_nazgul_armor = Boss_nazgul_label.render("Armor: " + str(elem.armor), False, "green")
-
-    #screen.blit(boss_nazgul_down[0],(screen.get_width()//2,200))
-    if duck.x!=1000 or duck.x!=0:
-        duck.duck_go(screen)
-    if elem.hp>0:
-        screen.blit(Boss_nazgul_heal_points, (elem.x + 10, elem.y - 30))
-        screen.blit(Boss_nazgul_armor, (elem.x + 10, elem.y - 60))
-        screen.blit(Boss_nazgul_name, (400, 20))
-        if elem.flag_for_proza:
-            elem.proza(screen)
-        else:
-            if (elem.hp>50 or elem.flag_magic) and elem.flag_invicible==False :
-                elem.go_to(screen,player_x,player_y)
-                if abs(player_x-elem.x)<25 and abs(player_y-elem.y)<25:
-                    player_character.hp-=elem.standart_attack()
-            elif elem.hp<=50:
-                elem.flag_go_to_center=True
-            if elem.flag_go_to_center:
-                elem.go_to(screen,screen.get_width()//2,screen.get_height()//2)
-                if elem.check==True:
-                    elem.flag_invicible=True
-                    elem.check=False
-                    elem.flag_go_to_center=False
-            if elem.flag_invicible:
-                if elem.flag_totem:
-                    elem.invicible(screen)
-                    if elem.totem_spawn:
-                        totem_list=[Totem(elem.x-200,elem.y-200),Totem(elem.x-200,elem.y+200),Totem(elem.x+200,elem.y-200),Totem(elem.x+200,elem.y+200)]
-                        elem.totem_spawn=False
-                    for i in totem_list:
-                        i.spawn(screen)
-                        i.draw(screen)
-                    if elem.hp<100 and len(totem_list)!=0:
-                        if elem.flag_heal:
-                            elem.hp+=5
-                            elem.flag_heal=False
-                            pygame.time.set_timer(elem.time_heal,2000)
-                    else:
-                        elem.flag_invicible=False
-                        totem_list.clear()
-                        elem.totem_spawn=True
-                        elem.flag_totem=False
-                        pygame.time.set_timer(elem.time_totem,20000)
-                else:
-                    if not elem.flag_magic:
-                        if elem.flag_create_magic:
-                            elem.set_magic(elem.x,elem.y)
-                            elem.flag_create_magic=False
-                        magic=elem.get_magic()
-                        magic.special_attack(screen,player_x,player_y)
-                        screen.blit(boss_nazgul_down[0],(elem.x,elem.y))
-                        if abs(magic.x-player_x)<=25 and abs(magic.y-player_y)<=25:
-                            elem.flag_magic=True
-                            player_character.hp-=magic.damage
-                            if player_character.strong>=0:
-                                player_character.strong-=magic.sd
-                                print("Damage reduced by 10 points :( ...")
-                            elem.flag_invicible=False
-                            elem.flag_magic=True
-            if player_character.hp <= 0:
-                player_character.hp = 0
-                gameplay = False
-
 def Boss_warg_mechanicks_go():
     global Boss_warg_list_in_the_game, player_y, player_x, player_character, heal_anim, n_timer, Boss_warg_ability_flag, \
         gameplay, Boss_warg_flag3, Boss_warg_flag1, Boss_warg_flag2, Boss_warg_flag4, Boss_warg_Heal_flag
@@ -392,7 +322,7 @@ bg_y = 0
 
 orc_list_in_the_game = []
 orc_flag = 0
-totem_list=[]
+#totem_list=[]
 player_speed = 15
 player_x = 300
 player_y = 250
@@ -429,7 +359,7 @@ Arrow_list = []
 Arrow_How = 0
 Attack_point = 0
 
-boss_list = []
+actually_boss = ""
 portal_list = []
 
 
@@ -740,135 +670,134 @@ while running:
                         Zelya.zelya_list.pop(i)
 
             # ---BOSSES--------------------------------------------------------------------------------
-            if boss_list:
-                for (i, elem) in enumerate(boss_list):
-                    if elem.name == "The Alpha Warg":
+            if actually_boss:
+                    if actually_boss.name == "The Alpha Warg":
                         Boss_warg_mechanicks_go()
-                    if elem.name == "King of nazgul":
-                        Boss_nazgul_mechanicks()
-                    if elem.name == "BossOrkConqueror":
+                    if actually_boss.name == "King of nazgul":
+                        mechanics.Boss_nazgul_mechanicks(actually_boss)
+                    if actually_boss.name == "BossOrkConqueror":
                         label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 50)
                         name_label_boss = label_Boss.render('BOSSSSSS', True, 'Red')
                         screen.blit(name_label_boss, (screen.get_width() // 2 - 100, 50))
                         label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 10)
-                        cry_label_boss = label_Boss.render(elem.cry, False, 'White')
-                        hp_boss = label_Boss.render("HP BOSS: " + str(elem.hp), True, 'Red')
-                        armor_boss = label_Boss.render("ARMOR BOSS: " + str(elem.armor), True, 'Red')
+                        cry_label_boss = label_Boss.render(actually_boss.cry, False, 'White')
+                        hp_boss = label_Boss.render("HP BOSS: " + str(actually_boss.hp), True, 'Red')
+                        armor_boss = label_Boss.render("ARMOR BOSS: " + str(actually_boss.armor), True, 'Red')
                         screen.blit(hp_boss, (screen.get_width() // 2 - 100, 100))
 
                         # screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                        if elem.flag_go_to_center:
-                            elem.coord_x -= 5
-                            elem.anim += 1
-                            screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
-                            if elem.coord_x - screen.get_width() // 2 < 30:
-                                elem.flag_go_to_center = False
-                                pygame.time.set_timer(elem.time, 1000)
-                                elem.time_definition = True
-                        elif elem.flag_orc_cry:
-                            screen.blit(Orc_conqueror_down[1], (elem.coord_x, elem.coord_y))
+                        if actually_boss.flag_go_to_center:
+                            actually_boss.coord_x -= 5
+                            actually_boss.anim += 1
+                            screen.blit(Orc_conqueror_left[actually_boss.anim % 3], (actually_boss.coord_x, actually_boss.coord_y))
+                            if actually_boss.coord_x - screen.get_width() // 2 < 30:
+                                actually_boss.flag_go_to_center = False
+                                pygame.time.set_timer(actually_boss.time, 1000)
+                                actually_boss.time_definition = True
+                        elif actually_boss.flag_orc_cry:
+                            screen.blit(Orc_conqueror_down[1], (actually_boss.coord_x, actually_boss.coord_y))
                             screen.blit(cry_label_boss,
-                                        (elem.coord_x + 5 + randint(-1, 1), elem.coord_y - 5 + randint(-1, 1)))
+                                        (actually_boss.coord_x + 5 + randint(-1, 1), actually_boss.coord_y - 5 + randint(-1, 1)))
 
-                        elif elem.hp > 0:
+                        elif actually_boss.hp > 0:
                             if portal_list:
                                 for port in portal_list:
                                     if port.flag_to_visual:
                                         port.visual(screen, portal_png)
-                            if elem.hp < 120:
+                            if actually_boss.hp < 120:
 
                                 # запускает щит и остаётся на месте
-                                if elem.can_protectiveDome and elem.heal > 0:
+                                if actually_boss.can_protectiveDome and actually_boss.heal > 0:
                                     #print("elem.heal", elem.heal)
-                                    elem.can_protectiveDome = False
-                                    elem.flag_protective_dome_enable = True
-                                    elem.flag_protective_dome_unable = False
-                                    pygame.time.set_timer(elem.time_to_protective_enable, 5000)
-                                    elem.healing()
-                                    elem.time_to_protective_enable_DEFINITION = True
+                                    actually_boss.can_protectiveDome = False
+                                    actually_boss.flag_protective_dome_enable = True
+                                    actually_boss.flag_protective_dome_unable = False
+                                    pygame.time.set_timer(actually_boss.time_to_protective_enable, 5000)
+                                    actually_boss.healing()
+                                    actually_boss.time_to_protective_enable_DEFINITION = True
 
-                            if abs(elem.coord_x - player_x) <= 60 and abs(elem.coord_y - player_y) <= 60:
-                                player_character.hp -= elem.standart_attack()
+                            if abs(actually_boss.coord_x - player_x) <= 60 and abs(actually_boss.coord_y - player_y) <= 60:
+                                player_character.hp -= actually_boss.standart_attack()
                                 player_y += 150
                                 if player_character.hp <= 0:
                                     player_character.hp = 0
                                     gameplay = False
 
-                            if abs(elem.coord_x - player_x) > 140 and abs(
-                                    elem.coord_y - player_y) > 140 and elem.can_portal:
-                                elem.can_portal = False
-                                portal_list.append(Portal(elem.coord_x + 20, elem.coord_y, screen))
-                                elem.portal1 = [elem.coord_x + 20, elem.coord_y]
+                            if abs(actually_boss.coord_x - player_x) > 140 and abs(
+                                    actually_boss.coord_y - player_y) > 140 and actually_boss.can_portal:
+                                actually_boss.can_portal = False
+                                portal_list.append(Portal(actually_boss.coord_x + 20, actually_boss.coord_y, screen))
+                                actually_boss.portal1 = [actually_boss.coord_x + 20, actually_boss.coord_y]
                                 portal_list.append(Portal(player_x, player_y, screen))
-                                elem.portal2 = [player_x, player_y]
-                                elem.flag_go_to_portal = True
+                                actually_boss.portal2 = [player_x, player_y]
+                                actually_boss.flag_go_to_portal = True
                                 portal_sound.play(-1)
 
-                            if elem.flag_go_to_portal:
-                                if elem.portal1[0] == elem.coord_x and elem.portal1[1] == elem.coord_y:
-                                    elem.flag_go_to_portal = False
-                                    elem.coord_x = elem.portal2[0]
-                                    elem.coord_y = elem.portal2[1]
+                            if actually_boss.flag_go_to_portal:
+                                if actually_boss.portal1[0] == actually_boss.coord_x and actually_boss.portal1[1] == actually_boss.coord_y:
+                                    actually_boss.flag_go_to_portal = False
+                                    actually_boss.coord_x = actually_boss.portal2[0]
+                                    actually_boss.coord_y = actually_boss.portal2[1]
                                 else:
-                                    if abs(elem.coord_x - elem.portal1[0]) > abs(elem.coord_y - elem.portal1[1]):
-                                        if elem.coord_x > elem.portal1[0]:
-                                            elem.coord_x -= 4
-                                            elem.anim += 1
-                                            if elem.flag_protective_dome_enable:
-                                                screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                            screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                    if abs(actually_boss.coord_x - actually_boss.portal1[0]) > abs(actually_boss.coord_y - actually_boss.portal1[1]):
+                                        if actually_boss.coord_x > actually_boss.portal1[0]:
+                                            actually_boss.coord_x -= 4
+                                            actually_boss.anim += 1
+                                            if actually_boss.flag_protective_dome_enable:
+                                                screen.blit(protectiveDome, (actually_boss.coord_x - 50, actually_boss.coord_y - 50))
+                                            screen.blit(Orc_conqueror_left[actually_boss.anim % 3], (actually_boss.coord_x, actually_boss.coord_y))
                                         else:
-                                            elem.coord_x += 4
-                                            elem.anim += 1
-                                            if elem.flag_protective_dome_enable:
-                                                screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                            screen.blit(Orc_conqueror_right[elem.anim % 3],
-                                                        (elem.coord_x, elem.coord_y))
+                                            actually_boss.coord_x += 4
+                                            actually_boss.anim += 1
+                                            if actually_boss.flag_protective_dome_enable:
+                                                screen.blit(protectiveDome, (actually_boss.coord_x - 50, actually_boss.coord_y - 50))
+                                            screen.blit(Orc_conqueror_right[actually_boss.anim % 3],
+                                                        (actually_boss.coord_x, actually_boss.coord_y))
 
-                                    elif abs(elem.coord_x - elem.portal1[0]) <= abs(elem.coord_y - elem.portal1[1]):
-                                        if elem.coord_y > elem.portal1[1]:
-                                            elem.coord_y -= 4
-                                            elem.anim += 1
-                                            if elem.flag_protective_dome_enable:
-                                                screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                            screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                    elif abs(actually_boss.coord_x - actually_boss.portal1[0]) <= abs(actually_boss.coord_y - actually_boss.portal1[1]):
+                                        if actually_boss.coord_y > actually_boss.portal1[1]:
+                                            actually_boss.coord_y -= 4
+                                            actually_boss.anim += 1
+                                            if actually_boss.flag_protective_dome_enable:
+                                                screen.blit(protectiveDome, (actually_boss.coord_x - 50, actually_boss.coord_y - 50))
+                                            screen.blit(Orc_conqueror_up[actually_boss.anim % 3], (actually_boss.coord_x, actually_boss.coord_y))
 
                                         else:
-                                            elem.coord_y += 4
-                                            elem.anim += 1
-                                            if elem.flag_protective_dome_enable:
-                                                screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                            screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                            actually_boss.coord_y += 4
+                                            actually_boss.anim += 1
+                                            if actually_boss.flag_protective_dome_enable:
+                                                screen.blit(protectiveDome, (actually_boss.coord_x - 50, actually_boss.coord_y - 50))
+                                            screen.blit(Orc_conqueror_down[actually_boss.anim % 3], (actually_boss.coord_x, actually_boss.coord_y))
 
                             else:
-                                if abs(elem.coord_x - player_x) > abs(elem.coord_y - player_y):
-                                    if elem.coord_x > player_x:
-                                        elem.coord_x -= 4
-                                        elem.anim += 1
-                                        if elem.flag_protective_dome_enable:
-                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                        screen.blit(Orc_conqueror_left[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                if abs(actually_boss.coord_x - player_x) > abs(actually_boss.coord_y - player_y):
+                                    if actually_boss.coord_x > player_x:
+                                        actually_boss.coord_x -= 4
+                                        actually_boss.anim += 1
+                                        if actually_boss.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (actually_boss.coord_x - 50, actually_boss.coord_y - 50))
+                                        screen.blit(Orc_conqueror_left[actually_boss.anim % 3], (actually_boss.coord_x, actually_boss.coord_y))
                                     else:
-                                        elem.coord_x += 4
-                                        elem.anim += 1
-                                        if elem.flag_protective_dome_enable:
-                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                        screen.blit(Orc_conqueror_right[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                        actually_boss.coord_x += 4
+                                        actually_boss.anim += 1
+                                        if actually_boss.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (actually_boss.coord_x - 50, actually_boss.coord_y - 50))
+                                        screen.blit(Orc_conqueror_right[actually_boss.anim % 3], (actually_boss.coord_x, actually_boss.coord_y))
 
-                                elif abs(elem.coord_x - player_x) <= abs(elem.coord_y - player_y):
-                                    if elem.coord_y > player_y:
-                                        elem.coord_y -= 4
-                                        elem.anim += 1
-                                        if elem.flag_protective_dome_enable:
-                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                        screen.blit(Orc_conqueror_up[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                elif abs(actually_boss.coord_x - player_x) <= abs(actually_boss.coord_y - player_y):
+                                    if actually_boss.coord_y > player_y:
+                                        actually_boss.coord_y -= 4
+                                        actually_boss.anim += 1
+                                        if actually_boss.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (actually_boss.coord_x - 50, actually_boss.coord_y - 50))
+                                        screen.blit(Orc_conqueror_up[actually_boss.anim % 3], (actually_boss.coord_x, actually_boss.coord_y))
 
                                     else:
-                                        elem.coord_y += 4
-                                        elem.anim += 1
-                                        if elem.flag_protective_dome_enable:
-                                            screen.blit(protectiveDome, (elem.coord_x - 50, elem.coord_y - 50))
-                                        screen.blit(Orc_conqueror_down[elem.anim % 3], (elem.coord_x, elem.coord_y))
+                                        actually_boss.coord_y += 4
+                                        actually_boss.anim += 1
+                                        if actually_boss.flag_protective_dome_enable:
+                                            screen.blit(protectiveDome, (actually_boss.coord_x - 50, actually_boss.coord_y - 50))
+                                        screen.blit(Orc_conqueror_down[actually_boss.anim % 3], (actually_boss.coord_x, actually_boss.coord_y))
 
             # ---перс при бездействии-------------------------------------------
             if flag_animation:
@@ -947,13 +876,13 @@ while running:
                         screen.blit(Arrow[1], (ar[0].x, ar[0].y))
                         ar[0].y += 20
 
-                    if totem_list:
-                        for (j, elem) in enumerate(totem_list):
+                    if actually_boss and actually_boss.name=="King of nazgul" and actually_boss.totem_list:
+                        for (j, elem) in enumerate(actually_boss.totem_list):
                             if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
                                 uron.play()
                                 elem.Protect(Attack_point)
                                 if elem.hp <= 0:
-                                    totem_list.pop(j)
+                                    actually_boss.totem_list.pop(j)
                                     print("Totem destroyed...")
 
                                 if Arrow_list:
@@ -1036,80 +965,79 @@ while running:
                                     #print("заш1л в arrow_pop_set")
                                     arrow_pop_set.add(i)
                                     continue
-                    if boss_list:
-                        for (j, elem) in enumerate(boss_list):
-                            if elem.name == "King of nazgul":
-                                if abs(ar[0].x - elem.x) < 200 and abs(ar[0].y - elem.y) < 200 and elem.flag_go_to_center == False and elem.flag_invicible == False and not elem.flag_for_proza:
-                                    elem.y -= 50
-                                    uron.play()
-                                    if elem.armor > 0:
-                                        elem.armor -= Attack_point
-                                        if elem.armor < 0:
-                                            elem.armor = 0
-                                    else:
-                                        elem.hp -= Attack_point
+                    if actually_boss:
+                        if actually_boss.name == "King of nazgul":
+                            if abs(ar[0].x - actually_boss.x) < 200 and abs(ar[0].y - actually_boss.y) < 200 and actually_boss.flag_go_to_center == False and actually_boss.flag_invicible == False and not actually_boss.flag_for_proza:
+                                actually_boss.y -= 50
+                                uron.play()
+                                if actually_boss.armor > 0:
+                                    actually_boss.armor -= Attack_point
+                                    if actually_boss.armor < 0:
+                                        actually_boss.armor = 0
+                                else:
+                                    actually_boss.hp -= Attack_point
 
-                                    if elem.hp <= 0:
-                                          boss_list.pop(j)
-                                          print("the King of nazgul is murdered...")
-                                          num_mob -= 1
-                                          wave_flag = True
-                                          wave_how -= 1
-                                          flag_ability = 1
-
-                                    if Arrow_list:
-                                        Arrow_list.pop(i)
-                                        continue
-                            if elem.name == "BossOrkConqueror" and elem.flag_go_to_center == False and not elem.flag_protective_dome_enable:
-                                if abs(ar[0].x - elem.coord_x) < 100 and abs(ar[0].y - elem.coord_y) < 100:
-                                    elem.coord_y -= 50
-                                    uron.play()
-                                    if elem.armor > 0:
-                                        elem.armor -= Attack_point
-                                        if elem.armor < 0:
-                                            elem.armor = 0
-                                    else:
-                                        elem.hp -= Attack_point
-
-                                    if elem.hp <= 0:
-                                        boss_list.pop(j)
-                                        print("the Boss Orc Conqueror is murdered...")
-                                        wave_flag = True
-                                        wave_how -= 1
-
-                                    if Arrow_list and arrow_pop_flag == False:
-                                        arrow_pop_set.add(i)
-                                        continue
-                                elif elem.name == "BossOrkConqueror" and elem.flag_protective_dome_enable:
-                                    if abs(ar[0].x - elem.coord_x) < 20 and abs(ar[0].y - elem.coord_y) < 20:
-                                        if Arrow_list and arrow_pop_flag == False:
-                                            Arrow_list.pop(i)
-
-                            if elem.name == 'The Alpha Warg':
-
-                                if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
-                                    uron.play()
-                                    if Boss_warg_Heal_flag == False:
-                                        elem.y -= 50
-
-                                    if elem.armor > 0:
-                                        elem.armor -= Attack_point
-                                        if elem.armor < 0:
-                                            elem.armor = 0
-                                    else:
-                                        elem.Protect(Attack_point)
-
-                                    if elem.hp <= 0:
-                                        boss_list.pop(j)
-                                        print("the Alpha Warg is murdered...")
+                                if actually_boss.hp <= 0:
+                                        actually_boss=""
+                                        print("the King of nazgul is murdered...")
                                         num_mob -= 1
                                         wave_flag = True
                                         wave_how -= 1
                                         flag_ability = 1
 
+                                if Arrow_list:
+                                    Arrow_list.pop(i)
+                                    continue
+                        if actually_boss.name == "BossOrkConqueror" and actually_boss.flag_go_to_center == False and not actually_boss.flag_protective_dome_enable:
+                            if abs(ar[0].x - actually_boss.coord_x) < 100 and abs(ar[0].y - actually_boss.coord_y) < 100:
+                                actually_boss.coord_y -= 50
+                                uron.play()
+                                if actually_boss.armor > 0:
+                                    actually_boss.armor -= Attack_point
+                                    if actually_boss.armor < 0:
+                                        actually_boss.armor = 0
+                                else:
+                                    actually_boss.hp -= Attack_point
+
+                                if actually_boss.hp <= 0:
+                                    actually_boss=""
+                                    print("the Boss Orc Conqueror is murdered...")
+                                    wave_flag = True
+                                    wave_how -= 1
+
+                                if Arrow_list and arrow_pop_flag == False:
+                                    arrow_pop_set.add(i)
+                                    continue
+                            elif actually_boss.name == "BossOrkConqueror" and actually_boss.flag_protective_dome_enable:
+                                if abs(ar[0].x - actually_boss.coord_x) < 20 and abs(ar[0].y - actually_boss.coord_y) < 20:
                                     if Arrow_list and arrow_pop_flag == False:
-                                        arrow_pop_set.add(i)
-                                        continue
+                                        Arrow_list.pop(i)
+
+                        if actually_boss.name == 'The Alpha Warg':
+
+                            if abs(ar[0].x - actually_boss.x) < 100 and abs(ar[0].y - actually_boss.y) < 100:
+                                uron.play()
+                                if Boss_warg_Heal_flag == False:
+                                    actually_boss.y -= 50
+
+                                if actually_boss.armor > 0:
+                                    actually_boss.armor -= Attack_point
+                                    if actually_boss.armor < 0:
+                                        actually_boss.armor = 0
+                                else:
+                                    actually_boss.Protect(Attack_point)
+
+                                if actually_boss.hp <= 0:
+                                    actually_boss=""
+                                    print("the Alpha Warg is murdered...")
+                                    num_mob -= 1
+                                    wave_flag = True
+                                    wave_how -= 1
+                                    flag_ability = 1
+
+                                if Arrow_list and arrow_pop_flag == False:
+                                    arrow_pop_set.add(i)
+                                    continue
 
             for num in arrow_pop_set:
                 Arrow_list.pop(num)
@@ -1194,12 +1122,12 @@ while running:
             Nazgul_boss.count = 0
             BossOrkConqueror.count = 0
             Boss_warg.count = 0
-            totem_list.clear()
+            #totem_list.clear()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             n_list_it_the_game.clear()
             warg_list_in_the_game.clear()
             orc_list_in_the_game.clear()
             Arrow_list.clear()
-            boss_list.clear()
+            actually_boss=""
             Boss_warg_list_in_the_game.clear()
             player_character.hp = All_Hp
             flag_ability = 1
@@ -1237,12 +1165,12 @@ while running:
             Nazgul_boss.count = 0
             BossOrkConqueror.count = 0
             Boss_warg.count = 0
-            totem_list.clear()
+            #totem_list.clear()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             n_list_it_the_game.clear()
             warg_list_in_the_game.clear()
             orc_list_in_the_game.clear()
             Arrow_list.clear()
-            boss_list.clear()
+            actually_boss=""
             Boss_warg_list_in_the_game.clear()
             player_character.hp = All_Hp
             flag_ability = 1
@@ -1325,12 +1253,12 @@ while running:
                         gameplay = False
                         Start_game_flag = True
                         player_y = 500
-                        totem_list.clear()
+                        #totem_list.clear()!!!!!!!!!!!!!!!!!
                         n_list_it_the_game.clear()
                         warg_list_in_the_game.clear()
                         orc_list_in_the_game.clear()
                         Arrow_list.clear()
-                        boss_list.clear()
+                        actually_boss=""
                         Boss_warg_list_in_the_game.clear()
                         player_character.hp = All_Hp
                         flag_ability = 1
@@ -1352,35 +1280,34 @@ while running:
                             flag_options_menu_in_pause = False
                             elem.timer_keyup_DEFINITION = False
 
-            if boss_list:
-                for (i, elem) in enumerate(boss_list):
-                    if elem.name == "BossOrkConqueror":
-                        if event.type == elem.time_to_protective_enable and elem.time_to_protective_enable_DEFINITION:
+            if actually_boss:
+                    if actually_boss.name == "BossOrkConqueror":
+                        if event.type == actually_boss.time_to_protective_enable and actually_boss.time_to_protective_enable_DEFINITION:
                             #print("внутри флага включающего щит")
-                            elem.time_to_protective_enable_DEFINITION = False
-                            elem.flag_protective_dome_unable = True
-                            elem.flag_protective_dome_enable = False
-                            pygame.time.set_timer(elem.time_to_protective_unable, 1000)
-                            elem.time_to_protective_unable_DEFINITION = True
+                            actually_boss.time_to_protective_enable_DEFINITION = False
+                            actually_boss.flag_protective_dome_unable = True
+                            actually_boss.flag_protective_dome_enable = False
+                            pygame.time.set_timer(actually_boss.time_to_protective_unable, 1000)
+                            actually_boss.time_to_protective_unable_DEFINITION = True
 
-                        if event.type == elem.time_to_protective_unable and elem.time_to_protective_unable_DEFINITION:
-                            #print("elem.time_to_protective_Unable")
-                            elem.time_to_protective_unable_DEFINITION = False
-                            elem.can_protectiveDome = True
+                        if event.type == actually_boss.time_to_protective_unable and actually_boss.time_to_protective_unable_DEFINITION:
+                            #print("actually_boss.time_to_protective_Unable")
+                            actually_boss.time_to_protective_unable_DEFINITION = False
+                            actually_boss.can_protectiveDome = True
 
 
-                        if elem.time_definition and event.type == elem.time:
-                            elem.time_definition = False
-                            elem.flag_orc_cry = False
-                            elem.flag_boss_to_heal = True
+                        if actually_boss.time_definition and event.type == actually_boss.time:
+                            actually_boss.time_definition = False
+                            actually_boss.flag_orc_cry = False
+                            actually_boss.flag_boss_to_heal = True
 
-                        if event.type == elem.time_reload_can_portal and not elem.can_portal:
-                            elem.can_portal = True
-                    if elem.name=="King of nazgul":
-                        if event.type==elem.time_heal:
-                            elem.flag_heal=True
-                        if event.type==elem.time_totem:
-                             elem.flag_totem=True
+                        if event.type == actually_boss.time_reload_can_portal and not actually_boss.can_portal:
+                            actually_boss.can_portal = True
+                    if actually_boss.name=="King of nazgul":
+                        if event.type==actually_boss.time_heal:
+                            actually_boss.flag_heal=True
+                        if event.type==actually_boss.time_totem:
+                             actually_boss.flag_totem=True
             if portal_list:
                 for (i, elem) in enumerate(portal_list):
                     if event.type == elem.time_to_visual and elem.flag_to_visual:
@@ -1405,27 +1332,28 @@ while running:
 
             else:
                 if wave_flag:
-                    num_mob = randint(2,5)
+                    #num_mob = randint(2,5)
+                    num_mob=1
                     how_villians = num_mob
                     wave_flag = False
                     flag_create_the_boss = True
 
                 if num_mob == 0 and flag_create_the_boss:
-                    randomize_select = randint(1,3)
+                    #randomize_select = randint(1,3)
+                    randomize_select=3
 
 
                     if randomize_select == 1:
-                        boss_list.append(
-                            BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
-                                             'УЧИ МАТАНАЛИЗ', screen.get_width() + 75, screen.get_height() // 2, 3))
+                        actually_boss=BossOrkConqueror(300, 150, 70, Weapon('Boss Ork Sword', 50), Magic('Protective Dome', 5),
+                                             'УЧИ МАТАНАЛИЗ', screen.get_width() + 75, screen.get_height() // 2, 3)
                         boss_ork_sound.play()
                         #print("create the boss")
                     elif randomize_select == 2:
-                        boss_list.append(Boss_warg(100, 100, 3))
+                        actually_boss=Boss_warg(100, 100, 3)
                         wolf_howl_sound.play()
                         #print("create the boss")
                     elif randomize_select==3:
-                        boss_list.append(Nazgul_boss(screen.get_width()//2 + 15, 300))
+                        actually_boss=Nazgul_boss(screen.get_width()//2 + 15, 300)
                         duck=Duck()
                         duck.spawn()
                         print("Откуда тут утка?")
@@ -1437,11 +1365,10 @@ while running:
             The_Win_flag = True
             gameplay = False
 
-        if boss_list:
-            for(i,elem) in enumerate(boss_list):
-                if elem.name == "The Alpha Warg":
-                    if event.type == elem.timer and Boss_warg_ability_flag:
-                        elem.special_ability()
+        if actually_boss:
+            if elem.name == "The Alpha Warg":
+                if event.type == elem.timer and Boss_warg_ability_flag:
+                    elem.special_ability()
 
 
         if event.type == Character.attack_timer and not Character.attack_flag and Character.attack_timer_DEFINITION:
@@ -1484,13 +1411,13 @@ while running:
             punch_anim += 1
             if Attack_point <= a:
                 Attack_point = a
-            if totem_list:
-                for (j,elem) in enumerate(totem_list):
+            if actually_boss and actually_boss.name=="King of nazgul" and actually_boss.totem_list:
+                for (j,elem) in enumerate(actually_boss.totem_list):
                     if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
                         uron.play()
                         elem.Protect(Attack_point)
                     if elem.hp<=0:
-                        totem_list.pop(j)
+                        actually_boss.totem_list.pop(j)
                         print("Totem destoyed...")
             if n_list_it_the_game:
                 for (j, elem) in enumerate(n_list_it_the_game):
@@ -1560,76 +1487,75 @@ while running:
                             print("the Ork is murdered...")
                             num_mob -= 1
                             flag_ability = 1
-            if boss_list:
-                for (j, elem) in enumerate(boss_list):
-                    if elem.name == "King of nazgul" :
-                            if abs(player_x - elem.x) < 140 and abs(player_y - elem.y) < 140 and elem.flag_go_to_center == False and elem.flag_invicible==False and not elem.flag_for_proza:
-                                elem.y -= 50
-                                uron.play()
-                                if elem.armor > 0:
-                                    elem.armor -= Attack_point
-                                    if elem.armor < 0:
-                                        elem.armor = 0
-                                else:
-                                    elem.hp -= Attack_point
-
-                                    if elem.hp <= 0:
-                                        boss_list.pop(j)
-                                        print("the King of nazgul is murdered...")
-                                        num_mob -= 1
-                                        wave_flag = True
-                                        wave_how -= 1
-                                        flag_ability = 1
-                    if elem.name == "BossOrkConqueror":
-                        if abs(elem.coord_x - player_x) < 140 and abs(elem.coord_y - player_y) < 140:
-                            elem.coord_y -= 100
+            if actually_boss:          
+                if actually_boss.name == "King of nazgul" :
+                        if abs(player_x - actually_boss.x) < 140 and abs(player_y - actually_boss.y) < 140 and actually_boss.flag_go_to_center == False and actually_boss.flag_invicible==False and not actually_boss.flag_for_proza:
+                            actually_boss.y -= 50
                             uron.play()
-                            if elem.armor > 0:
-                                elem.armor -= Attack_point
-                                if elem.armor < 0:
-                                    elem.armor = 0
+                            if actually_boss.armor > 0:
+                                actually_boss.armor -= Attack_point
+                                if actually_boss.armor < 0:
+                                    actually_boss.armor = 0
                             else:
-                                elem.hp -= Attack_point
+                                actually_boss.hp -= Attack_point
 
-                            if elem.hp <= 0:
-                                boss_list.pop(j)
-                                print("the Ork is murdered...")
-                                flag_ability = 1
-                                wave_flag = True
-                                wave_how -= 1
+                                if actually_boss.hp <= 0:
+                                    actually_boss=""
+                                    print("the King of nazgul is murdered...")
+                                    num_mob -= 1
+                                    wave_flag = True
+                                    wave_how -= 1
+                                    flag_ability = 1
+                if actually_boss.name == "BossOrkConqueror":
+                    if abs(actually_boss.coord_x - player_x) < 140 and abs(actually_boss.coord_y - player_y) < 140:
+                        actually_boss.coord_y -= 100
+                        uron.play()
+                        if actually_boss.armor > 0:
+                            actually_boss.armor -= Attack_point
+                            if actually_boss.armor < 0:
+                                actually_boss.armor = 0
+                        else:
+                            actually_boss.hp -= Attack_point
 
-                    if elem.name == "The Alpha Warg":
-                        if abs(elem.x - player_x) < 140 and abs(elem.y - player_y) < 140:
-                            uron.play()
-                            if Boss_warg_Heal_flag == False:
-                                if Boss_warg_flag1:
-                                    elem.y -= 100
+                        if actually_boss.hp <= 0:
+                            actually_boss=""
+                            print("the Ork is murdered...")
+                            flag_ability = 1
+                            wave_flag = True
+                            wave_how -= 1
 
-                                if Boss_warg_flag2:
-                                    elem.x -= 100
+                if actually_boss.name == "The Alpha Warg":
+                    if abs(actually_boss.x - player_x) < 140 and abs(actually_boss.y - player_y) < 140:
+                        uron.play()
+                        if Boss_warg_Heal_flag == False:
+                            if Boss_warg_flag1:
+                                actually_boss.y -= 100
 
-                                if Boss_warg_flag3:
-                                    elem.y += 100
+                            if Boss_warg_flag2:
+                                actually_boss.x -= 100
 
-                                if Boss_warg_flag4:
-                                    elem.x += 100
+                            if Boss_warg_flag3:
+                                actually_boss.y += 100
+
+                            if Boss_warg_flag4:
+                                actually_boss.x += 100
 
 
-                            if elem.armor > 0:
-                                elem.armor -= Attack_point
-                                if elem.armor < 0:
-                                    elem.armor = 0
-                            else:
-                                elem.Protect(Attack_point)
+                        if actually_boss.armor > 0:
+                            actually_boss.armor -= Attack_point
+                            if actually_boss.armor < 0:
+                                actually_boss.armor = 0
+                        else:
+                            actually_boss.Protect(Attack_point)
 
-                            Attack_point = 0
+                        Attack_point = 0
 
-                            if elem.hp <= 0:
-                                boss_list.pop(j)
-                                print("the Alpha Warg is murdered...")
-                                flag_ability = 1
-                                wave_flag = True
-                                wave_how -= 1
+                        if actually_boss.hp <= 0:
+                            actually_boss=""
+                            print("the Alpha Warg is murdered...")
+                            flag_ability = 1
+                            wave_flag = True
+                            wave_how -= 1
 
 
 

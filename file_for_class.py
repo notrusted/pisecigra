@@ -498,6 +498,75 @@ class Mechanics_of_Mobs():
                     self.player.hp = 0
                     self.gameplay = False
 
+    def Boss_nazgul_mechanicks(self, boss_nazgul):
+        Boss_nazgul_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+        Boss_nazgul_name = Boss_nazgul_label.render("King of nazguls", False, "blue")
+        Boss_nazgul_heal_points = Boss_nazgul_label.render("Hp: " + str(boss_nazgul.hp), False, "green")
+        Boss_nazgul_armor = Boss_nazgul_label.render("Armor: " + str(boss_nazgul.armor), False, "green")
+
+        #screen.blit(boss_nazgul_down[0],(screen.get_width()//2,200))
+        #if duck.x!=1000 or duck.x!=0:
+        #    duck.duck_go(screen)
+        if boss_nazgul.hp>0:
+            self.screen.blit(Boss_nazgul_heal_points, (boss_nazgul.x + 10, boss_nazgul.y - 30))
+            self.screen.blit(Boss_nazgul_armor, (boss_nazgul.x + 10, boss_nazgul.y - 60))
+            self.screen.blit(Boss_nazgul_name, (400, 20))
+            if boss_nazgul.flag_for_proza:
+                boss_nazgul.proza(self.screen)
+            else:
+                if (boss_nazgul.hp>50 or boss_nazgul.flag_magic) and boss_nazgul.flag_invicible==False :
+                    boss_nazgul.go_to(self.screen,self.player.Player_coordinate()[0],self.player.Player_coordinate()[1])
+                    if abs(self.player.Player_coordinate()[0]-boss_nazgul.x)<25 and abs(self.player.Player_coordinate()[1]-boss_nazgul.y)<25:
+                        self.player.hp-=boss_nazgul.standart_attack()
+                elif boss_nazgul.hp<=50:
+                    boss_nazgul.flag_go_to_center=True
+                if boss_nazgul.flag_go_to_center:
+                    boss_nazgul.go_to(self.screen,self.screen.get_width()//2,self.screen.get_height()//2)
+                    if boss_nazgul.check==True:
+                        boss_nazgul.flag_invicible=True
+                        boss_nazgul.check=False
+                        boss_nazgul.flag_go_to_center=False
+                if boss_nazgul.flag_invicible:
+                    if boss_nazgul.flag_totem:
+                        boss_nazgul.invicible(self.screen)
+                        if boss_nazgul.totem_spawn:
+                            boss_nazgul.set_totem()
+                            #totem_list=[Totem(boss_nazgul.x-200,boss_nazgul.y-200),Totem(boss_nazgul.x-200,boss_nazgul.y+200),Totem(boss_nazgul.x+200,boss_nazgul.y-200),Totem(boss_nazgul.x+200,boss_nazgul.y+200)]
+                            boss_nazgul.totem_spawn=False
+                        for i in boss_nazgul.totem_list:
+                            i.spawn(self.screen)
+                            i.draw(self.screen)
+                        if boss_nazgul.hp<100 and len(boss_nazgul.totem_list)!=0:
+                            if boss_nazgul.flag_heal:
+                                boss_nazgul.hp+=5
+                                boss_nazgul.flag_heal=False
+                                pygame.time.set_timer(boss_nazgul.time_heal,2000)
+                        else:
+                            boss_nazgul.flag_invicible=False
+                            boss_nazgul.totem_list.clear()
+                            boss_nazgul.totem_spawn=True
+                            boss_nazgul.flag_totem=False
+                            pygame.time.set_timer(boss_nazgul.time_totem,20000)
+                    else:
+                        if not boss_nazgul.flag_magic:
+                            if boss_nazgul.flag_create_magic:
+                                boss_nazgul.set_magic(boss_nazgul.x,boss_nazgul.y)
+                                boss_nazgul.flag_create_magic=False
+                            magic=boss_nazgul.get_magic()
+                            magic.special_attack(self.screen,self.player.Player_coordinate()[0],self.player.Player_coordinate()[1])
+                            self.screen.blit(boss_nazgul_down[0],(boss_nazgul.x,boss_nazgul.y))
+                            if abs(magic.x-self.player.Player_coordinate()[0])<=25 and abs(magic.y-self.player.Player_coordinate()[1])<=25:
+                                boss_nazgul.flag_magic=True
+                                self.player.hp-=magic.damage
+                                if self.player.strong>=0:
+                                    self.player.strong-=magic.sd
+                                    print("Damage reduced by 10 points :( ...")
+                                boss_nazgul.flag_invicible=False
+                                boss_nazgul.flag_magic=True
+                if self.player.hp <= 0:
+                    self.player.hp = 0
+                    self.gameplay = False
+
     def visual_health(self,health_model, Fullhp):
 
         health = self.player.hp
@@ -580,6 +649,7 @@ class Nazgul_boss(Boss):
         self.flag_totem=True
         self.flag_magic=False
         self.flag_create_magic=True
+        self.totem_list=[]
         Nazgul_boss.count += 1
     def get_magic(self):
         return self.magic
@@ -619,6 +689,8 @@ class Nazgul_boss(Boss):
             else:
                 self.y+=self.sp
                 Nazgul_boss.animation(self,sur,"d",self.x,self.y)
+    def set_totem(self):
+         self.totem_list=[Totem(self.x-200,self.y-200),Totem(self.x-200,self.y+200),Totem(self.x+200,self.y-200),Totem(self.x+200,self.y+200)]
     def animation(self, surf: pygame.surface.Surface, symbol: str, x, y):
         if Nazgul_boss.count_animation == 0:
             Nazgul_boss.count_animation = 1
