@@ -498,6 +498,155 @@ class Mechanics_of_Mobs():
                     self.player.hp = 0
                     self.gameplay = False
 
+    def Boss_warg_mechanicks_go(self,Boss_warg,player_x,player_y):
+
+        Boss_warg_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+        Boss_warg_name = Boss_warg_label.render("The Alpha Warg", False, "green")
+        Boss_warg_heal_points = Boss_warg_label.render("Hp: " + str(Boss_warg.hp), False, "green")
+        Boss_warg_armor = Boss_warg_label.render("Armor: " + str(Boss_warg.armor), False, "green")
+
+        if Boss_warg.Boss_warg_Heal_flag == False:
+            if Boss_warg.Boss_warg_flag1 and Boss_warg.y <= 1100 and Boss_warg.Boss_warg_Heal_flag == False:
+                Boss_warg.y += 20
+
+                Boss_warg.anim += 1
+                self.screen.blit(Boss_warg_Down[Boss_warg.anim % 3], (Boss_warg.x, Boss_warg.y))
+                self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
+                self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
+                self.screen.blit(Boss_warg_name, (400, 20))
+
+            if Boss_warg.y > 1100 and Boss_warg.Boss_warg_flag1:
+                a = self.player.Player_coordinate()
+                Boss_warg.x = -100
+                Boss_warg.y = a[1]
+                Boss_warg.Boss_warg_flag1 = False
+                Boss_warg.Boss_warg_flag2 = True
+
+                if Boss_warg.hp <= 100:
+                    Boss_warg.Boss_warg_Heal_flag = True
+                    pygame.time.set_timer(Boss_warg.timer, 100000000)
+                    Boss_warg.armor += 500
+                    Boss_warg.x = -100
+                    Boss_warg.y = 200
+
+            if Boss_warg.Boss_warg_flag2 and Boss_warg.x <= 900 and Boss_warg.Boss_warg_Heal_flag == False:
+                Boss_warg.x += 20
+
+                Boss_warg.anim += 1
+                self.screen.blit(Boss_warg_Left[Boss_warg.anim % 2], (Boss_warg.x, Boss_warg.y))
+                self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
+                self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
+                self.screen.blit(Boss_warg_name, (400, 20))
+
+            if Boss_warg.x > 900 and Boss_warg.Boss_warg_flag2:
+                a = self.player.Player_coordinate()
+                Boss_warg.x = a[0]
+                Boss_warg.y = 1100
+                Boss_warg.Boss_warg_flag2 = False
+                Boss_warg.Boss_warg_flag3 = True
+
+                if Boss_warg.hp <= 100:
+                    Boss_warg.Boss_warg_Heal_flag = True
+                    pygame.time.set_timer(Boss_warg.timer, 100000000)
+                    Boss_warg.armor += 500
+                    Boss_warg.x = -100
+                    Boss_warg.y = 200
+
+            if Boss_warg.Boss_warg_flag3 and Boss_warg.y >= -100 and Boss_warg.Boss_warg_Heal_flag == False:
+                Boss_warg.y -= 20
+
+                Boss_warg.anim += 1
+                self.screen.blit(Boss_warg_Up[Boss_warg.anim % 2], (Boss_warg.x, Boss_warg.y))
+                self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
+                self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
+                self.screen.blit(Boss_warg_name, (400, 20))
+
+            if Boss_warg.y < -100 and Boss_warg.Boss_warg_flag3:
+                a = self.player.Player_coordinate()
+                Boss_warg.x = 900
+                Boss_warg.y = a[1]
+                Boss_warg.Boss_warg_flag3 = False
+                Boss_warg.Boss_warg_flag4 = True
+
+                if Boss_warg.hp <= 100:
+                    Boss_warg.Boss_warg_Heal_flag = True
+                    pygame.time.set_timer(Boss_warg.timer, 100000000)
+                    Boss_warg.armor += 500
+                    Boss_warg.x = -100
+                    Boss_warg.y = 200
+
+            if Boss_warg.Boss_warg_flag4 and Boss_warg.x >= -100 and Boss_warg.Boss_warg_Heal_flag == False:
+                Boss_warg.x -= 20
+
+                Boss_warg.anim += 1
+                self.screen.blit(Boss_warg_Right[Boss_warg.anim % 2], (Boss_warg.x, Boss_warg.y))
+                self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
+                self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
+                self.screen.blit(Boss_warg_name, (400, 20))
+
+            if Boss_warg.x < -100 and Boss_warg.Boss_warg_flag4:
+                a = self.player.Player_coordinate()
+                Boss_warg.x = a[0]
+                Boss_warg.y = -100
+                Boss_warg.Boss_warg_flag4 = False
+                Boss_warg.Boss_warg_flag1 = True
+
+                if Boss_warg.hp <= 100:
+                    Boss_warg.Boss_warg_Heal_flag = True
+                    pygame.time.set_timer(Boss_warg.timer, 100000000)
+                    Boss_warg.armor += 500
+                    Boss_warg.x = -100
+                    Boss_warg.y = 200
+
+            if abs(Boss_warg.x - player_x) < 50 and abs(Boss_warg.y - player_y) < 50:
+                self.player.hp -= Boss_warg.base_attack()
+
+                if player_x > Boss_warg.x:
+                    player_x -= 150
+
+                elif player_x < Boss_warg.x:
+                    player_x += 150
+
+                if player_y < Boss_warg.y:
+                    player_y += 150
+
+                elif player_y > Boss_warg.y:
+                    player_y -= 150
+
+                if self.player.hp <= 0:
+                    self.player.hp = 0
+                    self.gameplay = False
+
+        if Boss_warg.hp > 150:
+            Boss_warg.Boss_warg_Heal_flag = False
+            Boss_warg.heal_anim = 0
+            Boss_warg.Boss_warg_ability_flag = False
+
+        if Boss_warg.Boss_warg_Heal_flag:
+            Boss_warg.anim += 1
+
+            if Boss_warg.x < 250:
+                Boss_warg.x += 10
+                self.screen.blit(Boss_warg_Left[Boss_warg.anim % 2], (Boss_warg.x, Boss_warg.y))
+                self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
+                self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
+                self.screen.blit(Boss_warg_name, (400, 20))
+
+            else:
+                if Boss_warg.heal_anim != 3:
+                    self.screen.blit(Boss_warg_Heal[Boss_warg.heal_anim], (Boss_warg.x, Boss_warg.y))
+                    self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
+                    self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
+                    self.screen.blit(Boss_warg_name, (400, 20))
+                    Boss_warg.heal_anim += 1
+                else:
+                    self.screen.blit(Boss_warg_Heal[3], (Boss_warg.x, Boss_warg.y))
+                    self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
+                    self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
+                    self.screen.blit(Boss_warg_name, (400, 20))
+                    Boss_warg.Boss_warg_ability_flag = True
+
+
     def Boss_nazgul_mechanicks(self, boss_nazgul):
         Boss_nazgul_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
         Boss_nazgul_name = Boss_nazgul_label.render("King of nazguls", False, "blue")
@@ -748,13 +897,16 @@ class BossOrkConqueror(Boss):
         return self.dmg + self.weapon.damage
 
 
-
-
-
-
 class Boss_warg(Boss):
     count = 0
     def __init__(self,x,y,anim):
+        self.Boss_warg_flag1 = True
+        self.Boss_warg_flag2 = False
+        self.Boss_warg_flag3 = False
+        self.Boss_warg_flag4 = False
+        self.Boss_warg_Heal_flag = False
+        self.Boss_warg_ability_flag = False
+        self.heal_anim = 0
         self.name = "The Alpha Warg"
         self.anim = anim
         self.timer = pygame.USEREVENT + 1

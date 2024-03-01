@@ -121,154 +121,7 @@ class Hobbit(Character):
             self.hp += 15
         flag_ability = 0
 #--- функции механики перемещения мобов ----------------------------------------------------------------
-def Boss_warg_mechanicks_go():
-    global Boss_warg_list_in_the_game, player_y, player_x, player_character, heal_anim, n_timer, Boss_warg_ability_flag, \
-        gameplay, Boss_warg_flag3, Boss_warg_flag1, Boss_warg_flag2, Boss_warg_flag4, Boss_warg_Heal_flag
-    Boss_warg_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
-    Boss_warg_name = Boss_warg_label.render("The Alpha Warg", False, "green")
-    Boss_warg_heal_points = Boss_warg_label.render("Hp: " + str(elem.hp), False, "green")
-    Boss_warg_armor = Boss_warg_label.render("Armor: " + str(elem.armor), False, "green")
 
-    if Boss_warg_Heal_flag == False:
-        if Boss_warg_flag1 and elem.y <= 1100 and Boss_warg_Heal_flag == False:
-            elem.y += 20
-
-            elem.anim += 1
-            screen.blit(Boss_warg_Down[elem.anim % 3], (elem.x, elem.y))
-            screen.blit(Boss_warg_heal_points, (elem.x + 10, elem.y - 30))
-            screen.blit(Boss_warg_armor, (elem.x + 10, elem.y - 60))
-            screen.blit(Boss_warg_name, (400, 20))
-
-        if elem.y > 1100 and Boss_warg_flag1:
-            a = player_character.Player_coordinate()
-            elem.x = -100
-            elem.y = a[1]
-            Boss_warg_flag1 = False
-            Boss_warg_flag2 = True
-
-            if elem.hp <= 100:
-                Boss_warg_Heal_flag = True
-                pygame.time.set_timer(elem.timer,100000000)
-                elem.armor += 500
-                elem.x = -100
-                elem.y = 200
-
-        if Boss_warg_flag2 and elem.x <= 900 and Boss_warg_Heal_flag == False:
-            elem.x += 20
-
-            elem.anim += 1
-            screen.blit(Boss_warg_Left[elem.anim % 2], (elem.x, elem.y))
-            screen.blit(Boss_warg_heal_points, (elem.x + 10, elem.y - 30))
-            screen.blit(Boss_warg_armor, (elem.x + 10, elem.y - 60))
-            screen.blit(Boss_warg_name, (400, 20))
-
-        if elem.x > 900 and Boss_warg_flag2:
-            a = player_character.Player_coordinate()
-            elem.x = a[0]
-            elem.y = 1100
-            Boss_warg_flag2 = False
-            Boss_warg_flag3 = True
-
-            if elem.hp <= 100:
-                Boss_warg_Heal_flag = True
-                pygame.time.set_timer(elem.timer, 100000000)
-                elem.armor += 500
-                elem.x = -100
-                elem.y = 200
-
-        if Boss_warg_flag3 and elem.y >= -100 and Boss_warg_Heal_flag == False:
-            elem.y -= 20
-
-            elem.anim += 1
-            screen.blit(Boss_warg_Up[elem.anim % 2], (elem.x, elem.y))
-            screen.blit(Boss_warg_heal_points, (elem.x + 10, elem.y - 30))
-            screen.blit(Boss_warg_armor, (elem.x + 10, elem.y - 60))
-            screen.blit(Boss_warg_name, (400, 20))
-
-        if elem.y < -100 and Boss_warg_flag3:
-            a = player_character.Player_coordinate()
-            elem.x = 900
-            elem.y = a[1]
-            Boss_warg_flag3 = False
-            Boss_warg_flag4 = True
-
-            if elem.hp <= 100:
-                Boss_warg_Heal_flag = True
-                pygame.time.set_timer(elem.timer, 100000000)
-                elem.armor += 500
-                elem.x = -100
-                elem.y = 200
-
-        if Boss_warg_flag4 and elem.x >= -100 and Boss_warg_Heal_flag == False:
-            elem.x -= 20
-
-            elem.anim += 1
-            screen.blit(Boss_warg_Right[elem.anim % 2], (elem.x, elem.y))
-            screen.blit(Boss_warg_heal_points, (elem.x + 10, elem.y - 30))
-            screen.blit(Boss_warg_armor, (elem.x + 10, elem.y - 60))
-            screen.blit(Boss_warg_name, (400, 20))
-
-        if elem.x < -100 and Boss_warg_flag4:
-            a = player_character.Player_coordinate()
-            elem.x = a[0]
-            elem.y = -100
-            Boss_warg_flag4 = False
-            Boss_warg_flag1 = True
-
-            if elem.hp <= 100:
-                Boss_warg_Heal_flag = True
-                pygame.time.set_timer(elem.timer, 100000000)
-                elem.armor += 500
-                elem.x = -100
-                elem.y = 200
-
-        if abs(elem.x - player_x) < 50 and abs(elem.y - player_y) < 50:
-            player_character.hp -= elem.base_attack()
-
-            if player_x > elem.x:
-                player_x -= 150
-
-            elif player_x < elem.x:
-                player_x += 150
-
-            if player_y < elem.y:
-                player_y += 150
-
-            elif player_y > elem.y:
-                player_y -= 150
-
-            if player_character.hp <= 0:
-                player_character.hp = 0
-                gameplay = False
-
-    if elem.hp > 150:
-        Boss_warg_Heal_flag = False
-        heal_anim = 0
-        Boss_warg_ability_flag = False
-
-    if Boss_warg_Heal_flag:
-        elem.anim += 1
-
-        if elem.x < 250:
-            elem.x += 10
-            screen.blit(Boss_warg_Left[elem.anim % 2], (elem.x, elem.y))
-            screen.blit(Boss_warg_heal_points, (elem.x + 10, elem.y - 30))
-            screen.blit(Boss_warg_armor, (elem.x + 10, elem.y - 60))
-            screen.blit(Boss_warg_name, (400, 20))
-
-        else:
-            if heal_anim != 3:
-                screen.blit(Boss_warg_Heal[heal_anim], (elem.x, elem.y))
-                screen.blit(Boss_warg_heal_points, (elem.x + 10, elem.y - 30))
-                screen.blit(Boss_warg_armor, (elem.x + 10, elem.y - 60))
-                screen.blit(Boss_warg_name, (400, 20))
-                heal_anim += 1
-            else:
-                screen.blit(Boss_warg_Heal[3], (elem.x, elem.y))
-                screen.blit(Boss_warg_heal_points, (elem.x + 10, elem.y - 30))
-                screen.blit(Boss_warg_armor, (elem.x + 10, elem.y - 60))
-                screen.blit(Boss_warg_name, (400, 20))
-                Boss_warg_ability_flag = True
 # ---функция отображения хп игрока-------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------------
@@ -299,14 +152,9 @@ pygame.time.set_timer(boss_timer_to_heal, 10000)
 
 n_list_it_the_game = []
 
-Boss_warg_list_in_the_game = []
-Boss_warg_flag1 = True
-Boss_warg_flag2 = False
-Boss_warg_flag3 = False
-Boss_warg_flag4 = False
-Boss_warg_Heal_flag = False
-heal_anim = 0
-Boss_warg_ability_flag = False
+#Boss_warg_list_in_the_game = []
+#heal_anim = 0
+
 
 The_Win_flag = False
 
@@ -672,7 +520,7 @@ while running:
             # ---BOSSES--------------------------------------------------------------------------------
             if actually_boss:
                     if actually_boss.name == "The Alpha Warg":
-                        Boss_warg_mechanicks_go()
+                        mechanics.Boss_warg_mechanicks_go(actually_boss,player_x,player_y)
                     if actually_boss.name == "King of nazgul":
                         mechanics.Boss_nazgul_mechanicks(actually_boss)
                     if actually_boss.name == "BossOrkConqueror":
@@ -1017,7 +865,7 @@ while running:
 
                             if abs(ar[0].x - actually_boss.x) < 100 and abs(ar[0].y - actually_boss.y) < 100:
                                 uron.play()
-                                if Boss_warg_Heal_flag == False:
+                                if actually_boss.Boss_warg_Heal_flag == False:
                                     actually_boss.y -= 50
 
                                 if actually_boss.armor > 0:
@@ -1128,7 +976,7 @@ while running:
             orc_list_in_the_game.clear()
             Arrow_list.clear()
             actually_boss=""
-            Boss_warg_list_in_the_game.clear()
+            #Boss_warg_list_in_the_game.clear()
             player_character.hp = All_Hp
             flag_ability = 1
             Arrow_How = 0
@@ -1171,7 +1019,7 @@ while running:
             orc_list_in_the_game.clear()
             Arrow_list.clear()
             actually_boss=""
-            Boss_warg_list_in_the_game.clear()
+            #Boss_warg_list_in_the_game.clear()
             player_character.hp = All_Hp
             flag_ability = 1
             Arrow_How = 0
@@ -1259,7 +1107,7 @@ while running:
                         orc_list_in_the_game.clear()
                         Arrow_list.clear()
                         actually_boss=""
-                        Boss_warg_list_in_the_game.clear()
+                        #Boss_warg_list_in_the_game.clear()
                         player_character.hp = All_Hp
                         flag_ability = 1
                         Arrow_How = 0
@@ -1340,7 +1188,7 @@ while running:
 
                 if num_mob == 0 and flag_create_the_boss:
                     #randomize_select = randint(1,3)
-                    randomize_select=3
+                    randomize_select=2
 
 
                     if randomize_select == 1:
@@ -1367,7 +1215,7 @@ while running:
 
         if actually_boss:
             if elem.name == "The Alpha Warg":
-                if event.type == elem.timer and Boss_warg_ability_flag:
+                if event.type == elem.timer and actually_boss.Boss_warg_ability_flag:
                     elem.special_ability()
 
 
@@ -1500,7 +1348,7 @@ while running:
                                 actually_boss.hp -= Attack_point
 
                                 if actually_boss.hp <= 0:
-                                    actually_boss=""
+                                    actually_boss.name=""
                                     print("the King of nazgul is murdered...")
                                     num_mob -= 1
                                     wave_flag = True
@@ -1518,7 +1366,7 @@ while running:
                             actually_boss.hp -= Attack_point
 
                         if actually_boss.hp <= 0:
-                            actually_boss=""
+                            actually_boss.name=""
                             print("the Ork is murdered...")
                             flag_ability = 1
                             wave_flag = True
@@ -1527,17 +1375,17 @@ while running:
                 if actually_boss.name == "The Alpha Warg":
                     if abs(actually_boss.x - player_x) < 140 and abs(actually_boss.y - player_y) < 140:
                         uron.play()
-                        if Boss_warg_Heal_flag == False:
-                            if Boss_warg_flag1:
+                        if actually_boss.Boss_warg_Heal_flag == False:
+                            if actually_boss.Boss_warg_flag1:
                                 actually_boss.y -= 100
 
-                            if Boss_warg_flag2:
+                            if actually_boss.Boss_warg_flag2:
                                 actually_boss.x -= 100
 
-                            if Boss_warg_flag3:
+                            if actually_boss.Boss_warg_flag3:
                                 actually_boss.y += 100
 
-                            if Boss_warg_flag4:
+                            if actually_boss.Boss_warg_flag4:
                                 actually_boss.x += 100
 
 
@@ -1551,7 +1399,7 @@ while running:
                         Attack_point = 0
 
                         if actually_boss.hp <= 0:
-                            actually_boss=""
+                            actually_boss.name=""
                             print("the Alpha Warg is murdered...")
                             flag_ability = 1
                             wave_flag = True
