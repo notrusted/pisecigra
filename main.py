@@ -57,7 +57,6 @@ The_Win_flag = False
 arrow_pop_flag = False
 punch_anim = 0
 
-# warg_list_in_the_game = []
 arrow_pop_set = set()
 
 Player_animation_count = 0
