@@ -1,12 +1,24 @@
-from random import randint
-from classes.Models.Weapons.Weapon import Weapon
-class Character:
-    def __init__(self,Hp, Strong, Ability, Weapon):
+import pygame
+
+
+
+class Character():
+    pred_rsp_hero = [0, 0]
+    count_animation = 0
+    attack_flag = True
+    attack_timer = pygame.USEREVENT + 1
+    attack_timer_DEFINITION = False
+    player_x = 300
+    player_y = 250
+
+    def __init__(self, Hp, Strong, Ability, Weapon, list_animation: list):
         self.strong = Strong
         self.hp = Hp
         self.ability = Ability
         self.weapon = Weapon
-
+        self.la = list_animation
+        self.player_x = 0
+        self.player_y = 0 #todo может сделать factory которая будет производить персонажей, чтобы только там менять входные параметры
     def Attack(self):
         return (self.strong + self.weapon.damage)
 
@@ -18,72 +30,22 @@ class Character:
         print("use ability: ", self.ability)
         print()
 
+    def animation(self, surf: pygame.surface.Surface, symbol: str, x, y):
+        if Character.count_animation == 0:
+            Character.count_animation = 1
+        else:
+            Character.count_animation = 0
+        if symbol == "l":
+            ch = 0
+        elif symbol == "r":
+            ch = 1
+        elif symbol == "u":
+            ch = 2
+        elif symbol == "d":
+            ch = 3
+        surf.blit(self.la[ch][Character.count_animation], (x, y))
 
-class Elf(Character):
-
-    def __init__(self):
-        Character.__init__(self,90,30, "has agility",Weapon("Bow",30))
-
-
-    def Attack(self):
-        print("The Elf attack with damage", self.strong + self.weapon.damage)
-        return self.strong + self.weapon.damage
-
-    def Protect(self):
-        a =  5 * randint(0,1)
-        self.hp = self.hp + a
-        print("The Elf's protect give him a " + str(a) + " Hp")
-
-    def Use_the_Ability(self):
-        global flag_ability,Arrow_How
-        if flag_ability != 0:
-            print("The Elf try to use him agility")
-            Arrow_How += 15
-        flag_ability = 0
-
-
-
-class Human(Character):
-
-    def __init__(self):
-        Character.__init__(self,150,40, "is a tracker", Weapon("sword", 15))
-
-    def Attack(self):
-        global bonus_attack
-        print("The Human attack with damage", self.strong + bonus_attack + self.weapon.damage)
-        a = self.strong + bonus_attack + self.weapon.damage
-        bonus_attack = 0
-        return a
-
-    def Protect(self):
-        a = randint(0, 1)
-        self.hp = self.hp + a * 15
-        print("the Human's protect give him a  " + str(a * 15) + " Hp")
-
-    def Use_the_Ability(self):
-        global flag_ability, bonus_attack
-        if flag_ability != 0:
-            print('The Human Find the vulnerability')
-            bonus_attack += randint(20,35)
-        flag_ability = 0
-
-class Hobbit(Character):
-
-    def __init__(self):
-        Character.__init__(self,50,70, 'can a hide', Weapon('Arnors knife', 15))
-
-    def Attack(self):
-        print( "The Hobbit attack with damage", self.strong + self.weapon.damage)
-        return self.strong + self.weapon.damage
-
-    def Protect(self):
-        a = randint(0,1) * randint(1,5) * 5
-        self.hp = self.hp + a
-        print("The Hobbit's  protect give him a " + str(a) +' Hp')
-
-    def Use_the_Ability(self):
-        global flag_ability
-        if flag_ability != 0:
-            print( " The Hobbit was able to hide")
-            self.hp += 15
-        flag_ability = 0
+    def Player_coordinate(self):
+        Character.pred_rsp_hero[0] = self.player_x
+        Character.pred_rsp_hero[1] = self.player_y
+        return (self.player_x, self.player_y)
