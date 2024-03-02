@@ -1,7 +1,24 @@
 import pygame
 from random import randint
+
+from classes.Mechanics.Mechanics_of_Mobs import Mechanics_of_Mobs
+from classes.Menu.Button_old.Button import Button
+from classes.Menu.Volume_button import Volume_button
+from classes.Menu.light_button import light_button
+from classes.Models.Bosses.BossOrkConqueror import BossOrkConqueror
+from classes.Models.Bosses.Boss_warg import Boss_warg
+from classes.Models.Bosses.Nazgul_boss import Nazgul_boss
+from classes.Models.Magic.Magic import Magic
+from classes.Models.Magic.Portal import Portal
+from classes.Models.Monsters.Duck import Duck
+from classes.Models.Monsters.Nazgul import Nazgul
+from classes.Models.Monsters.Ork import Ork
+from classes.Models.Monsters.Warg import Warg
+from classes.Models.Utility.Zelya import Zelya
+from classes.Models.Weapons.Weapon import Weapon
+from classes.global_variables import warg_list_in_the_game
 from file_for_images import *
-from file_for_class import *
+#from file_for_class import *
 #пуш для Некита
 #---------------------------------------------------
 #---------------------------------------------------
