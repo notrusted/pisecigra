@@ -9,3 +9,6 @@ class ArmyMonsters:
 
     def addMonster(self):
         self.army.append(MonstersFactory.createMonster(self.type))
+
+    def deleteMonster(self, index: int):
+        self.army.pop(index)
