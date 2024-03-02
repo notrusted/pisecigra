@@ -1,5 +1,5 @@
 from random import randint
-from classes.Weapon import Weapon
+from classes.Models.Weapons.Weapon import Weapon
 class Character:
     def __init__(self,Hp, Strong, Ability, Weapon):
         self.strong = Strong

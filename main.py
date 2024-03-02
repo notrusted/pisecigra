@@ -1412,4 +1412,4 @@ while running:
 
         arrow_pop_flag = False
 
-    clock.tick(20)
+    clock.tick(30)
