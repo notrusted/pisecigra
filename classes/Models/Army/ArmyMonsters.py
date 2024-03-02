@@ -1,4 +1,11 @@
-class Army:
+from factories.MonstersFactory import MonstersFactory
 
-    def __init__(self, Class, counter: int):
+
+class ArmyMonsters:
+
+    def __init__(self, type):
         self.army = []
+        self.type = type
+
+    def addMonster(self):
+        self.army.append(MonstersFactory.createMonster(self.type))
