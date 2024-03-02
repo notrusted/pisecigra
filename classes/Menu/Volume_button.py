@@ -5,7 +5,7 @@ from classes.Menu.Button import Button
 
 class Volume_button(Button):
     def __init__(self):
-        self.anim = [pygame.image.load('images/buttons/Volume_on.png'),pygame.image.load('images/buttons/Volume_off.png')]
+        self.anim = [pygame.image.load('Repositories/source/images/buttons/Volume_on.png'),pygame.image.load('Repositories/source/images/buttons/Volume_off.png')]
         self.rect = [self.anim[0].get_rect(topleft=(900, 720)),self.anim[1].get_rect(topleft=(900, 720))]
         self.music_mute = False
         self.timer = 0

@@ -15,7 +15,7 @@ class Mechanics_of_Mobs():
         if orc_list_in_the_game:
 
             for (i, elem) in enumerate(orc_list_in_the_game):
-                orc_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+                orc_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 25)
                 orc_heal_points = orc_label.render("Hp: " + str(elem.hp), False, "green")
                 orc_armor = orc_label.render("Armor: " + str(elem.armor), False, "green")
 
@@ -89,7 +89,7 @@ class Mechanics_of_Mobs():
 
     def nazgul_mechanicks_go(self,n_list_it_the_game, n_flag,player_x, player_y):
         for (i, elem) in enumerate(n_list_it_the_game):
-            n_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+            n_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 25)
             n_heal_points = n_label.render("Hp: " + str(elem.hp), False, "green")
             n_armor = n_label.render("Armor: " + str(elem.armor), False, "green")
 
@@ -140,7 +140,7 @@ class Mechanics_of_Mobs():
     def warg_mechanicks_go(self,warg_list_in_the_game,player_x, player_y):
 
         for (i, elem1) in enumerate(warg_list_in_the_game):
-            warg_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+            warg_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 25)
             warg_heal_points = warg_label.render("Hp: " + str(elem1.hp), False, "green")
             warg_armor = warg_label.render("Armor: " + str(elem1.armor), False, "green")
 
@@ -227,7 +227,7 @@ class Mechanics_of_Mobs():
 
     def Boss_warg_mechanicks_go(self,Boss_warg,player_x,player_y):
 
-        Boss_warg_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+        Boss_warg_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 25)
         Boss_warg_name = Boss_warg_label.render("The Alpha Warg", False, "green")
         Boss_warg_heal_points = Boss_warg_label.render("Hp: " + str(Boss_warg.hp), False, "green")
         Boss_warg_armor = Boss_warg_label.render("Armor: " + str(Boss_warg.armor), False, "green")
@@ -375,7 +375,7 @@ class Mechanics_of_Mobs():
 
 
     def Boss_nazgul_mechanicks(self, boss_nazgul):
-        Boss_nazgul_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 25)
+        Boss_nazgul_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 25)
         Boss_nazgul_name = Boss_nazgul_label.render("King of nazguls", False, "blue")
         Boss_nazgul_heal_points = Boss_nazgul_label.render("Hp: " + str(boss_nazgul.hp), False, "green")
         Boss_nazgul_armor = Boss_nazgul_label.render("Armor: " + str(boss_nazgul.armor), False, "green")

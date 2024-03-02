@@ -1,6 +1,7 @@
 import pygame
 from random import randint
 
+from Repositories.FontRepository import FontRepository
 from classes.Mechanics.Mechanics_of_Mobs import Mechanics_of_Mobs
 from classes.Menu.Button_old.Button import Button
 from classes.Menu.Volume_button import Volume_button
@@ -32,13 +33,14 @@ clock = pygame.time.Clock()
 pygame.init()
 screen = pygame.display.set_mode((1000, 800))
 pygame.display.set_caption("The Hobbit: Pyton's Adventure")
-bg = pygame.image.load("images/Back.png")
+bg = pygame.image.load("Repositories/source/images/Back.png")
 bg = pygame.transform.scale(bg, (1000, 800))
 
 wave_flag = False
 num_mob = 0
 wave_how = 0
-wave_label = pygame.font.Font("fonts/Hardpixel.OTF", 30)
+#wave_label = pygame.font.Font("Repositories/source/fonts/Hardpixel.OTF", 30)
+wave_label = FontRepository.getFont("Hardpixel.OTF", 30)
 how_villians = 0
 
 n_flag = True
@@ -72,14 +74,14 @@ Type_anim = 0
 
 gameplay = True
 # ---Подключение шрифтов----------------------------------------------------
-player_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 30)
-the_end_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 50)
-Count_label = pygame.font.Font("fonts/RobotoMono-VariableFont_wght.ttf", 20)
+player_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 30)
+the_end_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 50)
+Count_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 20)
 loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
 Win_label = the_end_label.render("YOU WIN!!!", False, "Yellow")
 restart_label = the_end_label.render("Start again", False, "Black")
 restart_label_rect = restart_label.get_rect(topleft=(250, 400))
-volume_label = pygame.font.Font('fonts/Hardpixel.OTF', 30)
+volume_label = pygame.font.Font('Repositories/source/fonts/gwent_extrabold.ttf', 30)
 
 Volume_level_label = volume_label.render("volume", False, "Black")
 Volume_1_flag = True
@@ -92,7 +94,7 @@ Volume_0_2_flag = False
 # volume_rect = button_Volume[1].get_rect(topleft=(900,720))
 volume_button = Volume_button()
 light_button = light_button()
-Arrow_label = pygame.font.Font("fonts/Angkor-Regular.ttf", 20)
+Arrow_label = pygame.font.Font("Repositories/source/fonts/Angkor-Regular.ttf", 20)
 # --------------------------------------------------------------------------
 
 Arrow_list = []
@@ -141,14 +143,15 @@ while running:
     if Start_game_flag:
         gameplay = False
         screen.fill("Black")
-        label = pygame.font.Font('fonts/gwent_extrabold.ttf', 60)
+        #label = pygame.font.Font('Repositories/source/fonts/gwent_extrabold.ttf', 60)
+        label = FontRepository.getFont("gwent_extrabold.ttf", 60)
         project_company = label.render("JIN Project", True, "White")
         if flag_project_screen:
             screen.blit(screen_saver, (0, 0))
             screen.blit(project_company, (screen.get_width() // 2 - 150, screen.get_height() // 2))
         else:
             screen.blit(screen_saver, (0, 0))
-            label = pygame.font.Font('fonts/gwent_extrabold.ttf', 30)
+            label = pygame.font.Font('Repositories/source/fonts/gwent_extrabold.ttf', 30)
             Game_Name = label.render("The Hobbit: Pyton's Adventure", False, "Black")
             screen.blit(Game_Name, (50, 50))
             volume_button.music_config(screen)
@@ -174,7 +177,7 @@ while running:
         if flag_options_menu:
             screen.blit(screen_saver, (0, 0))
             screen.blit(back_for_options, (225, 270))
-            label_options = pygame.font.Font('fonts/Hardpixel.OTF', 50)
+            label_options = pygame.font.Font('Repositories/source/fonts/Hardpixel.OTF', 50)
             label_options_view = label_options.render('OPTIONS', False, 'white')
             screen.blit(label_options_view, (425, 100))
             screen.blit(Volume_level_label, (465, 290))
@@ -203,7 +206,7 @@ while running:
         if entr:
             screen.fill("Black")
             The_Win_flag = False
-            screen.blit(pygame.image.load("images/CHOICE_screen2.png"), (0, 0))
+            screen.blit(pygame.image.load("Repositories/source/images/CHOICE_screen2.png"), (0, 0))
             Character_label = label.render("Choose your hero:", False, "Red")
             screen.blit(Character_label, (400, 100))
             Character_label_Elf = label.render("Forest Elf", False, "Yellow")
@@ -293,7 +296,7 @@ while running:
 
         if game_pause:
             screen.blit(screen_saver, (0, 0))
-            pause_label = pygame.font.Font('fonts/Hardpixel.OTF', 50)
+            pause_label = pygame.font.Font('Repositories/source/fonts/Hardpixel.OTF', 50)
             pause_view_label = pause_label.render('PAUSE', False, 'white')
             screen.blit(pause_view_label, (425, 100))
             if not flag_options_menu_in_pause:
@@ -316,7 +319,7 @@ while running:
             if flag_options_menu_in_pause:
                 screen.blit(screen_saver, (0, 0))
                 screen.blit(back_for_options, (225, 270))
-                label_options = pygame.font.Font('fonts/Hardpixel.OTF', 50)
+                label_options = pygame.font.Font('Repositories/source/fonts/Hardpixel.OTF', 50)
                 label_options_view = label_options.render('OPTIONS', False, 'white')
                 screen.blit(label_options_view, (425, 100))
                 screen.blit(Volume_level_label, (465, 290))
@@ -407,10 +410,10 @@ while running:
                 if actually_boss.name == "King of nazgul":
                     mechanics.Boss_nazgul_mechanicks(actually_boss)
                 if actually_boss.name == "BossOrkConqueror":
-                    label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 50)
+                    label_Boss = pygame.font.Font('Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf', 50)
                     name_label_boss = label_Boss.render('BOSSSSSS', True, 'Red')
                     screen.blit(name_label_boss, (screen.get_width() // 2 - 100, 50))
-                    label_Boss = pygame.font.Font('fonts/RobotoMono-VariableFont_wght.ttf', 10)
+                    label_Boss = pygame.font.Font('Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf', 10)
                     cry_label_boss = label_Boss.render(actually_boss.cry, False, 'White')
                     hp_boss = label_Boss.render("HP BOSS: " + str(actually_boss.hp), True, 'Red')
                     armor_boss = label_Boss.render("ARMOR BOSS: " + str(actually_boss.armor), True, 'Red')
@@ -864,7 +867,7 @@ while running:
     elif Start_game_flag == False and The_Win_flag == False:
         screen.fill("White")
         portal_sound.stop()
-        screen.blit(pygame.image.load("images/THE_END.png"), (0, 0))
+        screen.blit(pygame.image.load("Repositories/source/images/THE_END.png"), (0, 0))
         screen.blit(loose_label, (320, 500))
         screen.blit(restart_label, (320, 400))
         mouse = pygame.mouse.get_pos()
@@ -894,7 +897,7 @@ while running:
             Start_game_flag = True
 
     elif Start_game_flag == False and The_Win_flag:
-        screen.blit(pygame.image.load("images/THE_END_WIN.png"), (0, 0))
+        screen.blit(pygame.image.load("Repositories/source/images/THE_END_WIN.png"), (0, 0))
         count_nazguls = Count_label.render(f"You kill a {Nazgul.count} nazgul's", False, "Yellow")
         count_wargs = Count_label.render(f"You kill a {Warg.count} warg's", False, "Yellow")
         count_orks = Count_label.render(f"You kill a {Ork.count} ork's", False, "Yellow")

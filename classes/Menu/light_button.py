@@ -6,7 +6,7 @@ from file_for_images import convert_list_of_images
 
 class light_button(Button):
     def __init__(self):
-        self.anim = convert_list_of_images([pygame.image.load("images/buttons/Light_button.png"),pygame.image.load("images/buttons/Off_light_button.png")],1/3,1/3)
+        self.anim = convert_list_of_images([pygame.image.load("Repositories/source/images/buttons/Light_button.png"),pygame.image.load("Repositories/source/images/buttons/Off_light_button.png")],1/3,1/3)
         self.rect = [self.anim[1].get_rect(topleft=(530,330)),self.anim[1].get_rect(topleft=(500,330)),self.anim[1].get_rect(topleft=(470,330))]
         self.vol_1 = True
         self.vol_0_5 = False
