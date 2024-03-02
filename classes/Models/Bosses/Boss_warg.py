@@ -6,7 +6,7 @@ from classes.Models.Bosses.Boss import Boss
 from classes.Models.Magic.Magic import Magic
 from classes.Models.Monsters.Warg import Warg
 from classes.Models.Weapons.Weapon import Weapon
-from file_for_class import warg_list_in_the_game
+from classes.global_variables import warg_list_in_the_game
 
 
 class Boss_warg(Boss):
