@@ -1119,9 +1119,9 @@ while running:
             gameplay = False
 
         if actually_boss:
-            if elem.name == "The Alpha Warg":
-                if event.type == elem.timer and actually_boss.Boss_warg_ability_flag:
-                    elem.special_ability()
+            if actually_boss.name == "The Alpha Warg":
+                if event.type == actually_boss.timer and actually_boss.Boss_warg_ability_flag:
+                    actually_boss.special_ability()
 
         if event.type == Character.attack_timer and not Character.attack_flag and Character.attack_timer_DEFINITION:
             Character.attack_flag = True
