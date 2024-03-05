@@ -225,6 +225,14 @@ class Mechanics_of_Mobs():
                     self.player.hp = 0
                     self.gameplay = False
 
+    def Boss_warg_check_hp(self,Boss_warg):
+        if Boss_warg.hp <= 100:
+            Boss_warg.Boss_warg_Heal_flag = True
+            pygame.time.set_timer(Boss_warg.timer, 100000000)
+            Boss_warg.armor += 500
+            Boss_warg.x = -100
+            Boss_warg.y = 200
+
     def Boss_warg_mechanicks_go(self,Boss_warg,player_x,player_y):
 
         Boss_warg_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 25)
@@ -249,12 +257,9 @@ class Mechanics_of_Mobs():
                 Boss_warg.Boss_warg_flag1 = False
                 Boss_warg.Boss_warg_flag2 = True
 
-                if Boss_warg.hp <= 100:
-                    Boss_warg.Boss_warg_Heal_flag = True
-                    pygame.time.set_timer(Boss_warg.timer, 100000000)
-                    Boss_warg.armor += 500
-                    Boss_warg.x = -100
-                    Boss_warg.y = 200
+                self.Boss_warg_check_hp(Boss_warg)
+
+
 
             if Boss_warg.Boss_warg_flag2 and Boss_warg.x <= 900 and Boss_warg.Boss_warg_Heal_flag == False:
                 Boss_warg.x += 20
@@ -272,12 +277,8 @@ class Mechanics_of_Mobs():
                 Boss_warg.Boss_warg_flag2 = False
                 Boss_warg.Boss_warg_flag3 = True
 
-                if Boss_warg.hp <= 100:
-                    Boss_warg.Boss_warg_Heal_flag = True
-                    pygame.time.set_timer(Boss_warg.timer, 100000000)
-                    Boss_warg.armor += 500
-                    Boss_warg.x = -100
-                    Boss_warg.y = 200
+                self.Boss_warg_check_hp(Boss_warg)
+
 
             if Boss_warg.Boss_warg_flag3 and Boss_warg.y >= -100 and Boss_warg.Boss_warg_Heal_flag == False:
                 Boss_warg.y -= 20
@@ -295,12 +296,8 @@ class Mechanics_of_Mobs():
                 Boss_warg.Boss_warg_flag3 = False
                 Boss_warg.Boss_warg_flag4 = True
 
-                if Boss_warg.hp <= 100:
-                    Boss_warg.Boss_warg_Heal_flag = True
-                    pygame.time.set_timer(Boss_warg.timer, 100000000)
-                    Boss_warg.armor += 500
-                    Boss_warg.x = -100
-                    Boss_warg.y = 200
+                self.Boss_warg_check_hp(Boss_warg)
+
 
             if Boss_warg.Boss_warg_flag4 and Boss_warg.x >= -100 and Boss_warg.Boss_warg_Heal_flag == False:
                 Boss_warg.x -= 20
@@ -318,12 +315,7 @@ class Mechanics_of_Mobs():
                 Boss_warg.Boss_warg_flag4 = False
                 Boss_warg.Boss_warg_flag1 = True
 
-                if Boss_warg.hp <= 100:
-                    Boss_warg.Boss_warg_Heal_flag = True
-                    pygame.time.set_timer(Boss_warg.timer, 100000000)
-                    Boss_warg.armor += 500
-                    Boss_warg.x = -100
-                    Boss_warg.y = 200
+                self.Boss_warg_check_hp(Boss_warg)
 
             if abs(Boss_warg.x - player_x) < 50 and abs(Boss_warg.y - player_y) < 50:
                 self.player.hp -= Boss_warg.base_attack()
