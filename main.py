@@ -110,7 +110,7 @@ Start_game_flag = True
 entr = False  # флаг на переключение экранов стартовый->выбор игрока
 Fullhp = 1
 running = True
-pygame.mixer.music.load("Sounds/Main theme.mp3")
+pygame.mixer.music.load("Sounds/FLIP-FLAP.mp3")
 arrow_sound = pygame.mixer.Sound('Sounds/arrow.wav')
 wolf_howl_sound = pygame.mixer.Sound('Sounds/wolf_howl_sound.wav')
 portal_sound = pygame.mixer.Sound('Sounds/portal.wav')

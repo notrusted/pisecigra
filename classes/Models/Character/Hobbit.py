@@ -5,6 +5,7 @@ from classes.Models.Weapons.Weapon import Weapon
 from file_for_images import Hobba_left, Hobba_right, Hobba_down, Hobba_up
 
 
+
 class Hobbit(Character):
 
     def __init__(self):
