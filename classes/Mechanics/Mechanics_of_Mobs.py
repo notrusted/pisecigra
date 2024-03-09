@@ -232,6 +232,10 @@ class Mechanics_of_Mobs():
             Boss_warg.armor += 500
             Boss_warg.x = -100
             Boss_warg.y = 200
+    def Boss_warg_print_information(self,Boss_warg,Boss_warg_heal_points,Boss_warg_armor,Boss_warg_name):
+        self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
+        self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
+        self.screen.blit(Boss_warg_name, (400, 20))
 
     def Boss_warg_mechanicks_go(self,Boss_warg,player_x,player_y):
 
@@ -246,9 +250,7 @@ class Mechanics_of_Mobs():
 
                 Boss_warg.anim += 1
                 self.screen.blit(Boss_warg_Down[Boss_warg.anim % 3], (Boss_warg.x, Boss_warg.y))
-                self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
-                self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
-                self.screen.blit(Boss_warg_name, (400, 20))
+                self.Boss_warg_print_information(Boss_warg,Boss_warg_heal_points,Boss_warg_armor,Boss_warg_name)
 
             if Boss_warg.y > 1100 and Boss_warg.Boss_warg_flag1:
                 a = self.player.Player_coordinate()
@@ -266,9 +268,7 @@ class Mechanics_of_Mobs():
 
                 Boss_warg.anim += 1
                 self.screen.blit(Boss_warg_Left[Boss_warg.anim % 2], (Boss_warg.x, Boss_warg.y))
-                self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
-                self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
-                self.screen.blit(Boss_warg_name, (400, 20))
+                self.Boss_warg_print_information(Boss_warg,Boss_warg_heal_points,Boss_warg_armor,Boss_warg_name)
 
             if Boss_warg.x > 900 and Boss_warg.Boss_warg_flag2:
                 a = self.player.Player_coordinate()
@@ -285,9 +285,7 @@ class Mechanics_of_Mobs():
 
                 Boss_warg.anim += 1
                 self.screen.blit(Boss_warg_Up[Boss_warg.anim % 2], (Boss_warg.x, Boss_warg.y))
-                self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
-                self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
-                self.screen.blit(Boss_warg_name, (400, 20))
+                self.Boss_warg_print_information(Boss_warg,Boss_warg_heal_points,Boss_warg_armor,Boss_warg_name)
 
             if Boss_warg.y < -100 and Boss_warg.Boss_warg_flag3:
                 a = self.player.Player_coordinate()
@@ -304,9 +302,7 @@ class Mechanics_of_Mobs():
 
                 Boss_warg.anim += 1
                 self.screen.blit(Boss_warg_Right[Boss_warg.anim % 2], (Boss_warg.x, Boss_warg.y))
-                self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
-                self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
-                self.screen.blit(Boss_warg_name, (400, 20))
+                self.Boss_warg_print_information(Boss_warg,Boss_warg_heal_points,Boss_warg_armor,Boss_warg_name)
 
             if Boss_warg.x < -100 and Boss_warg.Boss_warg_flag4:
                 a = self.player.Player_coordinate()
@@ -347,22 +343,16 @@ class Mechanics_of_Mobs():
             if Boss_warg.x < 250:
                 Boss_warg.x += 10
                 self.screen.blit(Boss_warg_Left[Boss_warg.anim % 2], (Boss_warg.x, Boss_warg.y))
-                self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
-                self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
-                self.screen.blit(Boss_warg_name, (400, 20))
+                self.Boss_warg_print_information(Boss_warg,Boss_warg_heal_points,Boss_warg_armor,Boss_warg_name)
 
             else:
                 if Boss_warg.heal_anim != 3:
                     self.screen.blit(Boss_warg_Heal[Boss_warg.heal_anim], (Boss_warg.x, Boss_warg.y))
-                    self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
-                    self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
-                    self.screen.blit(Boss_warg_name, (400, 20))
+                    self.Boss_warg_print_information(Boss_warg,Boss_warg_heal_points,Boss_warg_armor,Boss_warg_name)
                     Boss_warg.heal_anim += 1
                 else:
                     self.screen.blit(Boss_warg_Heal[3], (Boss_warg.x, Boss_warg.y))
-                    self.screen.blit(Boss_warg_heal_points, (Boss_warg.x + 10, Boss_warg.y - 30))
-                    self.screen.blit(Boss_warg_armor, (Boss_warg.x + 10, Boss_warg.y - 60))
-                    self.screen.blit(Boss_warg_name, (400, 20))
+                    self.Boss_warg_print_information(Boss_warg,Boss_warg_heal_points,Boss_warg_armor,Boss_warg_name)
                     Boss_warg.Boss_warg_ability_flag = True
 
 
