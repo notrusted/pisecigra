@@ -6,6 +6,7 @@ from classes.Mechanics.Mechanics_of_Mobs import Mechanics_of_Mobs
 from classes.Menu.Button_old.Button import Button
 from classes.Menu.Volume_button import Volume_button
 from classes.Menu.light_button import light_button
+from classes.Menu.Restart_Button import Restart_Button
 from classes.Models.Bosses.BossOrkConqueror import BossOrkConqueror
 from classes.Models.Bosses.Boss_warg import Boss_warg
 from classes.Models.Bosses.Nazgul_boss import Nazgul_boss
@@ -75,7 +76,7 @@ Type_anim = 0
 gameplay = True
 # ---Подключение шрифтов----------------------------------------------------
 player_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 30)
-the_end_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 50)
+the_end_label = pygame.font.Font("Repositories/source/fonts/gwent_extrabold.ttf", 50)
 Count_label = pygame.font.Font("Repositories/source/fonts/RobotoMono-VariableFont_wght.ttf", 20)
 loose_label = the_end_label.render('YOU LOOSE!', False, "Red")
 Win_label = the_end_label.render("YOU WIN!!!", False, "Yellow")
@@ -94,6 +95,7 @@ Volume_0_2_flag = False
 # volume_rect = button_Volume[1].get_rect(topleft=(900,720))
 volume_button = Volume_button()
 light_button = light_button()
+restart_button = Restart_Button()
 Arrow_label = pygame.font.Font("Repositories/source/fonts/Angkor-Regular.ttf", 20)
 # --------------------------------------------------------------------------
 
@@ -868,10 +870,11 @@ while running:
         screen.fill("White")
         portal_sound.stop()
         screen.blit(pygame.image.load("Repositories/source/images/THE_END.png"), (0, 0))
-        screen.blit(loose_label, (320, 500))
-        screen.blit(restart_label, (320, 400))
+        #screen.blit(loose_label, (320, 500))
+        #screen.blit(restart_label, (320, 400))
         mouse = pygame.mouse.get_pos()
-        if restart_label_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
+        restart_button.Restart_button_print(screen)
+        if restart_button.Restart_button_control(mouse) and not restart_button.flag_to_restart:
             player_character.player_y = 500
             Nazgul.count = 0
             Warg.count = 0
