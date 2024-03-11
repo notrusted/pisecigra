@@ -182,7 +182,7 @@ while running:
             label_options = pygame.font.Font('Repositories/source/fonts/Hardpixel.OTF', 50)
             label_options_view = label_options.render('OPTIONS', False, 'white')
             screen.blit(label_options_view, (425, 100))
-            screen.blit(Volume_level_label, (465, 290))
+            screen.blit(Volume_level_label, (475, 300))
 
             light_button.choice_of_level(volume_button)
             light_button.level_config(screen)
@@ -324,7 +324,7 @@ while running:
                 label_options = pygame.font.Font('Repositories/source/fonts/Hardpixel.OTF', 50)
                 label_options_view = label_options.render('OPTIONS', False, 'white')
                 screen.blit(label_options_view, (425, 100))
-                screen.blit(Volume_level_label, (465, 290))
+                screen.blit(Volume_level_label, (475, 300))
 
                 light_button.choice_of_level(volume_button)
                 light_button.level_config(screen)
