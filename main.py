@@ -145,7 +145,6 @@ while running:
     if Start_game_flag:
         gameplay = False
         screen.fill("Black")
-        #label = pygame.font.Font('Repositories/source/fonts/gwent_extrabold.ttf', 60)
         label = FontRepository.getFont("gwent_extrabold.ttf", 60)
         project_company = label.render("JIN Project", True, "White")
         if flag_project_screen:
