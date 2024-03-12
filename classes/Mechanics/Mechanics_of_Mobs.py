@@ -228,7 +228,7 @@ class Mechanics_of_Mobs():
     def Boss_warg_check_hp(self,Boss_warg):
         if Boss_warg.hp <= 100:
             Boss_warg.Boss_warg_Heal_flag = True
-            pygame.time.set_timer(Boss_warg.timer, 100000000)
+            pygame.time.set_timer(Boss_warg.timer, 100000)
             Boss_warg.armor += 500
             Boss_warg.x = -100
             Boss_warg.y = 200

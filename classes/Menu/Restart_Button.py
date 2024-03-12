@@ -27,14 +27,12 @@ class Restart_Button(Button):
             if self.rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
                 self.click_sound.play()
                 self.flag_to_restart = True
-                pygame.time.set_timer(self.timer, 100000000)
+                pygame.time.set_timer(self.timer, 300)
                 return False
 
 
-        elif self.timer:
+        elif pygame.event.get(self.timer):
             self.flag_to_restart = False
             return True
-
-
 
 

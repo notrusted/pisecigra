@@ -46,3 +46,4 @@ class Boss_warg(Boss):
         if b != 0:
             self.hp += 15
         self.hp = self.hp - dmg + b
+

@@ -24,6 +24,7 @@ from classes.Models.Utility.Zelya import Zelya
 from classes.Models.Weapons.Weapon import Weapon
 from classes.global_variables import warg_list_in_the_game
 from file_for_images import *
+from controllers.Flags import Flags
 
 bonus_attack = 0
 flag_ability = 1
@@ -55,9 +56,9 @@ pygame.time.set_timer(boss_timer_to_heal, 10000)
 n_list_it_the_game = []
 
 
-The_Win_flag = False
+#The_Win_flag = False
 
-arrow_pop_flag = False
+#arrow_pop_flag = False
 punch_anim = 0
 
 arrow_pop_set = set()
@@ -206,7 +207,7 @@ while running:
         # ---экран выбора героя----------------------------------------------------
         if entr:
             screen.fill("Black")
-            The_Win_flag = False
+            Flags.The_Win_flag = False
             screen.blit(pygame.image.load("Repositories/source/images/CHOICE_screen2.png"), (0, 0))
             Character_label = label.render("Choose your hero:", False, "Red")
             screen.blit(Character_label, (400, 100))
@@ -664,7 +665,7 @@ while running:
                                 if Arrow_list:
                                     arrow_pop_set.add(i)
 
-                            if Arrow_list and arrow_pop_flag == False:
+                            if Arrow_list and Flags.arrow_pop_flag == False:
                                 if ar[0].y < -100:
                                     arrow_pop_set.add(i)
                                 elif ar[0].y > 1100:
@@ -694,7 +695,7 @@ while running:
                                     num_mob -= 1
                                     flag_ability = 1
 
-                                if Arrow_list and arrow_pop_flag == False:
+                                if Arrow_list and Flags.arrow_pop_flag == False:
                                     arrow_pop_set.add(i)
                                     continue
 
@@ -716,7 +717,7 @@ while running:
                                     num_mob -= 1
                                     flag_ability = 1
 
-                                if Arrow_list and arrow_pop_flag == False:
+                                if Arrow_list and Flags.arrow_pop_flag == False:
                                     # print("заш1л в arrow_pop_set")
                                     arrow_pop_set.add(i)
                                     continue
@@ -762,13 +763,13 @@ while running:
                                     wave_flag = True
                                     wave_how -= 1
 
-                                if Arrow_list and arrow_pop_flag == False:
+                                if Arrow_list and Flags.arrow_pop_flag == False:
                                     arrow_pop_set.add(i)
                                     continue
                             elif actually_boss.name == "BossOrkConqueror" and actually_boss.flag_protective_dome_enable:
                                 if abs(ar[0].x - actually_boss.coord_x) < 20 and abs(
                                         ar[0].y - actually_boss.coord_y) < 20:
-                                    if Arrow_list and arrow_pop_flag == False:
+                                    if Arrow_list and Flags.arrow_pop_flag == False:
                                         Arrow_list.pop(i)
 
                         if actually_boss.name == 'The Alpha Warg':
@@ -793,7 +794,7 @@ while running:
                                     wave_how -= 1
                                     flag_ability = 1
 
-                                if Arrow_list and arrow_pop_flag == False:
+                                if Arrow_list and Flags.arrow_pop_flag == False:
                                     arrow_pop_set.add(i)
                                     continue
 
@@ -865,7 +866,7 @@ while running:
 
 
 
-    elif Start_game_flag == False and The_Win_flag == False:
+    elif Start_game_flag == False and Flags.The_Win_flag == False:
         screen.fill("White")
         portal_sound.stop()
         screen.blit(pygame.image.load("Repositories/source/images/THE_END.png"), (0, 0))
@@ -898,7 +899,7 @@ while running:
             attack_flag = True
             Start_game_flag = True
 
-    elif Start_game_flag == False and The_Win_flag:
+    elif Start_game_flag == False and Flags.The_Win_flag:
         screen.blit(pygame.image.load("Repositories/source/images/THE_END_WIN.png"), (0, 0))
         count_nazguls = Count_label.render(f"You kill a {Nazgul.count} nazgul's", False, "Yellow")
         count_wargs = Count_label.render(f"You kill a {Warg.count} warg's", False, "Yellow")
@@ -1117,7 +1118,7 @@ while running:
 
         if wave_how <= 0 and gameplay == True:
             print("The end")
-            The_Win_flag = True
+            Flags.The_Win_flag = True
             gameplay = False
 
         if actually_boss:
@@ -1308,6 +1309,6 @@ while running:
         if gameplay and event.type == pygame.KEYDOWN and event.key == pygame.K_c:
             player_character.Use_the_Ability()
 
-        arrow_pop_flag = False
+        Flags.arrow_pop_flag = False
 
     clock.tick(30)
