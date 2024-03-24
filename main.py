@@ -1311,4 +1311,4 @@ while running:
 
         Flags.arrow_pop_flag = False
 
-    clock.tick(30)
+    clock.tick(20)
