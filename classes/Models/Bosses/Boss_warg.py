@@ -6,7 +6,7 @@ from classes.Models.Bosses.Boss import Boss
 from classes.Models.Magic.Magic import Magic
 from classes.Models.Monsters.Warg import Warg
 from classes.Models.Weapons.Weapon import Weapon
-from classes.global_variables import warg_list_in_the_game
+
 
 
 class Boss_warg(Boss):
@@ -31,11 +31,11 @@ class Boss_warg(Boss):
         print('The Alpha Warg attack with damage', self.dmg + self.weapon.damage)
         return self.dmg + self.weapon.damage
 
-    def special_ability(self):
+    def special_ability(self,Mob_Army):
         print('The Alpha Warg try to heal...')
         a = 1
         for i in range(a):
-            warg_list_in_the_game.append(Warg(True, False, False, False))
+            Mob_Army.addMonster("warg")
         self.hp += 2
 
 

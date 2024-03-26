@@ -22,9 +22,9 @@ from classes.Models.Monsters.Ork import Ork
 from classes.Models.Monsters.Warg import Warg
 from classes.Models.Utility.Zelya import Zelya
 from classes.Models.Weapons.Weapon import Weapon
-from classes.global_variables import warg_list_in_the_game
 from file_for_images import *
 from controllers.Flags import Flags
+from classes.Models.Army.ArmyMonsters import ArmyMonsters
 
 bonus_attack = 0
 flag_ability = 1
@@ -53,7 +53,7 @@ boss_timer_to_heal = pygame.USEREVENT + 1
 pygame.time.set_timer(boss_timer_to_cry, 1000)
 pygame.time.set_timer(boss_timer_to_heal, 10000)
 
-n_list_it_the_game = []
+
 
 
 #The_Win_flag = False
@@ -66,7 +66,7 @@ arrow_pop_set = set()
 Player_animation_count = 0
 bg_y = 0
 
-orc_list_in_the_game = []
+
 orc_flag = 0
 # totem_list=[]
 player_speed = 15
@@ -238,6 +238,8 @@ while running:
                     elem.flag_to_pressed = False
                     elem.visual(screen)
 
+            Mob_Army = ArmyMonsters()
+
             # реализация этого выбора
             if Character_label_Elf_rect.collidepoint(mouse) and pygame.mouse.get_pressed() == (1, 0, 0):
                 gameplay = True
@@ -389,14 +391,14 @@ while running:
 
             # ---реализация поведения и движения мобов-------------------------------------------
 
-            if warg_list_in_the_game:
-                mechanics.warg_mechanicks_go(warg_list_in_the_game, player_character.player_x, player_character.player_y)
+            if Mob_Army.army_of_wargs:
+                mechanics.warg_mechanicks_go(Mob_Army.army_of_wargs, player_character.player_x, player_character.player_y)
 
-            if n_list_it_the_game:
-                mechanics.nazgul_mechanicks_go(n_list_it_the_game, n_flag, player_character.player_x, player_character.player_y)
+            if Mob_Army.army_of_nazguls:
+                mechanics.nazgul_mechanicks_go( Mob_Army.army_of_nazguls, n_flag, player_character.player_x, player_character.player_y)
 
-            if orc_list_in_the_game:
-                mechanics.orc_mechanicks_go(orc_list_in_the_game, orc_flag, Character, player_character.player_x, player_character.player_y)
+            if Mob_Army.army_of_orks:
+                mechanics.orc_mechanicks_go(Mob_Army.army_of_orks, orc_flag, Character, player_character.player_x, player_character.player_y)
 
             if Zelya.zelya_list:
                 for (i, elem) in enumerate(Zelya.zelya_list):
@@ -644,8 +646,8 @@ while running:
                                 if Arrow_list:
                                     Arrow_list.pop(i)
                                     continue
-                    if n_list_it_the_game:
-                        for (j, elem) in enumerate(n_list_it_the_game):
+                    if Mob_Army.army_of_nazguls:
+                        for (j, elem) in enumerate(Mob_Army.army_of_nazguls):
                             if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
                                 elem.y -= 50
                                 uron.play()
@@ -657,7 +659,7 @@ while running:
                                     elem.Protect(Attack_point)
 
                                 if elem.hp <= 0:
-                                    n_list_it_the_game.pop(j)
+                                    Mob_Army.deleteMonster(j,"nazgul")
                                     print("the Nazgul is murdered...")
                                     num_mob -= 1
                                     flag_ability = 1
@@ -676,8 +678,8 @@ while running:
                                     arrow_pop_set.add(i)
                                     continue
 
-                    if warg_list_in_the_game:
-                        for (j1, elem1) in enumerate(warg_list_in_the_game):
+                    if Mob_Army.army_of_wargs:
+                        for (j1, elem1) in enumerate(Mob_Army.army_of_wargs):
                             if abs(ar[0].x - elem1.x) < 100 and abs(ar[0].y - elem1.y) < 100:
                                 elem1.y -= 50
                                 uron.play()
@@ -690,7 +692,7 @@ while running:
                                     elem1.Protect(Attack_point)
 
                                 if elem1.hp <= 0:
-                                    warg_list_in_the_game.pop(j1)
+                                    Mob_Army.deleteMonster(j1,"warg")
                                     print("the Warg is murdered...")
                                     num_mob -= 1
                                     flag_ability = 1
@@ -699,8 +701,8 @@ while running:
                                     arrow_pop_set.add(i)
                                     continue
 
-                    if orc_list_in_the_game:
-                        for (j, elem) in enumerate(orc_list_in_the_game):
+                    if Mob_Army.army_of_orks:
+                        for (j, elem) in enumerate(Mob_Army.army_of_orks):
                             if abs(ar[0].x - elem.x) < 100 and abs(ar[0].y - elem.y) < 100:
                                 uron.play()
                                 elem.y -= 50
@@ -712,7 +714,7 @@ while running:
                                     elem.Protect(Attack_point)
 
                                 if elem.hp <= 0:
-                                    orc_list_in_the_game.pop(j)
+                                    Mob_Army.deleteMonster(j,"ork")
                                     print("the Orc is murdered...")
                                     num_mob -= 1
                                     flag_ability = 1
@@ -883,9 +885,9 @@ while running:
             BossOrkConqueror.count = 0
             Boss_warg.count = 0
             # totem_list.clear()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            n_list_it_the_game.clear()
-            warg_list_in_the_game.clear()
-            orc_list_in_the_game.clear()
+            #n_list_it_the_game.clear()
+            #warg_list_in_the_game.clear()
+            #orc_list_in_the_game.clear()
             Arrow_list.clear()
             actually_boss = ""
             # Boss_warg_list_in_the_game.clear()
@@ -926,9 +928,9 @@ while running:
             BossOrkConqueror.count = 0
             Boss_warg.count = 0
             # totem_list.clear()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            n_list_it_the_game.clear()
-            warg_list_in_the_game.clear()
-            orc_list_in_the_game.clear()
+            #n_list_it_the_game.clear()
+            #warg_list_in_the_game.clear()
+            #orc_list_in_the_game.clear()
             Arrow_list.clear()
             actually_boss = ""
             # Boss_warg_list_in_the_game.clear()
@@ -1011,9 +1013,9 @@ while running:
                         Start_game_flag = True
                         player_character.player_y = 500
                         # totem_list.clear()!!!!!!!!!!!!!!!!!
-                        n_list_it_the_game.clear()
-                        warg_list_in_the_game.clear()
-                        orc_list_in_the_game.clear()
+                        #n_list_it_the_game.clear()
+                        #warg_list_in_the_game.clear()
+                        #orc_list_in_the_game.clear()
                         Arrow_list.clear()
                         actually_boss = ""
                         # Boss_warg_list_in_the_game.clear()
@@ -1078,13 +1080,13 @@ while running:
                     how_villians -= 1
 
                     if num == 1:
-                        n_list_it_the_game.append(Nazgul(0))
+                        Mob_Army.addMonster("nazgul")
 
                     elif num == 2:
-                        warg_list_in_the_game.append(Warg(True, False, False, False))
+                        Mob_Army.addMonster("warg")
 
                     elif num == 3:
-                        orc_list_in_the_game.append(Ork(3))
+                        Mob_Army.addMonster("ork")
 
             else:
                 if wave_flag:
@@ -1124,7 +1126,7 @@ while running:
         if actually_boss:
             if actually_boss.name == "The Alpha Warg":
                 if event.type == actually_boss.timer and actually_boss.Boss_warg_ability_flag:
-                    actually_boss.special_ability()
+                    actually_boss.special_ability(Mob_Army)
 
         if event.type == Character.attack_timer and not Character.attack_flag and Character.attack_timer_DEFINITION:
             Character.attack_flag = True
@@ -1171,8 +1173,8 @@ while running:
                     if elem.hp <= 0:
                         actually_boss.totem_list.pop(j)
                         print("Totem destoyed...")
-            if n_list_it_the_game:
-                for (j, elem) in enumerate(n_list_it_the_game):
+            if Mob_Army.army_of_nazguls:
+                for (j, elem) in enumerate(Mob_Army.army_of_nazguls):
                     if abs(elem.x - player_character.player_x) < 140 and abs(elem.y - player_character.player_y) < 140:
                         uron.play()
                         elem.y -= 100
@@ -1185,13 +1187,13 @@ while running:
                             elem.Protect(Attack_point)
 
                         if elem.hp <= 0:
-                            n_list_it_the_game.pop(j)
+                            Mob_Army.deleteMonster(j,"nazgul")
                             print("the Nazgul is murdered...")
                             num_mob -= 1
                             flag_ability = 1
 
-            if warg_list_in_the_game:
-                for (j1, elem1) in enumerate(warg_list_in_the_game):
+            if Mob_Army.army_of_wargs:
+                for (j1, elem1) in enumerate(Mob_Army.army_of_wargs):
                     if abs(elem1.x - player_character.player_x) < 140 and abs(elem1.y - player_character.player_y) < 140:
                         uron.play()
                         if elem1.flag1:
@@ -1214,13 +1216,13 @@ while running:
                             elem1.Protect(Attack_point)
 
                         if elem1.hp <= 0:
-                            warg_list_in_the_game.pop(j1)
+                            Mob_Army.deleteMonster(j1,"warg")
                             print("the Warg is murdered...")
                             num_mob -= 1
                             flag_ability = 1
 
-            if orc_list_in_the_game:
-                for (j, elem) in enumerate(orc_list_in_the_game):
+            if Mob_Army.army_of_orks:
+                for (j, elem) in enumerate(Mob_Army.army_of_orks):
                     if abs(elem.x - player_character.player_x) < 140 and abs(elem.y - player_character.player_y) < 140:
                         uron.play()
                         elem.y -= 100
@@ -1232,7 +1234,7 @@ while running:
                             elem.Protect(Attack_point)
 
                         if elem.hp <= 0:
-                            orc_list_in_the_game.pop(j)
+                            Mob_Army.deleteMonster(j,"ork")
                             print("the Ork is murdered...")
                             num_mob -= 1
                             flag_ability = 1
